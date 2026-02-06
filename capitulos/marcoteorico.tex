@@ -1,5 +1,4 @@
-
-(INSERTAR TÍTULO DE ESTUDIO DE VIABILIDAD AQUÍ)
+\chapter{Estudio de viabilidad}
     Para poder dar inicio a este proyecto es necesario evaluar previamente sus posibilidades reales de éxito. Esta etapa no se centra solo en su desarrollo inicial como TFG, sino enfocado también a una potencial evolución futura más allá del ámbito académico.
 
    Con el objetivo de saber si realmente merece la pena invertir esfuerzos y recursos en esta aplicación, hay que examinar el proyecto desde distintas perspectivas, identificando tanto los factores que juegan a favor como aquellos obstáculos que podrían dificultar su progreso o limitar su impacto.
@@ -9,7 +8,7 @@
    A continuación, se aplicarán distintas metodologías de análisis que permitirán obtener una visión completa de la situación. De esta forma, se podrá determinar si proyecto tiene solidez.
 
   
-(INSERTAR TÍTULO DE ANÁLISIS DAFO AQUÍ)
+\section{Análisis DAFO} 
 
     El análisis DAFO (Debilidades, Amenazas, Fortalezas y Oportunidades), también conocido por sus siglas en inglés como análisis SWOT (Strengths, Weaknesses, Opportunities, Threaths), es una herramienta de diagnóstico ampliamente utilizada en la gestión de proyectos y la planificación empresarial. Sirve para evaluar la situación actual de un producto o servicio, identificando tanto los factores internos como externos que pueden influir en su desarrollo y éxito.
 
@@ -44,19 +43,51 @@ Los rápidos cambios tecnológicos en la industria AR/VR representan otra amenaz
 Además, en un contexto práctico para la aplicación, vulnerabilidades de seguridad y privacidad inherentes a aplicaciones que capturan información espacial del entorno real y gestionan datos sensibles de proyectos constructivos presentan riesgos significativos. Podría comprometer datos confidenciales de clientes o generar responsabilidades legales, especialmente en un contexto donde la normativa sobre protección de datos (GDPR en Europa) es cada vez más estricta.
 
 
-Tabla:          
+\begin{table}[htbp]
+\centering
+\caption{Análisis DAFO del proyecto}
+\label{tab:dafo}
+\begin{tabular}{|p{3cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+& \textbf{POSITIVOS} & \textbf{NEGATIVOS} \\
+\hline
+\textbf{INTERNOS} & 
+\textbf{FORTALEZAS:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Relevancia actual
+    \item Simplificación individual
+    \item Experiencia en uso de tecnología inmersiva
+\end{itemize}
+& 
+\textbf{DEBILIDADES}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Falta de experiencia en desarrollo de tecnología inmersiva.
+    \item Falta de recursos financieros.
+    \item Obligaciones académicas simultáneas.
+    \item Limitación del proyecto.
+\end{itemize}
+\\
+\hline
+\textbf{EXTERNOS} & 
+\textbf{OPORTUNIDADES}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Contexto cultural adecuado.
+    \item Normalización de tecnología inmersiva.
+    \item Disponibilidad de plataformas de aprendizaje.
+\end{itemize}
+& 
+\textbf{AMENAZAS}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item Competencia actual
+    \item Tecnologías en entorno cambiante
+    \item Contexto de protección de datos estricta.
+\end{itemize}
+\\
+\hline
+\end{tabular}
+\end{table}
 
-            Positivos                           Negativos
-
-Internos    
-Fortalezas: Relevancia actual, simplificación individual, experiencia en uso de tecnología inmersiva.
-
-Debilidades: Falta de experiencia en desarrollo de tecnología inmersiva, falta de recursos financieros, obligaciones académicas simultáneas, limitación del proyecto
-Externos
-Oportunidades: Contexto cultural adecuado, normalización de tecnología inmersiva, disponibilidad de plataformas de aprendizaje.
-Amenazas: Competencia actual, tecnologías en entorno cambiante, contexto de protección de datos estricta.
-
-(INSERTAR TÍTULO DE LEAN CANVAS AQUÍ)
+\section{Lean Canvas} 
 
 El Lean Canvas es una herramienta de modelado empresarial derivada del tradicional Business Model Canvas, pero está adaptada para startups y proyectos en fase inicial como este. Es especialmente útil cuando existen muchas incertidumbres sobre el producto o servicio que se pretende desarrollar. Además, da una visión sobre cómo podría evolucionar esta solución en un entorno real si se decidiera continuar su desarrollo tras finalizar los estudios.
 
@@ -125,10 +156,99 @@ La arquitectura técnica se basa en frameworks consolidados como Unity o Unreal,
 4. Enfoque específico en construcción: Mientras que muchas soluciones AR/VR son genéricas adaptadas posteriormente al sector, esta se diseña desde cero considerando las necesidades particulares de arquitectos, ingenieros y constructores (métricas, materiales, normativas, fases constructivas).
 5. Experiencia de usuario simplificada: Curva de aprendizaje mínima mediante interfaces intuitivas diseñadas para profesionales no técnicos, eliminando la barrera de entrada que presentan herramientas complejas que requieren formación extensiva.
 
-(INSERTAR TABLA)
+\begin{table}[htbp]
+\centering
+\caption{Lean Canvas del proyecto}
+\label{tab:lean-canvas}
+\footnotesize
+\begin{tabular}{|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+\hline
+\textbf{PROBLEMA} & \textbf{SOLUCIÓN} & \textbf{PROPUESTA DE VALOR ÚNICA} & \textbf{VENTAJA ESPECIAL} & \textbf{SEGMENTOS DE CLIENTE} \\
+\hline
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=4pt]
+    \item Dificultad para comunicar proyectos a clientes no técnicos
+    \item Errores constructivos no detectados a tiempo
+    \item Falta de herramientas intuitivas para inspección
+    \item Barreras en colaboración multidisciplinar
+    \item Limitaciones de herramientas actuales
+\end{itemize}
+&
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=4pt]
+    \item App móvil multiplataforma con AR
+    \item App VR para gafas de realidad virtual
+    \item Sistema de importación BIM (IFC, Revit)
+    \item Anotación y reporte
+    \item Modo colaborativo
+\end{itemize}
+&
+Visualiza y valida tu proyecto constructivo donde realmente importa: en el lugar de la obra y antes de construir.
 
+Integración AR/VR accesible sin ser experto.
+&
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=4pt]
+    \item Integración completa AR + VR
+    \item Accesibilidad (smartphones)
+    \item Interoperabilidad BIM real
+    \item Enfoque específico construcción
+    \item UX simplificada
+\end{itemize}
+&
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=4pt]
+    \item Estudios de arquitectura e ingeniería
+    \item Empresas constructoras
+    \item Promotoras inmobiliarias
+    \item Project managers
+    \item Centros formativos
+\end{itemize}
+\\
+\hline
+& \textbf{MÉTRICAS CLAVE} & & \textbf{CANALES} & \\
+\cline{2-2} \cline{4-4}
+&
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=3pt]
+    \item Usuarios activos mensuales (MAU)
+    \item Conversión freemium/premium
+    \item Tiempo uso por sesión
+    \item Net Promoter Score
+    \item Reducción errores detectados
+    \item CAC vs LTV
+    \item Retención mensual
+\end{itemize}
+& &
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=3pt]
+    \item Ferias y congresos sector
+    \item Colaboración fabricantes BIM
+    \item Marketing digital (LinkedIn)
+    \item Prescripción universitaria
+    \item Casos de éxito
+\end{itemize}
+& \\
+\hline
+\multicolumn{3}{|p{7.5cm}|}{\textbf{ESTRUCTURA DE COSTES}} & \multicolumn{2}{p{5cm}|}{\textbf{FLUJOS DE INGRESOS}} \\
+\hline
+\multicolumn{3}{|p{7.5cm}|}{
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=3pt]
+    \item Desarrollo software (50.000-80.000€ MVP)
+    \item Infraestructura cloud (200-2.000€/mes)
+    \item Licencias software (3.000-5.000€/año)
+    \item Hardware testing (10.000-15.000€)
+    \item Marketing (10.000-30.000€/año)
+    \item Legal y administrativo (5.000-8.000€/año)
+\end{itemize}
+} & 
+\multicolumn{2}{p{5cm}|}{
+\begin{itemize}[leftmargin=*,noitemsep,topsep=2pt,itemsep=3pt]
+    \item Suscripción freemium: básico gratuito, profesional 15-30€/mes, empresarial personalizado
+    \item Licencias educativas
+    \item Servicios profesionales (consultoría, formación)
+    \item Marketplace de contenidos
+\end{itemize}
+} \\
+\hline
+\end{tabular}
+\end{table}
 
-(INSERTAR TÍTULO DE ANÁLISIS DE RIESGOS AQUÍ)
+\section{Análisis de riesgos} 
 
 El análisis de riesgos permite identificar anticipadamente aquellos eventos o circunstancias que podrían impactar negativamente en el desarrollo del proyecto, evaluando su probabilidad de ocurrencia y su potencial impacto. A diferencia del análisis DAFO que examina amenazas externas de forma general, este apartado se centra en riesgos concretos con estrategias específicas de mitigación. Esta herramienta permitirá aumentar significativamente las probabilidades de éxito del proyecto, anticipando problemas antes de que se materialicen y estableciendo planes de contingencia para aquellos que, inevitablemente, surgirán durante el desarrollo.
 
@@ -177,33 +297,31 @@ Riesgos operativos:
     Mitigación: Implementar cifrado end-to-end para datos sensibles, realizar auditorías de seguridad regulares, cumplir estrictamente con GDPR y normativas de protección de datos, y contratar seguros de responsabilidad profesional si el proyecto evoluciona más allá del ámbito académico.
 
 
-(INSERTAR MATRIZ, puesto en el documento de drive)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\chapter{\label{marcoteorico}Estudio de viabilidad
-
+\begin{table}[htbp]
+\centering
+\caption{Matriz de riesgos del proyecto}
+\label{tab:matriz-riesgos}
+\begin{tabular}{p{4cm}cccl}
+\toprule
+\textbf{Riesgo} & \textbf{Probabilidad} & \textbf{Impacto} & \textbf{Prioridad} & \textbf{Estrategia} \\
+\midrule
+Rendimiento insuficiente en móviles & Media-Alta & Alto & Alta & Optimización técnica proactiva \\
+\addlinespace
+Imprecisión posicionamiento AR & Alta & Crítico & Crítica & Sistemas híbridos GPS+Visual \\
+\addlinespace
+Subestimación complejidad & Alta & Medio & Alta & Planificación conservadora + MVP \\
+\addlinespace
+Rechazo usuarios objetivo & Media & Crítico & Alta & Validación temprana con usuarios \\
+\addlinespace
+Incompatibilidades BIM & Media & Medio & Media & Validadores robustos \\
+\addlinespace
+Movimientos competitivos & Media & Alto & Media & Diferenciación por nicho \\
+\addlinespace
+Dispersión de objetivos & Media & Alto & Media & Priorización estricta MVP \\
+\addlinespace
+Dependencia plataformas & Baja-Media & Medio-Alto & Media & Arquitectura modular \\
+\addlinespace
+Vulnerabilidades seguridad & Baja & Crítico & Alta & Buenas prácticas + auditorías \\
+\bottomrule
+\end{tabular}
+\end{table}
