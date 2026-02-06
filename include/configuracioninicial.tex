@@ -1,0 +1,208 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plantilla TFG/TFM
+% Escuela Politécnica Superior de la Universidad de Alicante
+% Realizado por: Jose Manuel Requena Plens
+% Contacto: info@jmrplens.com / Telegram:@jmrplens
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% FORMATO DEL DOCUMENTO
+%%%%%%%%%%%%%%%%%%%%%%%%
+% scrbook es la clase de documento
+% Si se desea que no haya página en blanco entre capítulos añadir "openany" en los parámetros de la clase. Sino siempre los capítulos empezarán en página impar.
+\documentclass[a4paper,11pt,titlepage]{scrbook}
+\KOMAoption{toc}{bib,chapterentryfill} % Opciones del índice
+
+% Paquete de formato para scrbook. Con marcas, linea-separador superior e inferior
+\usepackage[automark,headsepline,footsepline]{scrlayer-scrpage}
+\clearpairofpagestyles		% Borra los estilos por defecto
+%%
+% Formato y contenido de la información de cabecera y pie de página
+%%
+% Información de capítulo en cabecera e interno
+\ihead{{\color{gray30}\scshape\small\headmark}}	
+% Número de página en cabecera y externo
+\ohead{\normalfont\pagemark} 
+% Número de página en pie de página y externo. Sólo en páginas sin cabecera
+\ofoot[\normalfont\pagemark]{}
+%% 		
+% Edición del contenido de las distintas partes de la cabecera
+%%
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}} % Capítulo (Solo texto)
+\renewcommand{\sectionmark}[1]{\markright{\thesection. #1}} % Sección (Número y texto)
+\setkomafont{pagenumber}{} % Número de página (Sin nada añadido)
+
+% Añade al índice y numera hasta la profundidad 4.
+% 1:section,2:subsection,3:subsubsection,4:paragraph
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+% Muestra una regla para comprobar el formato de las páginas
+%\usepackage[type=upperleft,showframe,marklength=8mm]{fgruler}
+% MÁRGENES DE LAS PÁGINAS
+\usepackage[
+  inner	=	3.0cm, % Margen interior
+  outer	=	2.5cm, % Margen exterior
+  top	=	2.5cm, % Margen superior
+  bottom=	2.5cm, % Margen inferior
+  includeheadfoot, % Incluye cabecera y pie de página en los márgenes
+]{geometry}
+% Valor de interlineado
+\renewcommand{\baselinestretch}{1.0} % 1 línea de interlineado
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAFÍA
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{apacite} % NORMA APA
+\usepackage{natbib}
+\usepackage{breakcites}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% DOCUMENTO EN ESPAÑOL
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[base]{babel}
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+
+\usepackage{longtable,booktabs,array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% COLORES
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% Biblioteca de colores
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+% Otros colores definidos por el usuario
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\definecolor{gray30}{gray}{.30}
+\definecolor{negro}{RGB}{0,0,0}
+\definecolor{blanco}{RGB}{255,255,255}
+\definecolor{dkgreen}{rgb}{0,.6,0}
+\definecolor{dkblue}{rgb}{0,0,.6}
+\definecolor{dkyellow}{cmyk}{0,0,.8,.3}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% FIGURAS, TABLAS, ETC 
+%%%%%%%%%%%%%%%%%%%%%%%% 
+\usepackage{subcaption} % Para poder realizar subfiguras
+\usepackage{caption} % Para aumentar las opciones de diseño
+% Nombres de figuras, tablas, etc, en negrita la numeración, todo con letra small
+\captionsetup{labelfont={bf,small},textfont=small}
+% Paquete para modificar los espacios arriba y abajo de una figura o tabla
+\usepackage{setspace}
+% Define el espacio tanto arriba como abajo de las figuras, tablas
+\setlength{\intextsep}{5mm}
+% Para ajustar tamaños de texto de toda una tabla o grafica
+% Uso: {\scalefont{0.8} \begin{...} \end{...} }
+\usepackage{scalefnt}
+% Redefine las tablas y figuras para eliminar el '.' entre la numeración y el texto
+\renewcommand*{\figureformat}{\figurename~\thefigure}
+\renewcommand*{\tableformat}{\tablename~\thetable}
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% TEXTO
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquete para poder modificar las fuente de texto
+\usepackage{xltxtra}
+% Cualquier tamaño de texto. Uso: {\fontsize{100pt}{120pt}\selectfont tutexto}
+\usepackage{anyfontsize}
+% Para modificar parametros del texto.
+\usepackage{setspace}
+% Paquete para posicionar bloques de texto
+\usepackage{textpos}
+% Paquete para realizar cajas de texto. 
+% Uso: \begin{mdframed}[linecolor=red!100!black] tutexto \end{mdframed}
+\usepackage{framed,mdframed}
+% Para subrayar. Uso: \hlc[tucolor]{tutexto}
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+
+% Para introducir url's con formato. Uso: \url{http://www.google.es}
+\usepackage{url}
+% Amplia muchas funciones graficas de latex
+\usepackage{graphicx}
+% Paquete que añade el hipervinculo en referencias dentro del documento, indice, etc
+% Se define sin bordes alrededor. Uso: \ref{tulabel}
+\usepackage[pdfborder={000}]{hyperref}
+\usepackage{float}
+\usepackage{verbatim}
+% Paquete para condicionales avanzados
+\usepackage{xstring,xifthen}
+% Paquete para realizar calculos en el código
+\usepackage{calc}
+% Para rotar tablas o figuras o su contenido
+\usepackage{rotating} 
+\usepackage{tikz,tikzpagenodes}
+\usetikzlibrary{tikzmark,calc,shapes.geometric,arrows,backgrounds,shadings,shapes.arrows,shapes.symbols,shadows,positioning,fit,automata,patterns,intersections}
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% GLOSARIOS
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[acronym,nonumberlist,toc]{glossaries}
+\usepackage{glossary-superragged}
+\newglossarystyle{modsuper}{%
+  \setglossarystyle{super}%
+  \renewcommand{\glsgroupskip}{}
+}
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% COMANDOS AÑADIDOS
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Para mostrar la fecha actual (mes año) con \Hoy
+\newcommand{\MES}{%
+  \ifcase\month% 0
+    \or Enero% 1
+    \or Febrero% 2
+    \or Marzo% 3
+    \or Abril% 4
+    \or Mayo% 5
+    \or Junio% 6
+    \or Julio% 7
+    \or Agosto% 8
+    \or Septiembre% 9
+    \or Octubre% 10
+    \or Noviembre% 11
+    \or Diciembre% 12
+  \fi}
+\newcommand{\ANYO}{\number\year}
+\newcommand{\Hoy}{\MES\ \ANYO}
+
+%%%%%%%%%%%%%%%%%%%%%%%% 
+% MATEMÁTICAS
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{mathtools,amsthm,amsfonts,amssymb,bm,mathrsfs,nicefrac,upgreek,bigints} 
+% Comando para añadir información de variables a las ecuaciones
+% Uso: \begin{condiciones}[donde:] ....... \end{condiciones}
+\newenvironment{condiciones}[1][2]
+  {%
+   #1\tabularx{\textwidth-\widthof{#1}}[t]{
+     >{$}l<{$} @{}>{${}}c<{{}$}@{} >{\raggedright\arraybackslash}X
+   }%
+  }
+  {\endtabularx\\[\belowdisplayskip]}
+
+%%%%%
+% DEFINICION DE CONCEPTOS
+%%%%
+% Uso ejemplo: \begin{ejemplo} tucontenido \end{ejemplo} 
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{ejemplo}{Ejemplo}[chapter]
+\newtheorem{definicion}{Definición}[chapter]
+
