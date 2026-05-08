@@ -1,3 +1,191 @@
 \chapter{\label{desarrollo}Desarrollo}
 
+\section{Sistema de Visualización Dual (Gestión de Modelos)}
+La aplicación permite al usuario alternar dinámicamente entre el modelo de diseño teórico (BIM) y la captura de la realidad física (Gaussian Splatting). Esto es fundamental para identificar discrepancias en la obra mediante la superposición de ambos entornos.
 
+Para gestionar esta funcionalidad, se ha desarrollado el script LayerSwitcher.cs. Este componente utiliza una máquina de estados sencilla basada en el enumerado ViewMode, el cual define tres estados posibles:
+
+- BIM: Solo se muestra el modelo FBX.
+
+- GaussianSplat: Solo se muestra la nube de puntos volumétrica.
+
+- Both (Ambos): Superposición de ambos modelos simultáneamente.
+
+El script escucha las entradas de los controladores de Realidad Virtual (específicamente los botones X e Y del mando izquierdo, mapeados mediante la API de OVRInput). Al detectar una pulsación, el sistema recalcula qué modelo debe ser visible y utiliza el método SetActive() de Unity para habilitar o deshabilitar la jerarquía de los objetos correspondientes.
+Cabe destacar que para el renderizador de Gaussian Splatting, se incluyó una recarga forzada del componente (GaussianSplatRenderer.enabled = true) para asegurar que el buffer gráfico se actualiza correctamente al volver de un estado inactivo.
+
+Para ello se ha creado en Unity un objeto empty y se le ha añadiDo el script Layer Switcher.cs. Rellenando los slots con los modelos correspondientes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.1.png}
+    \caption{Configuración del script LayerSwitcher en el Inspector de Unity}
+    \label{fig:layer-switcher-unity}
+\end{figure}
+
+\section{Sistema de Punteros e Interacción Base}
+En un entorno de Realidad Virtual, el usuario necesita una referencia visual constante de hacia dónde están orientados sus controladores para poder interactuar con objetos distantes. El objetivo es proyectar un rayo infinito (o de gran alcance) que sirva como "puntero láser".
+
+Para esta funcionalidad se ha implementado el script ControllerRayVisual.cs. A diferencia de otros sistemas que dependen de entradas globales, este script se basa en la jerarquía de Unity:
+
+1. Representación Visual: Utiliza el componente LineRenderer para dibujar una línea continua en el espacio 3D.
+
+2. Cálculo Vectorial: En cada frame (Update), el script toma el transform.position del objeto como origen y calcula el punto final sumando a esa posición el vector transform.forward multiplicado por una distancia de 10 metros.
+
+3. Independencia de Espacio: Se ha configurado useWorldSpace = true para asegurar que la línea se dibuje correctamente en las coordenadas globales de la escena, independientemente de cómo se mueva el jugador.
+
+La integración en Unity se ha realizado aplicando el script sobre el objeto LeftControllerAnchor, creado con la plantilla de Unity y dentro de OVRCameraRig -> TrackingSpace). Al aplicar el script, Unity crea automáticamente un componente LineRenderer al que se le puede asignar un material. Lo más recomendable ha sido un material simple de color rojo para que no dependa de la iluminación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.2.png}
+    \caption{Configuración del script ControllerRayVisual en el Inspector de Unity}
+    \label{fig:controller-ray-unity}
+\end{figure}
+
+\section{Selección e Inspección de Elementos (BIM Data y Modo Rayos X)}
+Esta es la funcionalidad principal de inspección. Permite identificar piezas del modelo BIM, extraer su metadata (categoría, nombre, atributos) y visualizarlos en una interfaz flotante. Además, incluye la capacidad de "Rayos X" para ocultar elementos y permitir la visión de la nube de puntos subyacente.
+
+El sistema se apoya en dos scripts principales: BIMElementSelector.cs y VRUIManager.cs.
+
+- Detección por Raycast: El selector lanza un rayo físico filtrado por una LayerMask. Cuando el rayo colisiona con un objeto, se activa un sistema de feedback visual (cambio de color a amarillo para el hover y cian para la selección).
+
+- Procesamiento de Metadata: Los objetos BIM importados suelen contener información en su nombre de jerarquía. El script fragmenta el nombre del objeto (usando Split('_')) para reconstruir una ficha técnica con formato HTML compatible con TextMeshPro.
+
+- Interfaz Espacial Dinámica: El VRUIManager se encarga de posicionar el panel de información. Mediante cálculos vectoriales, el panel se sitúa siempre a 1.2 metros frente al usuario y orientado hacia su cabeza, evitando que el texto se vea deformado o quede oculto tras muros.
+
+ -Funcionalidad de Rayos X: Se ha implementado un método HideSelectedElement() que añade el objeto seleccionado a una lista de "ocultos" y lo desactiva. El sistema permite la reversibilidad mediante un método de restauración total vinculado al botón de agarre (Grip).
+
+
+Para configurar este sistema complejo, se siguieron estos pasos:
+
+1. Configuración del Gestor: El script BIMElementSelector se añadió al objeto OVRControllers. En el Inspector, se asignó el LeftControllerAnchor como origen del rayo y se vinculó la referencia del VRUIManager.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.3.png}
+    \caption{Configuración del objeto OVRControllers en el Inspector de Unity}
+    \label{fig:ovr-controllers-unity}
+\end{figure}
+
+2. Preparación de la UI: El VRUIManager se aplicó al objeto Canvas. Este Canvas debe estar en modo World Space y contener un componente OVR Raycaster para detectar colisiones del láser.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.4.png}
+    \caption{Configuración del objeto Canvas en el Inspector de Unity}
+    \label{fig:canvas-unity}
+\end{figure}
+
+3. Botón Interactivo: Dentro del panel de la interfaz, se creó un botón de Unity UI. Para conectarlo:
+
+    - En el evento On Click () del botón, se arrastró el objeto [Managers].
+    
+    - Se seleccionó la función BIMElementSelector -> HideSelectedElement.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.5.png}
+    \caption{Configuración del objeto Btn_Ocultar en el Inspector de Unity}
+    \label{fig:btn-ocultar-unity}
+\end{figure}
+
+4. Sistema de Eventos: Se sustituyó el Standalone Input Module del objeto EventSystem por el OVR Input Module, permitiendo que los controladores de las gafas actúen como punteros de ratón sobre la interfaz.
+
+\section{Herramienta de Medición Espacial (Cinta Métrica)}
+Para evaluar las discrepancias entre el diseño teórico y la realidad construida, el usuario necesita una herramienta capaz de medir distancias euclidianas exactas en el espacio 3D. Esta "cinta métrica virtual" debe permitir seleccionar dos puntos arbitrarios en el entorno (ya sea sobre la malla BIM o sobre la nube de puntos del Gaussian Splatting) y calcular la distancia real entre ellos.
+
+El script VRMeasurementTool.cs gestiona esta funcionalidad utilizando una máquina de estados finitos basada en el número de clics (_clickCount):
+
+1. Estado Inicial (0 clics): Un LineRenderer secundario actúa como láser rojo de apuntado, proyectándose constantemente desde el mando para indicar el punto exacto de colisión.
+
+2. Primer Punto (1 clic): Al pulsar el gatillo derecho, se registra la coordenada espacial (_pointA = hit.point). Se activa la "cinta métrica" (un LineRenderer verde). Un extremo se ancla en _pointA y el otro sigue dinámicamente al láser de apuntado.
+
+3. Segundo Punto (2 clics): Al pulsar de nuevo, la medición se fija. Se utiliza la función matemática Vector3.Distance(start, end) para obtener la longitud exacta.
+
+4. Generación Dinámica de UI: Para mostrar el resultado sin depender de Canvas prefabricados, el script instancia un GameObject en tiempo de ejecución con un componente TextMeshPro. Es crucial destacar que este objeto se crea en el espacio del mundo (World Space) y no se emparenta al controlador; de esta forma, el texto queda flotando fijamente en el punto medio de la medición. Además, se le añade un componente auxiliar BillboardText para garantizar que la cota siempre rote hacia la cámara del usuario, asegurando su legibilidad desde cualquier ángulo.
+
+Para su implementación:
+
+1. Se asignó el script VRMeasurementTool al objeto gestor de interacciones de las manos (OVRControllers).
+
+2. En el Inspector, se configuró la variable Measurement Mask en Everything. Este es un detalle técnico vital, ya que permite que el Raycast colisione tanto con los MeshColliders del modelo BIM como con los colisionadores de la reconstrucción volumétrica. El script está puesto en la figura 5.3.
+
+\section{Sistema de Auditoría y Trazabilidad (Incidencias)}
+
+Más allá de la visualización, la aplicación debe permitir al usuario documentar los errores encontrados durante la inspección. Esta funcionalidad permite "clavar" marcadores visuales en el entorno 3D, categorizándolos según su nivel de gravedad (Grave, Leve o a Revisar) mediante un flujo de trabajo adaptado a la Realidad Virtual.
+
+El sistema se centraliza en el script VRIssueTracker.cs y presenta varias soluciones complejas de Interacción Persona-Ordenador (HCI) específicas para entornos inmersivos:
+
+- Menú Radial Invisible (Input Direccional): Para no saturar la visión del usuario con interfaces gráficas intrusivas, se implementó un sistema de selección mediante el Joystick secundario. Al iniciar la creación de una incidencia, la lectura del OVRInput.Axis2D.SecondaryThumbstick determina el color y la categoría del marcador (Arriba para Grave/Rojo, Izquierda para Leve/Amarillo, Derecha para Revisar/Azul).
+
+- Gestión de Estados y Bloqueo de Locomoción: Surgió un conflicto técnico de entradas: el joystick derecho se utilizaba tanto para rotar la cámara (VRContinuousMovement) como para seleccionar la gravedad de la incidencia. Para resolverlo, se introdujo una variable estática global (isDraftingIssue). Cuando el usuario está configurando una incidencia, esta variable notifica al script de movimiento para que anule temporalmente la rotación del personaje (if (VRIssueTracker.isDraftingIssue) return;), evitando mareos o desplazamientos indeseados. Para esto se desactivó el script de movimiento original de la plantilla de Unity para utilizar el nuestro VRContinuousMovement.cs.
+
+- Anti-Clipping Vectorial: Para evitar que los marcadores esféricos y sus textos queden ocultos dentro de la geometría de las paredes, la posición de instanciación se calcula sumando el punto de impacto y la normal de la cara multiplicada por un factor de separación (hit.point + (hit.normal * 0.05f)). Además, la clase BillboardText empuja dinámicamente el texto hacia la posición de la cámara del usuario.
+
+Para intergrarlo en Unity, el script se acopló al ancla del controlador derecho (RightControllerAnchor) para centralizar las herramientas de edición en la mano dominante. Y después se vincularon las entradas lógicas a los botones físicos: el Botón A (OVRInput.Button.One) funciona como disparador y confirmador (doble estado), mientras que el Gatillo de Agarre secundario (SecondaryHandTrigger) se programó como un botón de "Deshacer" para eliminar el último marcador instanciado de la lista genérica issueMarkers. El script está puesto en la figura 5.3.
+
+\section{Sistema de Gestión de Capas Estructurales (BIM Layer Manager)}
+
+En la auditoría de proyectos constructivos, es habitual que los elementos arquitectónicos superficiales (como muros o falsos techos) oculten las instalaciones críticas (tuberías, cableado, estructura portante). El objetivo de esta funcionalidad es proporcionar al usuario una herramienta de "deconstrucción virtual", permitiéndole aislar, ocultar o mostrar grupos enteros de elementos del modelo BIM clasificados por su tipología constructiva.
+
+Para desarrollar esta mecánica, se ha implementado un sistema compuesto por dos scripts interdependientes: BuildingLayerManager.cs y MenuController.cs.
+
+- Estructura de Datos y Sincronización: El gestor principal (BuildingLayerManager) utiliza una clase serializada (BuildingLayer) que actúa como contenedor lógico. Esta clase asocia un nombre de categoría legible (ej. "Muros", "Suelos") con una lista dinámica de GameObjects (los elementos 3D individuales). Para evitar desincronizaciones de estado al arrancar la aplicación, el método Start() inspecciona la visibilidad real del primer objeto de cada lista en la jerarquía y ajusta la variable booleana isVisible en consecuencia.
+
+- Controladores de Visibilidad: Se ha desarrollado un método público ToggleLayer(string name) que itera sobre la lista correspondiente e invierte su estado activo mediante la función nativa SetActive(). Adicionalmente, se implementaron métodos de control global (ShowAll y HideAll) que fuerzan un estado uniforme en todas las capas registradas, facilitando el reinicio rápido del entorno.
+
+- Migración de Inputs (Gestión de Interfaz): Debido a la limitación de botones físicos en los controladores de realidad virtual, se delegó el control de estas capas a un panel de interfaz gráfica bidimensional inmersiva. El script MenuController se encarga de interceptar la pulsación del botón primario del mando izquierdo (Botón X) para alternar la visibilidad de este panel (MenuGestion), liberando así los comandos físicos para otras herramientas.
+
+La configuración de este módulo en el motor gráfico requirió un enfoque mixto entre organización de jerarquías y diseño de UI:
+
+1. Agrupación Lógica de Datos Brutos: Los modelos BIM exportados en formatos estándar (como IFC o FBX) a menudo fragmentan las geometrías asignándoles identificadores únicos (ej. 0x2372c). Para solventarlo, se creó un objeto vacío denominado [BuildingManager]. Utilizando la función de bloqueo del Inspector (Lock), se seleccionaron en bloque los objetos de la jerarquía correspondientes a una misma tipología y se asignaron de manera manual a sus listas correspondientes en el componente BuildingLayerManager.
+
+2. Construcción del Panel de Control: Se diseñó un panel flotante en el Canvas principal que incluye botones interactivos (UI Buttons) para cada capa registrada, así como para los controles maestros ("Mostrar Todo" y "Ocultar Todo").
+
+3. Vinculación de Eventos: Mediante el sistema de eventos de Unity (OnClick()), cada botón de la interfaz se vinculó al objeto [BuildingManager]. A los botones individuales se les asignó la función dinámica ToggleLayer pasando el nombre exacto de la capa como parámetro de cadena de texto (string), mientras que a los botones maestros se les asignaron las funciones directas ShowAll y HideAll.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.6.png}
+    \caption{Panel de gestión de capas estructurado en la interfaz de usuario inmersiva}
+    \label{fig:btn-capas-unity}
+\end{figure}
+
+4.3.8. Arquitectura de Navegación Multi-Escena e Interfaz Responsiva
+Objetivo
+
+Para dotar a la aplicación de una estructura escalable, se ha implementado un sistema de gestión de escenas que permite al usuario seleccionar entre diferentes modelos de auditoría (ej. Nave Industrial, Edificio de Oficinas) desde un hub central. El objetivo técnico es garantizar una navegación fluida y una interacción con los menús que sea visualmente coherente y que no interfiera con las herramientas de medición o selección de elementos BIM.
+Lógica de Programación y Control de Flujo
+
+La arquitectura de navegación se basa en tres pilares de software desarrollados en C sharp:
+
+- Gestión de Carga (SceneLoader.cs): Utiliza el espacio de nombres UnityEngine.SceneManagement para ejecutar transiciones asíncronas entre mapas. Se ha implementado una lógica de preprocesador (if UNITY EDITOR) para permitir el cierre controlado de la aplicación tanto en el entorno de desarrollo como en el dispositivo Meta Quest de forma nativa.
+
+- Protocolo de Bloqueo de Herramientas (Input Shielding): Para evitar el problema del "Click-Through" (activar herramientas de medición al interactuar con el menú), se ha modificado la lógica de los scripts VRMeasurementTool y BIMElementSelector. Mediante el uso de LayerMasks y comprobaciones de colisión en la capa "UI", el sistema detecta si el láser impacta en la interfaz; de ser así, se levanta una "bandera" (booleana) que inhabilita las funciones de los gatillos para la manipulación del modelo, delegando el input exclusivamente a la navegación web-style del menú.
+
+- Corte Visual del Puntero (ControllerRayVisual.cs): Se ha sustituido el trazado de línea estático por un sistema dinámico basado en Physics.Raycast. El láser ahora calcula en cada frame la distancia al primer objeto sólido (botón o muro), ajustando el extremo del LineRenderer al punto exacto de impacto, lo que elimina la desorientación visual que produce un láser atravesando interfaces físicas.
+
+Integración en Unity y Configuración VR
+
+La implementación en el motor gráfico requirió una reconfiguración de los módulos de entrada de Oculus (OVR):
+
+1. Event System y Raycasting: Se sustituyó el sistema de entrada estándar por el OVR Input Module, vinculando el "Ray Transform" al ancla del mando derecho. Los Canvas de los menús se configuraron en modo World Space con un componente OVR Raycaster para procesar los eventos de los mandos táctiles.
+
+2. Interactividad de Componentes: Para que los botones fueran detectables por el sistema de físicas y por el láser visual, se les dotó de componentes Box Collider ajustados a sus dimensiones. Se configuró una transición de color (Color Tint) en los botones para proporcionar feedback visual inmediato (Highlight, Pressed) al usuario.
+
+3. Escalabilidad mediante Prefabs: Para asegurar que todos los modelos compartan las mismas funcionalidades, se creó un Prefab del objeto [Managers]. Esto permite que, al crear una nueva escena para un modelo BIM distinto, solo sea necesario arrastrar este contenedor para disponer instantáneamente de las herramientas de medición, incidencias, capas y escáner de desviaciones sin necesidad de re-programación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{include/images/figura5.7.png}
+    \caption{Interfaz del menú principal}
+    \label{fig:btn-capas-unity}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{include//images/figura5.7.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
