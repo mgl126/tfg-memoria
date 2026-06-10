@@ -5,6 +5,48 @@ En este capítulo se describe el proceso técnico de creación de la aplicación
 Assets utilizados:
 https://maps.app.goo.gl/Qa8RHXL4oYLrD1Km6
 https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
+https://www.nordicsustainableconstruction.com/knowledge/2024/august/bim4lca-files
+
+\section{Generación Procedural de Colisionadores (Optimización)}
+Para que las herramientas de interacción mediante trazado de rayos (\textit{Raycast}), como el escáner espacial o el puntero de selección, operen de forma precisa sobre el modelo BIM, es estrictamente necesario que cada elemento geométrico posea un volumen de colisión (\texttt{MeshCollider}). Configurar esto de forma manual en modelos arquitectónicos complejos que contienen miles de piezas resulta inviable.
+
+Para automatizar este proceso, se desarrolló el componente \texttt{ModelOptimizer}. Durante la inicialización de la escena (\texttt{Start}), este algoritmo emplea una corrutina (\textit{Coroutine}) para iterar de forma asíncrona sobre todos los componentes \texttt{MeshFilter} del modelo importado. Al detectar una malla visual carente de físicas, instancia dinámicamente un \texttt{MeshCollider} y le transfiere la topología exacta de la pieza (\texttt{sharedMesh}). La ejecución se ha escalonado empleando \texttt{yield return null} cada diez iteraciones; esta técnica de programación concurrente garantiza que el hilo principal (\textit{Main Thread}) no se congele durante el procesamiento de edificios de alta densidad poligonal, manteniendo los fotogramas por segundo estables al cargar el entorno.
+
+
+
+\section{Alineación Espacial de Modelos (BIM vs Realidad)}
+Para que la validación y el escáner de desviaciones funcionen correctamente, es necesario que el modelo teórico BIM y la reconstrucción volumétrica (Gaussian Splatting) compartan exactamente el mismo sistema de coordenadas globales. Dado que las capturas de la realidad suelen generarse con orígenes y rotaciones arbitrarias, se ha desarrollado el script \texttt{AlineadorModelos} para automatizar la superposición precisa de ambos entornos.
+
+El sistema emplea un algoritmo de emparejamiento basado en tres puntos de referencia homólogos (anclas) definidos tanto en el BIM como en la realidad:
+\begin{itemize}
+    \item \textbf{Punto 1 (Origen):} Define la traslación exacta entre ambos mundos.
+    \item \textbf{Punto 2 (Dirección Forward):} Establece el vector de profundidad.
+    \item \textbf{Punto 3 (Dirección Up):} Ayuda a definir el plano y la verticalidad.
+\end{itemize}
+
+Matemáticamente, el script calcula los vectores directores (\texttt{forward}) y los vectores normales (\texttt{up}) utilizando el producto vectorial (\texttt{Vector3.Cross}) entre los puntos definidos. Con estos datos, se generan cuaterniones de rotación (\texttt{Quaternion.LookRotation}) para ambos espacios. Posteriormente, se calcula la diferencia rotacional multiplicando la rotación del BIM por la inversa de la rotación real (\texttt{Quaternion.Inverse}). Finalmente, esta diferencia de cuaterniones se aplica a la rotación del modelo escaneado, pivotando sobre el primer punto de anclaje para alinear geométricamente ambos mundos con precisión milimétrica.
+
+
+
+\section{Detección Automática de Colisiones (Clash Detection)}
+Una de las fases más críticas en la coordinación BIM es la identificación de interferencias entre las instalaciones (MEP) y los elementos arquitectónicos o estructurales. Para automatizar este proceso en el entorno virtual, se ha implementado el módulo \texttt{BIMClashDetector}.
+
+El algoritmo evalúa las colisiones mediante la intersección de cajas delimitadoras (\textit{Axis-Aligned Bounding Boxes} o AABB). Para evitar falsos positivos causados por roces superficiales (elementos que están en contacto pero no se atraviesan de forma crítica), el sistema aplica una reducción matemática a los límites de los colisionadores (\texttt{Bounds.Expand(-toleranciaConflicto)}) basándose en una variable paramétrica. Si tras esta substracción las áreas se siguen intersecando (\texttt{Intersects}), se confirma un conflicto estructural (\textit{Hard Clash}).
+
+Al detectar una interferencia, el sistema ejecuta tres acciones automatizadas:
+\begin{enumerate}
+    \item Instancia procedimentalmente un marcador visual (esfera roja) en el centro exacto de la colisión, calculado a partir del promedio espacial de la superposición de los límites.
+    \item Registra el impacto en la matriz de datos global para su posterior volcado en el sistema de informes (\texttt{GeneradorPDF}).
+    \item Se comunica directamente con la arquitectura de capas (\texttt{BuildingLayerManager}) enviando un conjunto de datos (\texttt{HashSet}) con las piezas involucradas. El gestor de capas aísla automáticamente estos elementos, ocultando el resto del edificio para proporcionar al usuario una vista limpia del problema.
+\end{enumerate}
+
+
+
+
+
+
+
+
 
 \section{Sistema de Visualización Dual (Gestión de Modelos)}
 La aplicación permite al usuario alternar dinámicamente entre el modelo de diseño teórico (BIM) y la captura de la realidad física (Gaussian Splatting). Esto es fundamental para identificar discrepancias en la obra mediante la superposición de ambos entornos.
@@ -70,15 +112,25 @@ Para configurar este sistema complejo, se siguieron estos pasos:
 \item Sistema de Eventos: Se sustituyó el \texttt{Standalone Input Module} del objeto \texttt{EventSystem} por el \texttt{OVR Input Module}, permitiendo que los controladores de las gafas actúen como punteros de ratón sobre la interfaz.
 \end{enumerate}
 
+
+Para dotar a esta herramienta de trazabilidad, el selector se ha integrado con el motor de generación documental. Al inspeccionar una pieza, el sistema evalúa dinámicamente si el elemento ya forma parte del registro de auditoría (\texttt{GeneradorPDF.elementosBIMInspeccionados}). De no ser así, habilita un botón interactivo en la ficha virtual que permite al usuario registrar la pieza (con su ID, categoría y coordenadas) para su posterior exportación.
+
+Adicionalmente, se diseñó un flujo de cierre limpio para la interfaz flotante. Mediante un patrón puente en el script \texttt{BIMElementSelector}, el usuario puede accionar un botón de cierre en el Canvas que delega la animación de ocultación procedural al \texttt{VRUIManager}, garantizando el despeje del campo visual tras finalizar la inspección.
+
+\subsection{Inteligencia Espacial y Prevención de Oclusiones (Anti-Clipping)}
+Desplegar menús flotantes (\textit{World Space Canvases}) a una distancia fija de 1.2 metros presentaba un alto riesgo de oclusión: si el usuario inspeccionaba una tubería cercana a una pared, la interfaz atravesaba el muro físico, imposibilitando la lectura (\textit{clipping}).
+
+Para dotar a la interfaz de consciencia espacial, el gestor \texttt{VRUIManager} implementa un algoritmo de posicionamiento de seguridad dinámico. Antes de invocar el panel, el sistema traza un rayo de detección matemática (\texttt{Physics.Raycast}) desde la cámara del usuario hacia la coordenada ideal teórica del menú, filtrando de forma excluyente las capas estructurales (\texttt{capasObstaculos}). Si se detecta una intersección geométrica (un muro) en la trayectoria, el sistema acorta el vector de distancia, reubicando el lienzo justo antes del punto de impacto (\texttt{hit.distance - margenSeguridad}). Adicionalmente, se garantiza que el lienzo nunca rebase una distancia mínima de seguridad (\texttt{distanciaMinima}) respecto a los ojos, evitando la fatiga visual por enfoque cercano (\textit{Vergence-Accommodation Conflict}).
+
 \section{Herramienta de Medición Espacial (Cinta Métrica)}
 Para evaluar las discrepancias entre el diseño teórico y la realidad construida, el usuario necesita una herramienta capaz de medir distancias euclidianas exactas en el espacio 3D. Esta "cinta métrica virtual" debe permitir seleccionar dos puntos arbitrarios en el entorno (ya sea sobre la malla BIM o sobre la nube de puntos del Gaussian Splatting) y calcular la distancia real entre ellos.
 
-El script \texttt{VRMeasurementTool} gestiona esta funcionalidad utilizando una máquina de estados finitos basada en el número de clics (\texttt{clickCount}):
+El script \texttt{VRMeasurementTool} gestiona esta funcionalidad utilizando una máquina de estados finitos basada en el número de interacciones (\texttt{clickCount}):
 \begin{enumerate}
-\item Estado Inicial (0 clics): Un \texttt{LineRenderer} secundario actúa como láser rojo de apuntado, proyectándose constantemente desde el mando para indicar el punto exacto de colisión mediante un \texttt{Physics.Raycast}.
-\item Primer Punto (1 clic): Al pulsar el gatillo derecho, se registra la coordenada espacial (\texttt{pointA = hit.point}). Se activa la "cinta métrica" (un \texttt{LineRenderer} verde). Un extremo se ancla en \texttt{pointA} y el otro sigue dinámicamente la posición actual al láser de apuntado.
-\item Segundo Punto (2 clics): Al pulsar de nuevo, la medición se fija. Se utiliza la función matemática nativa \texttt{Vector3.Distance(start, end)} para obtener la longitud exacta entre ambos puntos.
-\item Generación Dinámica de UI: Para mostrar el resultado sin depender de Canvas prefabricados, el script instancia un GameObject en tiempo de ejecución con un componente \texttt{TextMeshPro}. Es crucial destacar que este objeto se crea en el espacio del mundo (World Space) y no se emparenta al controlador; de esta forma, el texto queda flotando fijamente en el punto medio de la medición. Además, se le añade un componente auxiliar \texttt{BillboardText} para garantizar que la cota siempre rote hacia la cámara del usuario, asegurando su legibilidad desde cualquier ángulo.
+    \item \textbf{Estado Inicial (0 clics):} Un \texttt{LineRenderer} secundario actúa como láser rojo de apuntado, proyectándose constantemente desde el mando para indicar el punto exacto de colisión mediante un \texttt{Physics.Raycast} filtrado por una máscara de capas (\textit{LayerMask}) para ignorar la interfaz de usuario.
+    \item \textbf{Primer Punto (1 clic):} Al pulsar el gatillo derecho, se registra la coordenada espacial (\texttt{pointA = hit.point}). Se activa la "cinta métrica" (un \texttt{LineRenderer} principal). Un extremo se ancla en \texttt{pointA} y el otro sigue dinámicamente la posición actual del láser de apuntado.
+    \item \textbf{Segundo Punto (2 clics):} Al pulsar de nuevo, la medición se fija. Se utiliza la función matemática nativa \texttt{Vector3.Distance(start, end)} para obtener la longitud exacta. En este mismo instante, la medida formateada se inyecta en la estructura de datos persistente (\texttt{GeneradorPDF.medidasRealizadas}) para su posterior inclusión automática en el informe de auditoría.
+    \item \textbf{Generación Dinámica de UI:} Para mostrar el resultado in situ, el script instancia un GameObject flotante con un componente \texttt{TextMeshPro} posicionado en el punto medio exacto geométrico (\texttt{midPoint}) entre ambas coordenadas.
 \end{enumerate}
 
 Para su implementación:
@@ -94,9 +146,9 @@ El sistema se centraliza en el script \texttt{VRIssueTracker.cs} y presenta vari
 
 Para no saturar la visión del usuario con interfaces gráficas intrusivas, se implementó un sistema de selección mediante el Joystick secundario. Al iniciar la creación de una incidencia, la lectura del eje \texttt{OVRInput.Axis2D.SecondaryThumbstick} determina el color y la categoría del marcador (Arriba para Grave/Rojo, Izquierda para Leve/Amarillo, Derecha para Revisar/Azul).
 
-Para evitar que los marcadores esféricos y textos queden ocultos dentro de la geometría de las paredes, la posición de instanciación se calcula sumando el punto de impacto y la normal de la cara multiplicada por un factor de separación de 5 centímetros \texttt{hit.point + (hit.normal * 0.05f)}. Además, la clase \texttt{BillboardText} empuja dinámicamente el texto hacia la posición de \texttt{CenterEyeAnchor} (la cámara del usuario).
+Para asegurar la legibilidad constante de la información adjunta a estas marcas, independientemente del ángulo de aproximación del operador, se implementó una rutina geométrica de orientación continua (\textit{Billboarding}). El script \texttt{BillboardText} fuerza la rotación del elemento textual para encararlo contra el vector de la cámara del usuario (\texttt{LookAt()}). Sin embargo, para evitar rotaciones de cabeceo aberrantes cuando el usuario lee la etiqueta desde ángulos cenitales o nadirales, el vector director hacia la cámara se intercepta y aplana en su eje de elevación (\texttt{directionToCamera.y = 0}). Esto permite a la etiqueta rotar exclusivamente en su eje horizontal (Y), manteniendo la tipografía siempre perpendicular al plano del suelo.
 
-Para integrarlo en Unity, el script se acopló al ancla del controlador derecho (\texttt{RightControllerAnchor}) para centralizar las herramientas de edición en la mano dominante. Posteriormente se vincularon las entradas lógicas a los botones físicos: el Botón A (\texttt{OVRInput.Button.One}) funciona como disparador y confirmador (doble estado).
+Para integrarlo en Unity, el script se acopló al ancla del controlador derecho (\texttt{RightControllerAnchor}). Posteriormente se vincularon las entradas lógicas a los botones físicos: el Botón A (\texttt{OVRInput.Button.One}) funciona como disparador y confirmador (doble estado).
 
 \section{Sistema de Gestión de Capas Estructurales (BIM Layer Manager)}
 En la auditoría de proyectos constructivos, es habitual que los elementos arquitectónicos superficiales (como muros o falsos techos) oculten las instalaciones críticas (tuberías, cableado, estructura portante). El objetivo de esta funcionalidad es proporcionar al usuario una herramienta de "deconstrucción virtual", permitiéndole aislar, ocultar o mostrar grupos enteros de elementos del modelo BIM clasificados por su tipología constructiva.
@@ -155,7 +207,20 @@ El suavizado de las interfaces de usuario se programó empleando Corrutinas (\te
 
 Esta técnica de interpolación también se aplicó a la ocultación de las piezas del modelo BIM y a la transición cruzada entre el modelo teórico y el renderizado de \textit{Gaussian Splatting} gestionado por el \texttt{LayerSwitcher}, donde el modelo saliente se reduce de forma progresiva mientras el entrante recupera su escala original.
 
+En cuanto a la interacción directa con la interfaz, se detectaron deficiencias visuales al utilizar los cambios de color predeterminados de la UI de Unity en Realidad Virtual. Para solventarlo, se implementó el script \texttt{BotonMaterialVR}, el cual hereda de las interfaces de eventos del puntero (\texttt{IPointerEnterHandler}, \texttt{IPointerDownHandler}, etc.). En lugar de aplicar un tinte de color bidimensional, el sistema sustituye el material completo (\textit{Material Swapping}) del componente renderizado en respuesta a los estados de interacción (Hover, Pressed). Esta solución garantiza que los botones mantengan sus propiedades de sombreado e iluminación tridimensional (shaders), mejorando la respuesta táctil visual (\textit{feedback}).
+
 Para la carga entre escenas de la aplicación, el script \texttt{SceneLoader} fue ampliado para incorporar un fundido a negro (\textit{Fade-to-Black}). Se añadió un objeto \texttt{Canvas} configurado en \textit{World Space} y anclado rígidamente a escasos centímetros de la cámara del usuario (\texttt{CenterEyeAnchor}), asegurando la oclusión total del campo de visión sin generar distorsiones geométricas de perspectiva. La manipulación de su componente \texttt{CanvasGroup.alpha} se sincronizó con el método \texttt{SceneManager.LoadSceneAsync()}. El uso de cargas asíncronas es un requisito clave en VR; a diferencia de las cargas síncronas convencionales, las operaciones en segundo plano evitan que el hilo principal del procesador se congele al cambiar de mapa, garantizando que el \textit{tracking} (seguimiento de la cabeza) de las gafas se mantenga fluido y no expulse al usuario de la experiencia inmersiva.
+
+\subsection{Persistencia de Datos en Menú Principal}
+Para dotar a la aplicación de un seguimiento temporal de las auditorías sin incurrir en el coste computacional de bases de datos relacionales, se ha implementado un módulo de persistencia ligera (\texttt{GestorFechasMenu}). El sistema hace uso del registro local del motor (\texttt{PlayerPrefs}) para guardar, leer y actualizar las cadenas de texto (\textit{strings}) correspondientes a la fecha de la última inspección de cada maqueta. Estos datos se inyectan en tiempo de ejecución en los componentes de interfaz (\texttt{TextMeshPro}), otorgando al usuario un control de registro de versiones visual desde el inicio de la aplicación.
+
+\subsection{Gravedad Dinámica y Prevención de Cinetosis en Desniveles}
+El desplazamiento continuo mediante el \textit{joystick} (\texttt{VRContinuousMovement}) es fundamental para recorrer maquetas a escala real. Sin embargo, los sistemas de locomoción estándar presentan deficiencias matemáticas al interactuar con desniveles negativos (bajada de escaleras). Al avanzar horizontalmente a mayor velocidad que la aceleración gravitatoria, el \texttt{CharacterController} pierde contacto superficial, generando micro-saltos y caídas abruptas que inducen cinetosis grave en el visor.
+
+Para subsanar esta irregularidad computacional, se aisló el procesamiento del vector de movimiento horizontal (\texttt{X, Z}) del vertical (\texttt{Y}). El sistema evalúa constantemente la propiedad \texttt{isGrounded}. Cuando el usuario se encuentra en contacto con una superficie (como el borde de un escalón), en lugar de aplicar una aceleración gravitacional acumulativa, el algoritmo inyecta una fuerza descendente constante e intencionada (\texttt{-2f}). Esta presión vertical actúa como un anclaje magnético, obligando a la cápsula de colisión a adherirse milimétricamente a la pendiente de las escaleras, garantizando un descenso completamente fluido e inmersivo.
+
+
+
 
 \section{Sistema de Recorridos Cinemáticos Automatizados}
 Con el fin de facilitar la presentación y documentación de los proyectos arquitectónicos, se desarrolló un sistema de "vuelo de dron" que permite al usuario experimentar un recorrido guiado y suavizado a través de las instalaciones de forma pasiva.
@@ -171,19 +236,13 @@ Estos datos matemáticos se aplican directamente al objeto raíz del jugador (el
 
 
 
-
 \section{Sistema de Captura Fotográfica y Generación de Informes}
 Para consolidar la utilidad de la aplicación como herramienta de auditoría profesional, se implementó un sistema integral para documentar visual y paramétricamente las inspecciones. Este sistema se divide en dos componentes principales: una cámara virtual inmersiva y un motor automático de generación documental.
 
 \subsection{Cámara Virtual y Captura de Evidencias}
-La funcionalidad de captura de imágenes en el entorno tridimensional se gestionó mediante el script \texttt{VRCameraTool}. Para replicar el comportamiento de un dispositivo móvil en Realidad Virtual sin romper la inmersión, se empleó la tecnología \texttt{RenderTexture} nativa de Unity. Esta textura recibe el búfer de salida de una cámara secundaria (dedicada exclusivamente a la fotografía) y se proyecta sobre un plano bidimensional emparentado al controlador de la mano derecha del usuario, simulando una pantalla física.
+Para documentar visualmente las discrepancias estructurales o colisiones MEP encontradas durante la auditoría, se implementó una herramienta de cámara virtual interactiva gestionada por \texttt{VRCameraTool}.
 
-El flujo algorítmico de captura resuelve diversos desafíos técnicos de la plataforma:
-\begin{itemize}
-    \item \textbf{Lectura asíncrona de la GPU:} La captura real se ejecuta dentro de una Corrutina que detiene su ejecución hasta el final del ciclo de renderizado mediante \texttt{WaitForEndOfFrame()}. Posteriormente, se utiliza \texttt{Texture2D.ReadPixels()} para extraer la matriz de color de la \texttt{RenderTexture} y se codifica a formato PNG mediante \texttt{EncodeToPNG()}, almacenando el archivo físicamente en el almacenamiento persistente (\texttt{Application.persistentDataPath}).
-    \item \textbf{Gestión de colisiones lógicas (Input Shielding):} Dado que el botón de cierre de la cámara (Botón A del mando) es el mismo que confirma las incidencias espaciales del componente \texttt{VRIssueTracker}, se implementó un retraso intencionado de 0.15 segundos al actualizar la variable booleana de estado \texttt{isCameraActive}. Este "escudo" temporal absorbe el evento de pulsación de la API de Oculus, impidiendo la instanciación accidental de marcadores al guardar el dispositivo.
-    \item \textbf{Feedback visual inmersivo (Flash procedural):} Para confirmar al usuario que la captura se ha procesado, se instanció por código un plano semitransparente frente a la lente virtual. Tras guardar la imagen, una iteración matemática altera la propiedad \textit{Alpha} de su material de 1 a 0 a lo largo de 0.3 segundos, logrando un destello fotográfico orgánico sin sobrecargar el motor de renderizado.
-\end{itemize}
+El sistema renderiza la perspectiva de una cámara secundaria, simulando un dispositivo móvil anclado a la mano del usuario, proyectando la imagen en tiempo real sobre una textura dinámica (\texttt{RenderTexture}). Al accionar el disparador del controlador, el algoritmo lee el búfer de píxeles bidimensional de dicha textura (\texttt{Texture2D.ReadPixels}), lo codifica matemáticamente al estándar PNG (\texttt{EncodeToPNG()}) y lo almacena de forma persistente en la memoria de almacenamiento del visor (\texttt{Application.persistentDataPath}). Las rutas absolutas de estas capturas se vuelcan en la matriz global para ser adjuntadas dinámicamente durante la generación del informe PDF. Para maximizar la inmersión y proporcionar confirmación háptica-visual al usuario, el proceso invoca un \textit{shader} superpuesto a la lente que interpola su canal alfa para simular el destello (\textit{flash}) de una cámara tradicional.
 
 \subsection{Motor de Generación Documental (BIM Report)}
 La exportación de los datos recopilados durante la sesión de auditoría se automatizó mediante el script \texttt{GeneradorPDF}, apoyándose en la librería externa \texttt{iTextSharp}. La integración de esta librería (específicamente la versión autónoma 5.5.10) requirió reconfigurar el nivel de compatibilidad de la API del proyecto a \texttt{.NET Framework} en los ajustes del motor, posibilitando el acceso a las librerías de escritura profunda del sistema operativo requeridas para generar documentos complejos.
@@ -206,7 +265,7 @@ A nivel algorítmico y de presentación de datos, se aplicaron soluciones espec�
 
 
 \section{Escáner de Desviaciones Espaciales (Mapa de Calor)}
-Una de las aportaciones más innovadoras de la aplicación es la capacidad de auditar la precisión de la construcción física frente al modelo teórico BIM en tiempo real mediante un escáner de desviaciones. Esta herramienta proyecta un mapa de calor sobre las superficies del edificio virtual, marcando en color verde las áreas donde la obra real coincide con el plano, y en color rojo las zonas donde existen discrepancias geométricas.
+Una de las aportaciones más innovadoras de la aplicación es la capacidad de auditar la precisión de la construcción física frente al modelo teórico BIM en tiempo real mediante un escáner de desviaciones. Esta herramienta proyecta un mapa de calor sobre las superficies del edificio virtual, marcando en color verde las áreas donde la obra real coincide con el plano, y en color rojo las zonas donde existen discrepancias geométricas, teniendo niveles intermedios.
 
 \subsection{Optimización y Submuestreo de Datos (Spatial Subsampling)}
 El principal desafío técnico para implementar esta funcionalidad residía en la naturaleza volumétrica del modelo de la realidad. El renderizador de \textit{Gaussian Splatting} procesa millones de elipsoides directamente en la Unidad de Procesamiento Gráfico (GPU) mediante \textit{Compute Shaders}. Estas representaciones carecen de geometría poligonal (\textit{Mesh}) y de colisionadores físicos, imposibilitando la interacción nativa con los sistemas de físicas del motor (\texttt{Physics.Raycast}). Además, intentar transferir las coordenadas de millones de elementos desde la GPU hacia la CPU en cada fotograma para calcular distancias provocaría una gran ralentización, hundiendo la tasa de fotogramas e induciendo cinetosis en el entorno de Realidad Virtual.
@@ -221,12 +280,15 @@ El núcleo de procesamiento de la herramienta reside en el método \texttt{Exist
     \item Si el algoritmo detecta un punto físico a una distancia inferior a la "Tolerancia de Construcción" paramétrica de la aplicación, la función retorna un valor booleano positivo, confirmando la validez topológica de la estructura.
 \end{itemize}
 
-\subsection{Interacción Visual Procedimental}
-La proyección visual del resultado es gestionada por el script \texttt{ScannerDesviacionesVR}, anclado al controlador del usuario. Al accionar el gatillo de agarre (\texttt{Grip}), el sistema proyecta de forma ininterrumpida un haz de colisión que se filtra exclusivamente mediante una \textit{LayerMask} hacia la topología teórica (\texttt{capaBIM}).
-
-Al detectarse una colisión, se solicita la validación de coordenadas al componente \texttt{ComparadorRealidad}. Inmediatamente después, se instancia procedimentalmente una primitiva geométrica plana (\texttt{Quad}) en la coordenada de impacto. Para evitar aberraciones visuales por superposición de caras coplanares (\textit{Z-Fighting}), el plano bidimensional se desplaza $0.005$ metros a lo largo del vector normal de la superficie (\texttt{hit.normal}) y se orienta hacia la posición de la cámara del observador.
-
-A fin de maximizar el rendimiento gráfico de la plataforma autónoma, a estos elementos proyectados se les retiran los colisionadores de físicas por código y se les asigna un material sin cálculo de iluminación (\textit{Unlit}) haciendo uso de la propiedad \texttt{Renderer.sharedMaterial}. Esta técnica asegura que el motor gráfico referencie un único bloque de material en memoria, manteniendo la fluidez y estabilidad visual de la experiencia inmersiva aun tras generar miles de elementos individuales de evaluación en el mapa de calor. Como se puede observar en la Figura~\ref{fig:comparacion}, el modelo azul es la referencia al Gaussian Splat pero simplificado, en las zonas donde no haya puntos se marcará rojo, y está correcto se marcará verde
+\subsection{Sistema de Evaluación Espacial Gradual}
+El concepto inicial de validación binaria (correcto/incorrecto) evolucionó hacia un sistema de evaluación gradual que proporciona mayor fidelidad técnica sobre el estado de la construcción real frente al modelo BIM. El script \texttt{ScannerDesviacionesVR} parametriza la distancia obtenida del comparador euclidiano y clasifica el impacto topológico en cuatro umbrales visuales, modificando dinámicamente el material (\textit{Material Swapping}) de la marca proyectada:
+\begin{itemize}
+    \item \textbf{Verde (Perfecto):} La desviación es inferior al milímetro (\texttt{< 0.01m}). El elemento físico se encuentra exactamente donde dictan los planos.
+    \item \textbf{Amarillo (Aceptable):} Desviación leve dentro de las tolerancias de obra (\texttt{< 0.05m}).
+    \item \textbf{Naranja (Desviación Notable):} Discrepancia estructural que requiere revisión técnica (\texttt{< 0.10m}).
+    \item \textbf{Rojo (Fallo Crítico):} Ausencia total del elemento físico o desviación severa que supera el umbral máximo tolerado.
+\end{itemize}
+Esta categorización no solo enriquece el \textit{feedback} visual en el visor VR, sino que alimenta de forma paralela las estructuras de datos estáticas (\texttt{GeneradorPDF.puntosEscaneoCorrectos} y \texttt{puntosEscaneoDesviados}) para su posterior volcado cuantitativo en el informe de auditoría.
 
 \begin{figure}[!htb]
     \centering
@@ -234,3 +296,11 @@ A fin de maximizar el rendimiento gráfico de la plataforma autónoma, a estos e
     \caption{Interfaz del menú principal y sistema de botones}
     \label{fig:comparacion}
 \end{figure}
+
+
+
+
+\section{Simulación de Vuelo no Tripulado (Tour Automático)}
+Con el fin de facilitar la revisión panorámica del proyecto, se ha integrado un sistema de recorridos guiados gestionado por el \texttt{DroneTourController}. A nivel arquitectónico, este recorrido emplea matemáticas de interpolación espacial (\textit{Splines}) para definir curvas de Bézier tridimensionales a lo largo del entorno.
+
+Es un principio de diseño crítico en las experiencias inmersivas evitar la cinetosis (mareo por movimiento) provocada por conflictos entre la locomoción virtual y el sistema vestibular del usuario. Por ello, al iniciarse el tour, el algoritmo interrumpe y desactiva expresamente el motor de físicas (\texttt{CharacterController}) y las entradas de desplazamiento manual. Seguidamente, interpola la traslación del usuario evaluando la progresión de la curva (\texttt{EvaluatePosition}) e iguala la rotación calculando la tangente matemática del vector director (\texttt{EvaluateTangent}). Este vector se aplana intencionadamente en su eje de altura (\texttt{y = 0}) para evitar rotaciones anómalas de cabeceo que desorienten al usuario durante la presentación.
