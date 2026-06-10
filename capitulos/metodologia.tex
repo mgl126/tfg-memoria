@@ -2,45 +2,41 @@
 \chapter{\label{metodologia}Metodología}
 
 Este capítulo detalla las herramientas utilizadas para la organización de este proyecto. Dado que el objetivo es desarrollar una solución de ingeniería que integre visualización AR/VR y modelos BIM, se requiere un marco de trabajo que combine documentación académica con la flexibilidad que exige el desarrollo de software inmersivo.
+\section{Kanban}
 
-\section{Marco de trabajo}
-
-\subsection{Kanban}
-
-En el desarrollo de software, la elección entre metodologías tradicionales (como el modelo en cascada) y ágiles es determinante. Para este proyecto, se ha optado a una metodología ágil. Esta decisión se es debido a la falta de experiencia de las tecnologías AR/VR; la integración de modelos con millones de polígonos y la precisión del seguimiento espacial (tracking) pueden presentar imprevistos técnicos que requieren ajustes constantes durante el ciclo de vida del desarrollo.
+En el desarrollo de software, la elección entre metodologías tradicionales (como el modelo en cascada) y ágiles es determinante. Para este proyecto, se ha optado a una metodología ágil. Esta decisión es debido a la falta de experiencia de las tecnologías AR/VR, puede presentar imprevistos técnicos que requieren ajustes constantes durante el ciclo de vida del desarrollo.
 
 Dentro del ecosistema ágil, se ha seleccionado Kanban. A diferencia de Scrum, que utiliza ciclos temporales cerrados (sprints), Kanban se centra en la continuidad del flujo de trabajo y la gestión visual de las tareas. Esta elección es ideal para un proyecto desarrollado de forma individual, ya que permite:
+\begin{itemize}
+\item Optimizar la capacidad de trabajo disponible sin la presión de plazos artificiales internos.
 
-- Optimizar la capacidad de trabajo disponible sin la presión de plazos artificiales internos.
+\item Visualizar de forma clara el progreso del desarrollo y la redacción de la memoria.
 
-- Visualizar de forma clara el progreso del desarrollo y la redacción de la memoria.
-
-- Adaptar las prioridades según surjan desafíos técnicos en la optimización de modelos IFC o la implementación de SLAM.
-
-\subsubsection{Estructura del trabajo en gestión}
+\item Adaptar las prioridades según surjan desafíos técnicos.
+\end{itemize}
 
 El flujo de trabajo se ha organizado en un tablero compuesto por las siguientes cinco columnas:
+\begin{itemize}
+\item Pendiente (Backlog): Repositorio global de todas las funcionalidades y apartados de la memoria que deben realizarse según los objetivos específicos del proyecto.
 
-- Pendiente (Backlog): Repositorio global de todas las funcionalidades y apartados de la memoria que deben realizarse según los objetivos específicos del proyecto.
+\item Por hacer (To Do): Tareas que se han seleccionado para ser abordadas a corto plazo debido a su prioridad en la planificación temporal.
 
-- Por hacer (To Do): Tareas que se han seleccionado para ser abordadas a corto plazo debido a su prioridad en la planificación temporal.
+\item En curso (In Progress): Actividades que se están ejecutando en el momento actual.
 
-- En curso (In Progress): Actividades que se están ejecutando en el momento actual (programación en Unity, diseño de interfaces o revisión bibliográfica).
+\item Finalizado (Done): Tareas terminadas que están a la espera de una validación final.
 
-- Finalizado (Done): Tareas terminadas que están a la espera de una validación final.
-
-- Entregado/Validado (Deployed): Estado reservado para aquellos elementos que ya cuentan con el visto bueno del tutor.
-
+\item Entregado/Validado (Deployed): Estado reservado para aquellos elementos que ya cuentan con el visto bueno del tutor.
+\end{itemize}
 \section{Herramientas}
 
 Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, se han seleccionado herramientas que facilitan la labor de un desarrollador en solitario:
+\begin{itemize}
+\item Git y Github: Se utiliza Git para gestionar el historial de cambios, lo cual es importante para cualquier proyecto a nivel de código. GitHub actúa como servidor remoto, salvaguardando el progreso ante cualquier incidencia local.
 
-- Git y github (Control de versiones): Se utiliza Git para gestionar el historial de cambios, lo cual es importante para cualquier proyecto a nivel de código. GitHub actúa como servidor remoto, salvaguardando el progreso ante cualquier incidencia local.
+\item Github Desktop: Se emplea como capa gráfica para simplificar las operaciones de Git, permitiendo una gestión de ramas y commits más intuitiva.
 
-- Github Desktop (Gestión visual): Se emplea como capa gráfica para simplificar las operaciones de Git, permitiendo una gestión de ramas y commits más intuitiva.
+\item Trello: Esta plataforma permite materializar el tablero Kanban descrito. Su interfaz facilita el seguimiento visual de cada requisito del sistema.
 
-- Trello (Organización de tareas): Esta plataforma permite materializar el tablero Kanban descrito. Su interfaz facilita el seguimiento visual de cada requisito del sistema.
-
-- Clockify (Monitorización temporal): Dado que este TFG debe compaginarse con la carga académica del proyecto ABP, Clockify permite registrar el tiempo dedicado a cada fase. Esto ayuda a verificar si se está cumpliendo con el cronograma previsto para la entrega en septiembre de 2026.
-
-A diferencia de la redacción de la memoria, que se desglosa en capítulos, el desarrollo técnico se gestiona como un flujo microtareas para asegurar un buen resultado final.
+\item Clockify: Dado que este TFG debe compaginarse con la carga académica del proyecto ABP, Clockify permite registrar el tiempo dedicado a cada fase. Esto ayuda a verificar si se está cumpliendo con el cronograma previsto para la entrega en septiembre de 2026.
+\end{itemize}
+A diferencia de la redacción de la memoria, que se desglosa en capítulos, el desarrollo técnico se gestiona como un flujo de microtareas para asegurar un buen resultado final.
