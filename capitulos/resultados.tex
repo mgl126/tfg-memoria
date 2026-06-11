@@ -1,2 +1,79 @@
 \chapter{\label{resultados}Resultados}
 
+Una vez finalizada la fase de desarrollo y ensamblado tecnológico de la aplicación, en este capítulo se exponen los resultados finales obtenidos. Se detalla la solución inmersiva alcanzada mostrando las interfaces generadas, se evalúa su puesta en producción y métricas de rendimiento, se analizan los costes asociados frente a la planificación inicial y se verifica el cumplimiento de los objetivos. Finalmente, se realiza una reflexión académica sobre la relación del proyecto con el plan de estudios del Grado.
+
+\section{Descripción de la Solución Alcanzada}
+El resultado principal de este proyecto es una aplicación funcional de Realidad Virtual orientada a la auditoría de obras, desplegada de forma nativa para visores \textit{Standalone} (arquitectura Meta Quest). La solución se articula en torno a varias interfaces y herramientas visuales operables de forma intuitiva.
+
+\subsection{Interfaz Principal y Navegación}
+Al iniciar la aplicación, el usuario accede a un sala o menú principal inmersivo. La interfaz ha sido diseñada priorizando la legibilidad y previniendo el \textit{clipping} con el entorno. En este espacio, el operador puede consultar el registro persistente de fechas de las últimas inspecciones y seleccionar el entorno BIM a auditar  (Figura \ref{fig:res-menu}).
+\clearpage
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/figura6.1.png}
+\caption{Captura del jugador en el menú principal viendo los paneles de selección de proyectos}
+\label{fig:res-menu}
+\end{figure}
+
+
+\subsection{Herramientas de Auditoría Inmersiva}
+El núcleo de la aplicación se manifiesta a través del conjunto de herramientas interactivas, las cuales devuelven resultados visuales inmediatos al usuario:
+\begin{itemize}
+\item \textbf{Escáner de Desviaciones (Mapa de Calor):} Se ha logrado proyectar visualmente la diferencia topológica entre el modelo BIM y la captura de la realidad. El resultado es un mapa de color sobre las estructuras: verde para geometría precisa y un degradado hasta el rojo para desviaciones críticas (Figura \ref{fig:res-escaner}).
+\item \textbf{Cinta Métrica y Etiquetado:} La herramienta genera cotas tridimensionales dinámicas que calculan distancias exactas, manteniéndose siempre legibles gracias a la técnica de \textit{billboarding}.
+\item \textbf{Gestión de Capas y Colisiones:} A través de un menú contextual flotante, el operador puede aislar grupos estructurales. Al ejecutar el \texttt{BIMClashDetector}, la aplicación resalta visualmente mediante esferas las interferencias físicas entre instalaciones (MEP) y arquitectura.
+\end{itemize}
+
+\clearpage
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/figura6.2.png}
+\caption{Captura desde los ojos del usuario usando el escáner de desviaciones y la cinta métrica}
+\label{fig:res-escaner}
+\end{figure}
+
+
+\subsection{Producto Documental: El Informe de Auditoría}
+El resultado tangible y exportable del proyecto es el documento PDF generado procedimentalmente en el propio visor. Tras emplear la cámara virtual y recopilar datos espaciales, el motor \texttt{GeneradorPDF} maqueta un informe estructurado que consolida las fotografías, las incidencias categorizadas y las métricas de precisión de la obra, listo para ser entregado a la dirección de obra (Figura \ref{fig:res-pdf}).
+
+\clearpage
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/figura6.3.png}
+\caption{Captura de una de las páginas del PDF final generado por la aplicación}
+\label{fig:res-pdf}
+\end{figure}
+
+\section{Puesta en Producción, Métricas y Acceso}
+Dada la naturaleza industrial y especializada de la aplicación, su puesta en producción (\textit{Go-To-Market}) sigue un modelo \textit{Business-to-Business} (B2B), difiriendo del despliegue masivo en tiendas de aplicaciones de consumo.
+
+\begin{itemize}
+\item La aplicación ha sido compilada en un paquete de Android nativo (\texttt{.apk}). Su distribución e instalación en los dispositivos Meta Quest se realiza mediante \textit{Sideloading} a través de plataformas de gestión de flotas empresariales o herramientas como \textit{Meta Quest Developer Hub}.
+\item Al tratarse de Realidad Virtual, la métrica de éxito más crítica es la tasa de fotogramas. Gracias a las técnicas de optimización implementadas (submuestreo espacial, corrutinas para inicialización de colisionadores y operaciones matemáticas simplificadas), la aplicación logra mantener los fotogramas por segundo estables y dentro del umbral de confort exigido por Meta, minimizando el riesgo de cinetosis en el usuario.
+\item Las pruebas de estrés demostraron que la limpieza automática de los búferes de memoria tras la generación de cada informe PDF permite realizar múltiples sesiones de auditoría prolongadas sin que la aplicación sufra cierres inesperados por falta de memoria RAM (\textit{Out of Memory crashes}).
+\end{itemize}
+
+\section{Costes Finales y Comparativa de Planificación}
+En términos de costes económicos, el desarrollo directo de software ha tenido un impacto financiero mínimo. Se han empleado licencias académicas y gratuitas para el motor gráfico (Unity), el procesamiento de nubes de puntos (CloudCompare) y las librerías de generación documental (iTextSharp). Los costes tangibles se limitan a la amortización del \textit{hardware} utilizado: el ordenador de desarrollo y el propio visor de Realidad Virtual, siendo en este caso las Meta Quest 2 y Meta Quest Pro.
+
+Desde el punto de vista temporal, el desarrollo se ha adherido en gran medida a la planificación ágil estipulada en las fases iniciales. Se registraron ligeras desviaciones temporales en el cronograma durante la fase de iniciales de desarrollo debido a que el modelo de \textit{Gaussian Splatting} debido a las incompatibilidades iniciales de compilación binaria, junto con el aprendizaje inicial de Unity y desarrollo de Realidad Virtual. No obstante, estas demoras fueron absorbidas y mitigadas gracias a los márgenes de seguridad proyectados, logrando un producto funcional dentro del plazo académico establecido.
+
+\section{Monetización y Consecución de Objetivos}
+Todos los objetivos principales definidos al comienzo del proyecto se han cumplido satisfactoriamente. Se ha logrado crear un entorno inmersivo capaz de unificar modelos teóricos (BIM) y reconstrucciones reales, dotando al usuario de herramientas de medición, escaneo de tolerancias y reporte automatizado.
+
+En cuanto a la viabilidad y monetización, la aplicación posee un claro modelo de negocio \textit{SaaS} (Software as a Service) orientado a empresas constructoras y estudios de arquitectura. El retorno de inversión (ROI) para el cliente final no se basa en microtransacciones, sino en el ahorro masivo de horas de trabajo en inspecciones manuales y en la detección temprana de errores estructurales, cuyos costes de reparación en fases avanzadas de la obra son exponenciales.
+
+\section{Reflexión Académica sobre el Grado}
+El desarrollo de este proyecto representa el aprendizaje práctico de las competencias y conocimientos adquiridos a lo largo de la titulación en Ingeniería Multimedia. La consecución de esta aplicación no habría sido posible sin la base teórica e instrumental de diversas asignaturas clave:
+
+\begin{itemize}
+\item \textbf{Realidad Virtual:} Ha sido el pilar fundamental de este proyecto, me proporcionó más experiencia y práctica para desarrollo de aplicaciones de RV, con la diferencia de ser en este caso Unreal Engine. Aprendí la bases como el Raycast, la interacción con los mandos, la implementación de sistemas que previenen la cinetosis y el diseño de interacciones con mediante trazado de rayos.
+\item \textbf{Usabilidad y Accesibilidad} Su metodología ha sido vital para adaptar componentes 2D a un entorno inmersivo. La aplicación de estos conceptos permitió mejorar el diseño de interfaces.
+\item \textbf{Estructura de Datos y Algoritmia:} La arquitectura del código en hace uso intensivo de patrones de diseño, diccionarios, listas dinámicas y \textit{HashSets} para gestionar de manera eficiente los miles de componentes que conforman un modelo BIM.
+\item \textbf{Fundamentos de videojuegos  y Análisis y Especificación de Sistemas Multimedia:} Proporcionaron los marcos de trabajo ágiles y las buenas prácticas de versionado necesarias para organizar un desarrollo iterativo, documentar las funcionalidades y adaptar la planificación ante los imprevistos técnicos surgidos durante el proceso.
+\end{itemize}
+
+
+
+
+
