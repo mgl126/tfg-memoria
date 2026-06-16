@@ -31,12 +31,25 @@ El flujo de trabajo se ha organizado en un tablero compuesto por las siguientes 
 
 Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, se han seleccionado herramientas que facilitan la labor de un desarrollador en solitario:
 \begin{itemize}
-\item Git y Github: Se utiliza Git para gestionar el historial de cambios, lo cual es importante para cualquier proyecto a nivel de código. GitHub actúa como servidor remoto, salvaguardando el progreso ante cualquier incidencia local.
+\item Git y Github: Git se utiliza como sistema principal de control de versiones, una tecnología indispensable para registrar el historial de cambios, revertir errores y mantener un control estricto sobre el código fuente. GitHub actúa como repositorio remoto en la nube, garantizando la redundancia de los datos y salvaguardando todo el progreso ante cualquier posible fallo del equipo local.
 
-\item Github Desktop: Se emplea como capa gráfica para simplificar las operaciones de Git, permitiendo una gestión de ramas y commits más intuitiva.
+\item Github Desktop: Se emplea como capa gráfica (GUI) para simplificar la interacción con el control de versiones. Esta herramienta agiliza las operaciones diarias de Git, permitiendo una gestión de ramas más visual, una revisión detallada de las modificaciones (diffs) antes de cada commit y una sincronización más intuitiva con el repositorio remoto.
 
-\item Trello: Esta plataforma permite materializar el tablero Kanban descrito. Su interfaz facilita el seguimiento visual de cada requisito del sistema.
+\item Trello: Plataforma de gestión de proyectos que permite materializar el tablero Kanban. Su interfaz basada en listas y tarjetas facilita la categorización, asignación de prioridades y seguimiento visual del ciclo de vida de cada requisito del sistema, adaptándose perfectamente a metodologías ágiles.
 
-\item Clockify: Dado que este TFG debe compaginarse con la carga académica del proyecto ABP, Clockify permite registrar el tiempo dedicado a cada fase. Esto ayuda a verificar si se está cumpliendo con el cronograma previsto para la entrega en septiembre de 2026.
+\item Clockify: Dado que el desarrollo del TFG debe compaginarse con la carga académica del proyecto ABP, este software permite registrar y cronometrar de forma analítica el tiempo dedicado a cada fase de la ingeniería. La generación de reportes métricos ayuda a verificar si el ritmo de trabajo se ajusta al cronograma previsto para la entrega final en septiembre de 2026.
+
+\item Slack: Herramienta de comunicación corporativa y mensajería asíncrona. Permite mantenter una constante comunicación con el tutor para posibles dudas y reuniones futuras.
+
+\item Unity: Motor gráfico y plataforma de desarrollo en tiempo real que actúa como el núcleo del proyecto. Se ha seleccionado por su complejidad no excesiva, capacidades avanzadas de renderizado 3D y su soporte nativo e integración madura con los estándares de Realidad Virtual (XR), permitiendo construir entornos inmersivos interactivos. La versión que se utilizará para este proyecto será la 6000.3.9f1.
+
+\item CloudCompare: Software de código abierto especializado en el procesamiento de nubes de puntos 3D y mallas triangulares. Proporciona un conjunto avanzado de algoritmos matemáticos e interfaz visual para el filtrado, escalado y análisis de densidad de grandes conjuntos de datos espaciales antes de su exportación al motor gráfico.
+
+\item Entorno de Desarrollo Integrado (IDE) - Visual Studio: Editor de código avanzado indispensable para la redacción y depuración de los scripts en lenguaje CSharp. Su integración directa con Unity proporciona herramientas de autocompletado, análisis de sintaxis y detección de errores en tiempo real, agilizando la programación de la lógica interna de la aplicación.
+
+\item Meta Quest Link/Developer Hub: Conjunto de utilidades de desarrollo y retransmisión por cable o red local. Resulta crítico para el flujo de trabajo en Realidad Virtual (PC VR), ya que permite previsualizar y testear el entorno tridimensional directamente desde el editor de Unity usando el visor, ahorrando el costoso proceso de empaquetar y compilar un archivo ejecutable en cada iteración de prueba.
+
+\item Meta Quest 2: Dispositivo de hardware empleado como plataforma de pruebas y ejecución del entorno inmersivo. Este visor opera con arquitectura standalone (autónoma) impulsada por el SoC (System on a Chip) Qualcomm Snapdragon XR2 y 6 GB de memoria RAM, lo que proporciona una alta capacidad de procesamiento gráfico y computacional. A nivel visual, incorpora un panel LCD con una resolución de 1832 x 1920 píxeles por ojo y frecuencias de actualización dinámicas (72 Hz, 90 Hz y hasta 120 Hz), características críticas para mantener una latencia de fotones a movimiento (M2P) baja y asegurar el confort visual. Se apoya en cuatro cámaras integradas en el chasis que ejecutan algoritmos de visión artificial (SLAM) para mapear el entorno físico en tiempo real y rastrear con precisión milimétrica la posición y rotación de los controladores hápticos Oculus Touch. Además, su soporte para conectividad Wi-Fi y el protocolo Meta Quest Link resulta vital para la metodología de trabajo, permitiendo la depuración y el testeo en tiempo real directamente desde el motor gráfico.
+
 \end{itemize}
 A diferencia de la redacción de la memoria, que se desglosa en capítulos, el desarrollo técnico se gestiona como un flujo de microtareas para asegurar un buen resultado final.

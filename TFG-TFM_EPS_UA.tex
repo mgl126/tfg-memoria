@@ -100,11 +100,14 @@ pdftitle = {\titulo},
 \bibliography{bibliografia/bibliografia} % Archivo que contiene la bibliografía
 \bibliographystyle{apacite}
 
-% Incluye el listado de acrónimos utilizados en el trabajo. 
-\printglossary[style=modsuper,typ%\input{include/estiloscodigoprogramacion.tex}
-e=\acronymtype,title={Lista de Acrónimos y Abreviaturas}]
-% Añade el resto de acrónimos si así se desea. Si no elimina el comando siguiente
-\glsaddallunused 
+% Incluye el listado de acrónimos utilizados en el trabajo.
+\printglossary[style=modsuper,type=\acronymtype,title={Lista de Acrónimos y Abreviaturas}]
+
+%\input{include/estiloscodigoprogramacion.tex}
+
+% Añade el resto de acrónimos si así se desea.
+% Si no elimina el comando siguiente
+\glsaddallunused
 
 
 \end{document}
