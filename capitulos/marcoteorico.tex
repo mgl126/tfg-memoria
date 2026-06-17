@@ -10,7 +10,7 @@
   
 \section{Análisis DAFO} 
 
-    El análisis DAFO (Debilidades, Amenazas, Fortalezas y Oportunidades), también conocido por sus siglas en inglés como análisis SWOT (Strengths, Weaknesses, Opportunities, Threaths), es una herramienta de diagnóstico ampliamente utilizada en la gestión de proyectos y la planificación empresarial. Sirve para evaluar la situación actual de un producto o servicio, identificando tanto los factores internos como externos que pueden influir en su desarrollo y éxito.
+    El análisis DAFO (Debilidades, Amenazas, Fortalezas y Oportunidades), también conocido por sus siglas en inglés como análisis SWOT (Strengths, Weaknesses, Opportunities, Threaths), es una herramienta de diagnóstico ampliamente utilizada en la gestión de proyectos y la planificación empresarial\footnote{\cite{weihrich1982daws}}. Sirve para evaluar la situación actual de un producto o servicio, identificando tanto los factores internos como externos que pueden influir en su desarrollo y éxito.
 
     Esta metodología tiene 4 dimensiones principales, al ser una matriz 2x2. La primera examina los factores internos del proyecto, sobre los que se tiene control directo, clasificándolos como fortalezas (ventajas competitivas) y debilidades (limitaciones o carencias). Por otro lado, se analizan los factores externos, sobre los que no se ejerce control pero que afectan al proyecto, siendo oportunidades (circunstacias favorables aprovechables) y amenazas (riesgos que pueden comprometer objetivos).
 
@@ -64,7 +64,7 @@ Limitaciones de hardware en dispositivos móviles. & Posible aparición de soluc
 
 \section{Lean Canvas} 
 
-El Lean Canvas~\ref{tab:lean-canvas}  es una herramienta de modelado empresarial derivada del tradicional Business Model Canvas, pero está adaptada para startups y proyectos en fase inicial como este. Es especialmente útil cuando existen muchas incertidumbres sobre el producto o servicio que se pretende desarrollar. Además, da una visión sobre cómo podría evolucionar esta solución en un entorno real si se decidiera continuar su desarrollo tras finalizar los estudios.
+El Lean Canvas (Cuadro~\ref{tab:lean-canvas}  es una herramienta de modelado empresarial derivada del tradicional Business Model Canvas, pero está adaptada para startups y proyectos en fase inicial como este. Es especialmente útil cuando existen muchas incertidumbres sobre el producto o servicio que se pretende desarrollar. Además, da una visión sobre cómo podría evolucionar esta solución en un entorno real si se decidiera continuar su desarrollo tras finalizar los estudios\footnote{\cite{maurya2012running}}.
 
 Consiste en nueve bloques que permiten visualizar brevemente los aspectos fundamentales del modelo de negocio, es decir, a quién va dirigido, qué problema resuelve, cómo lo resuelve, cómo llegará a sus usuarios y cómo generará valor, tanto para los clientes como para el proyecto mismo. Lean Canvas ofrece un marco estructurado para organizar ideas, detectar inconsistencias y comunicar la propuesta de valor de forma clara. Sin embargo, no es una investigación de mercado exhaustiva ni proporciona datos cuantitativos precisos sobre tamaño de mercado.
 
@@ -116,6 +116,30 @@ La arquitectura técnica se basa en frameworks consolidados como Unity o Unreal 
 \begin{itemize}
 \item Desarrollo software: Aunque inicialmente asumido como proyecto de TFG, un desarrollo completo requeriría contratar o externalizar programadores especializados en Unity/Unreal, desarrolladores móviles y expertos en optimización 3D. Coste estimado: 50.000-80.000€ para MVP funcional.
 \item Licencias software: Unity Pro o Unreal Engine (aunque gratuitos hasta ciertos umbrales de ingresos), licencias de middleware para procesamiento BIM, herramientas de desarrollo y testing. Coste estimado: 3.000-5.000€/año.
+
+\begin{figure}[!htb]
+    \centering
+    % ---- PRIMERA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/unitypro.png}
+        \caption{Precio anual de Unity Pro}
+        \label{fig:unitypro}
+    \end{minipage}
+    \hfill
+    % ---- SEGUNDA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/unrealenginepro.PNG}
+        \caption{Precio anual de Unreal Engine}
+        \label{fig:unrealenginepro}
+    \end{minipage}
+\end{figure}
+
+
+
+
+
 \item Hardware para testing: Dispositivos móviles de diferentes gamas, gafas AR (HoloLens, Magic Leap) y VR (Quest, Vive) para pruebas exhaustivas. Inversión inicial: 10.000-15.000€.
 \item Marketing y ventas: Campañas publicitarias, participación en ferias, material promocional, equipo comercial. Coste variable: 10.000-30.000€/año inicialmente.
 \item Legal y administrativo: Registro de empresa, asesoría legal para contratos, cumplimiento GDPR, seguros profesionales. Coste estimado: 5.000-8.000€/año.
@@ -238,7 +262,7 @@ La arquitectura técnica se basa en frameworks consolidados como Unity o Unreal 
 
 \section{Análisis de riesgos} 
 
-El análisis de riesgos, visto en el Cuadro~\ref{tab:riesgos} permite identificar anticipadamente aquellos eventos o circunstancias que podrían impactar negativamente en el desarrollo del proyecto, evaluando su probabilidad de ocurrencia y su potencial impacto. A diferencia del análisis DAFO que examina amenazas externas de forma general, este apartado se centra en riesgos concretos con estrategias específicas de mitigación. Esta herramienta permitirá aumentar significativamente las probabilidades de éxito del proyecto, anticipando problemas antes de que se materialicen y estableciendo planes de contingencia para aquellos que, inevitablemente, surgirán durante el desarrollo.
+El análisis de riesgos, visto en el Cuadro~\ref{tab:riesgos} permite identificar anticipadamente aquellos eventos o circunstancias que podrían impactar negativamente en el desarrollo del proyecto, evaluando su probabilidad de ocurrencia y su potencial impacto\footnote{\cite{pmi2017pmbok}}. A diferencia del análisis DAFO que examina amenazas externas de forma general, este apartado se centra en riesgos concretos con estrategias específicas de mitigación. Esta herramienta permitirá aumentar significativamente las probabilidades de éxito del proyecto, anticipando problemas antes de que se materialicen y estableciendo planes de contingencia para aquellos que, inevitablemente, surgirán durante el desarrollo.
 
 - Riesgos técnicos:
 \begin{itemize}

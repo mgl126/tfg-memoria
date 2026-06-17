@@ -1,30 +1,99 @@
 \chapter{\label{resultados}Resultados}
 
-Una vez finalizada la fase de desarrollo y ensamblado tecnológico de la aplicación, en este capítulo se exponen los resultados finales obtenidos. Se detalla la solución inmersiva alcanzada mostrando las interfaces generadas, se evalúa su puesta en producción y métricas de rendimiento, se analizan los costes asociados frente a la planificación inicial y se verifica el cumplimiento de los objetivos. Finalmente, se realiza una reflexión académica sobre la relación del proyecto con el plan de estudios del Grado.
+Una vez finalizada la fase de desarrollo de la aplicación, en este capítulo se exponen los resultados finales obtenidos. Se detalla la solución inmersiva alcanzada mostrando las interfaces generadas, se evalúa su puesta en producción y métricas de rendimiento, se analizan los costes asociados frente a la planificación inicial y se verifica el cumplimiento de los objetivos. Finalmente, se realiza una reflexión académica sobre la relación del proyecto con el plan de estudios del Grado.
+
+\section{Casos de Prueba y Modelos Arquitectónicos}
+Para garantizar la fiabilidad del software desarrollado, se ha probado de manera exitosa la aplicación a tres tipos de modelos arquitectónicos, demostrando una gran adaptabilidad a diversas tipologías constructivas.
+
+\subsection{Apartamento Individual (Tres Cantos, Madrid)}
+Este primer escenario representa una vivienda unifamiliar de un solo nivel. Ha sido el entorno principal empleado de forma continuada durante el ciclo de desarrollo de la aplicación, utilizándose como prueba en lugar de avanzar con los tres casos de forma simultánea. Resultó ser el modelo ideal para depurar las interacciones a corta distancia y calibrar el comportamiento de las herramientas inmersivas en espacios reducidos. Cabe destacar que, aunque el modelo de diseño teórico (BIM) comprende la vivienda en su totalidad, el acceso a la reconstrucción volumétrica de la realidad (\textit{Gaussian Splatting}) está limitado a una única habitación debido a la alta complejidad computacional y el peso masivo de los datos capturados. En la siguiente Figura \ref{fig:trescantospiso}. 
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/trescantospiso.png}
+\caption{Vista general del piso con el modelo de puntos apreciable en la parte derecha}
+\label{fig:trescantospiso}
+\end{figure}
+
+\subsection{Aeródromo de la Universidad de Alicante}
+Este modelo representa el entorno de la Antigua Torre de Control de las instalaciones universitarias. Al ser una estructura vertical y aislada que opera como edificio de oficinas y gestión, permitió testear los algoritmos de movimiento en desniveles (prevención de cinetosis en escaleras) y comprobar el rendimiento de los colisionadores con grandes ventanales y geometrías atípicas. Para este caso de estudio específico no se dispuso de una digitalización física de la realidad, operando exclusivamente sobre el entorno BIM para la validación de las lógicas de locomoción y físicas procedurales. En las siguientes Figuras \ref{fig:aerodromofull} y \ref{fig:aerodromo} se puede apreciar la diferencia con el edificio descompuesto en solo puertas, ventanas, suelos y aparatos sanitarios.
+
+\begin{figure}[!htb]
+    \centering
+    % ---- PRIMERA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/aerodromofull.png}
+        \caption{Aeródromo completo en escena}
+        \label{fig:aerodromofull}
+    \end{minipage}
+    \hfill
+    % ---- SEGUNDA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/aerodromo.png}
+        \caption{Aeródromo sin los muros}
+        \label{fig:aerodromo}
+    \end{minipage}
+\end{figure}
+
+Durante las pruebas en este modelo, se detectó que el tramo de escaleras superior tenía una pendiente excesivamente vertical, lo cual obstaculizaba el ascenso fluido del usuario mediante el sistema de movimiento continuo. Para solventar este problema de accesibilidad geométrica sin alterar la malla visual arquitectónica original, se superpuso un volumen de colisión invisible (\textit{Collider}) en forma de rampa con un ángulo de inclinación más suave. De esta forma la colisión del usuario se deslizará de manera natural hacia la planta superior, evitando bloqueos físicos o movimientos abruptos que pudieran romper la inmersión o inducir cinetosis. Visto en la siguiente Figura \ref{fig:escaleraauxiliar}.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/escaleraauxiliar.png}
+\caption{Malla de la "escalera" invisible}
+\label{fig:escaleraauxiliar}
+\end{figure}
+
+\subsection{Complejo Residencial Nórdico (BIM4LCA)}
+Por último, se implementó un modelo BIM altamente complejo y completo: un conjunto de apartamentos finlandés proporcionado por \textit{Nordic Sustainable Construction}. Este proyecto incluye una gran densidad poligonal y divisiones estructurales por plantas completas. Validar la aplicación en este macro-escenario sirvió como prueba para los algoritmos de optimización procedural de mallas y el gestor global de capas. 
+
+Respecto a la representación de la obra física en este modelo, y como se anticipó en apartados anteriores de la memoria, se descartó la descarga o uso de un modelo \textit{Gaussian Splatting} de internet para evitar posibles infracciones de derechos de privacidad. Como solución técnica para probar el escáner espacial, mediante el software \textit{CloudCompare} se aisló exclusivamente la primera planta del edificio (Figura \ref{fig:thridmodel}) y se generó una nube de puntos convencional a partir del modelo teórico. Esta nube fue exportada directamente a un archivo de texto simplificado (\texttt{.txt}) para incluirlo al algoritmo de comparación de desviaciones. Como se puede observar en la Figura \ref{fig:wrongpiece}, para comprobar su funcionamiento despegó manualmente un muro del edificio.
+
+\begin{figure}[!htb]
+    \centering
+    % ---- PRIMERA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/apartamentos.png}
+        \caption{Edificio finlandés con modelos de puntos en el primer piso}
+        \label{fig:thridmodel}
+    \end{minipage}
+    \hfill
+    % ---- SEGUNDA IMAGEN ----
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{include/images/wrongpiece.png}
+        \caption{Pieza desplazada marcado como rojo}
+        \label{fig:wrongpiece}
+    \end{minipage}
+\end{figure}
+
+
 
 \section{Descripción de la Solución Alcanzada}
-El resultado principal de este proyecto es una aplicación funcional de Realidad Virtual orientada a la auditoría de obras, desplegada de forma nativa para visores \textit{Standalone} (arquitectura Meta Quest). La solución se articula en torno a varias interfaces y herramientas visuales operables de forma intuitiva.
+El resultado principal de este proyecto es una aplicación funcional de Realidad Virtual orientada a la auditoría de obras y validación de entornos. La solución final se articula en torno a varias interfaces y herramientas visuales operables de forma intuitiva, minimizando la carga cognitiva del operador.
 
 \subsection{Interfaz Principal y Navegación}
-Al iniciar la aplicación, el usuario accede a un sala o menú principal inmersivo. La interfaz ha sido diseñada priorizando la legibilidad y previniendo el \textit{clipping} con el entorno. En este espacio, el operador puede consultar el registro persistente de fechas de las últimas inspecciones y seleccionar el entorno BIM a auditar  (Figura \ref{fig:res-menu}).
-
+Al iniciar la aplicación, el usuario accede a una sala o menú principal inmersivo. La interfaz ha sido diseñada priorizando la legibilidad espacial, previniendo el \textit{clipping} con el entorno y utilizando texturas reactivas al puntero láser. En este espacio, el operador puede consultar el registro persistente de fechas de las últimas inspecciones y seleccionar de forma fluida el entorno arquitectónico a auditar (Figura \ref{fig:res-menu}).
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.8\linewidth]{include/images/figura6.1.png}
-\caption{Captura del jugador en el menú principal viendo los paneles de selección de proyectos}
+\caption{Captura del usuario en el menú principal viendo los paneles de selección de proyectos}
 \label{fig:res-menu}
 \end{figure}
 
 
-\subsection{Herramientas de Auditoría Inmersiva}
-El núcleo de la aplicación se manifiesta a través del conjunto de herramientas interactivas, las cuales devuelven resultados visuales inmediatos al usuario:
-\begin{itemize}
-\item \textbf{Escáner de Desviaciones (Mapa de Calor):} Se ha logrado proyectar visualmente la diferencia topológica entre el modelo BIM y la captura de la realidad. El resultado es un mapa de color sobre las estructuras: verde para geometría precisa y un degradado hasta el rojo para desviaciones críticas (Figura \ref{fig:res-escaner}).
-\item \textbf{Cinta Métrica y Etiquetado:} La herramienta genera cotas tridimensionales dinámicas que calculan distancias exactas, manteniéndose siempre legibles gracias a la técnica de \textit{billboarding}.
-\item \textbf{Gestión de Capas y Colisiones:} A través de un menú contextual flotante, el operador puede aislar grupos estructurales. Al ejecutar el \texttt{BIMClashDetector}, la aplicación resalta visualmente mediante esferas las interferencias físicas entre instalaciones (MEP) y arquitectura.
-\end{itemize}
+En cada escena del edificio también se presentan botones para volver al menú principal o salir directamente de la propia aplicación.
 
+
+\subsection{Herramientas de Auditoría Inmersiva}
+El núcleo de la aplicación se manifiesta a través del conjunto de herramientas interactivas, las cuales devuelven resultados visuales y espaciales inmediatos al usuario:
+\begin{itemize}
+\item \textbf{Escáner de Desviaciones (Mapa de Calor):} Se ha logrado proyectar visualmente la diferencia topológica entre el modelo teórico BIM y la captura de la realidad física. El resultado es un mapa de color paramétrico sobre las estructuras: verde para la coincidencia milimétrica y un degradado progresivo hacia el rojo para desviaciones estructurales críticas (Figura \ref{fig:res-escaner}).
+\item \textbf{Cinta Métrica y Etiquetado Espacial:} La herramienta genera cotas tridimensionales dinámicas que calculan distancias euclidianas exactas. Tanto estas mediciones como las etiquetas de incidencia (Graves, Leves o a Revisar) se mantienen siempre perfectamente legibles desde cualquier ángulo gracias a la técnica matemática de \textit{billboarding}.
 
 \begin{figure}[!htb]
 \centering
@@ -34,47 +103,52 @@ El núcleo de la aplicación se manifiesta a través del conjunto de herramienta
 \end{figure}
 
 
-\subsection{Producto Documental: El Informe de Auditoría}
-El resultado tangible y exportable del proyecto es el documento PDF generado procedimentalmente en el propio visor. Tras emplear la cámara virtual y recopilar datos espaciales, el motor \texttt{GeneradorPDF} maqueta un informe estructurado que consolida las fotografías, las incidencias categorizadas y las métricas de precisión de la obra, listo para ser entregado a la dirección de obra (Figura \ref{fig:res-pdf}).
+\item \textbf{Gestión de Capas y Colisiones:} A través de un panel de control inmersivo adherido al controlador, el operador puede aislar o deconstruir grupos estructurales masivos (Figura \ref{fig:aerodromo}). Asimismo, al ejecutar el detector de colisiones automatizado, la aplicación resalta visualmente mediante esferas las interferencias físicas entre instalaciones de conductos (MEP) y la arquitectura (Figura \ref{fig:conflicto}).
+\end{itemize}
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\linewidth]{include/images/conflicto.png}
+\caption{Tuberías atravesando paredes y suelo en el apartamento unifamiliar}
+\label{fig:conflicto}
+\end{figure}
+
+
+\subsection{Producto Documental: El Informe de Auditoría}
+El resultado tangible y exportable del proyecto es un documento PDF generado de manera procedimental directamente desde el entorno virtual. Tras emplear la cámara inmersiva y recopilar datos espaciales, el motor interno de maquetación compila un informe estructurado que consolida las fotografías con destellos de \textit{flash}, las incidencias categorizadas y las métricas de tolerancia de la obra. Este documento queda almacenado localmente. (Figura \ref{fig:res-pdf}).
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.8\linewidth]{include/images/figura6.3.png}
-\caption{Captura de una de las páginas del PDF final generado por la aplicación}
+\caption{Captura de una de las páginas del PDF final generado por la aplicación (Registro fotográfico no visible)}
 \label{fig:res-pdf}
 \end{figure}
 
 \section{Puesta en Producción, Métricas y Acceso}
-Dada la naturaleza industrial y especializada de la aplicación, su puesta en producción (\textit{Go-To-Market}) sigue un modelo \textit{Business-to-Business} (B2B), difiriendo del despliegue masivo en tiendas de aplicaciones de consumo.
+Dada la especialización de la aplicación y el enorme peso de los modelos volumétricos, su puesta en producción excluye el despliegue masivo en tiendas de aplicaciones de consumo (\textit{App Stores}).
 
 \begin{itemize}
-\item La aplicación ha sido compilada en un paquete de Android nativo (\texttt{.apk}). Su distribución e instalación en los dispositivos Meta Quest se realiza mediante \textit{Sideloading} a través de plataformas de gestión de flotas empresariales o herramientas como \textit{Meta Quest Developer Hub}.
-\item Al tratarse de Realidad Virtual, la métrica de éxito más crítica es la tasa de fotogramas. Gracias a las técnicas de optimización implementadas (submuestreo espacial, corrutinas para inicialización de colisionadores y operaciones matemáticas simplificadas), la aplicación logra mantener los fotogramas por segundo estables y dentro del umbral de confort exigido por Meta, minimizando el riesgo de cinetosis en el usuario.
-\item Las pruebas de estrés demostraron que la limpieza automática de los búferes de memoria tras la generación de cada informe PDF permite realizar múltiples sesiones de auditoría prolongadas sin que la aplicación sufra cierres inesperados por falta de memoria RAM (\textit{Out of Memory crashes}).
+\item Al trabajar con representaciones matemáticas densas como nubes de puntos pesadas y modelos BIM sin optimizar, la limitación de la memoria RAM unificada del visor (\textit{Standalone}) hace inviable la compilación en un paquete Android (\texttt{.apk}) convencional. Por ello, el modelo de despliegue recomendado consiste en generar una *Build* ejecutable nativa para entorno Windows (PC-VR). La aplicación se corre aprovechando el cálculo de la Unidad de Procesamiento Gráfico (GPU) del ordenador y la experiencia visual se transmite al visor a través de cable link o por red local (\textit{Air Link} / \textit{Virtual Desktop}).
+\item Al derivar la carga de procesamiento a la estación de trabajo local, la métrica de éxito más crítica, la tasa de fotogramas se mantiene alta y estable. Esto anula casi por completo la latencia motora-visual, manteniendo la experiencia inmersiva cómoda para el operario y minimizando radicalmente el riesgo de cinetosis.
+\item Las pruebas también demostraron que la arquitectura en PC permite almacenar y generar los informes PDF localmente a una velocidad superior. Además, la limpieza automática de los búferes de memoria tras la creación del documento permite ejecutar auditorías consecutivas sobre el modelo nórdico complejo sin experimentar cierres por falta de memoria.
 \end{itemize}
 
 \section{Costes Finales y Comparativa de Planificación}
-En términos de costes económicos, el desarrollo directo de software ha tenido un impacto financiero mínimo. Se han empleado licencias académicas y gratuitas para el motor gráfico (Unity), el procesamiento de nubes de puntos (CloudCompare) y las librerías de generación documental (iTextSharp). Los costes tangibles se limitan a la amortización del \textit{hardware} utilizado: el ordenador de desarrollo y el propio visor de Realidad Virtual, siendo en este caso las Meta Quest 2 y Meta Quest Pro.
+En términos de costes económicos, el desarrollo directo del software ha tenido un impacto financiero mínimo para la creación de este Trabajo de Fin de Grado. Se han empleado licencias académicas, repositorios gratuitos o herramientas de código abierto como el motor Unity, el procesador de nubes de puntos CloudCompare y las librerías dinámicas de C\# (iTextSharp). Los costes tangibles se limitan a la amortización técnica y energética del \textit{hardware} utilizado: el ordenador de escritorio para desarrollo y renderizado, y el visor Meta Quest 2 para el testing.
 
-Desde el punto de vista temporal, el desarrollo se ha adherido en gran medida a la planificación ágil estipulada en las fases iniciales. Se registraron ligeras desviaciones temporales en el cronograma durante la fase de iniciales de desarrollo debido a que el modelo de \textit{Gaussian Splatting} debido a las incompatibilidades iniciales de compilación binaria, junto con el aprendizaje inicial de Unity y desarrollo de Realidad Virtual. No obstante, estas demoras fueron absorbidas y mitigadas gracias a los márgenes de seguridad proyectados, logrando un producto funcional dentro del plazo académico establecido.
+Desde el punto de vista temporal, el desarrollo se ha adherido en gran medida a la metodología de trabajo ágil (\textit{Kanban}) estipulada en las fases iniciales. Se registraron ligeras desviaciones temporales en el cronograma de investigación temprana, fundamentalmente vinculadas a incompatibilidades iniciales al renderizar el \textit{Gaussian Splatting} en Unity, así como a la adaptación a la lógica asíncrona de C\#. No obstante, estas demoras se mitigaron utilizando eficazmente los márgenes de seguridad proyectados en el cronograma, logrando desplegar un producto integral y funcional dentro del plazo académico.
 
 \section{Monetización y Consecución de Objetivos}
-Todos los objetivos principales definidos al comienzo del proyecto se han cumplido satisfactoriamente. Se ha logrado crear un entorno inmersivo capaz de unificar modelos teóricos (BIM) y reconstrucciones reales, dotando al usuario de herramientas de medición, escaneo de tolerancias y reporte automatizado.
+Todos los objetivos principales definidos al comienzo del proyecto se han cumplido satisfactoriamente. Se ha diseñado e implementado con éxito un entorno inmersivo unificado, capaz de contrastar la aserción teórica del modelo BIM frente al levantamiento de la realidad física, dotando al auditor de un abanico de herramientas de cálculo de tolerancias métricas, reporte automatizado e inteligencia espacial.
 
-En cuanto a la viabilidad y monetización, la aplicación posee un claro modelo de negocio \textit{SaaS} (Software as a Service) orientado a empresas constructoras y estudios de arquitectura. El retorno de inversión (ROI) para el cliente final no se basa en microtransacciones, sino en el ahorro masivo de horas de trabajo en inspecciones manuales y en la detección temprana de errores estructurales, cuyos costes de reparación en fases avanzadas de la obra son exponenciales.
+En lo concerniente a la viabilidad comercial y vías de monetización post-académica, la aplicación desarrollada perfila un claro modelo \textit{SaaS} (Software as a Service) o de licenciamiento B2B. Orientada a empresas constructoras, consultoras técnicas y despachos de arquitectura, el valor para el cliente final (ROI) radica en la supresión de innumerables horas dedicadas a validaciones convencionales mediante topografía o planos de papel. Además, previene el devastador efecto cascada económico derivado de subsanar conflictos espaciales o desajustes entre el modelo y lo construido que solo se detectarían en fases posteriores y más complejas de la obra.
 
 \section{Vinculación Académica sobre el Grado}
-El desarrollo de este proyecto representa el aprendizaje práctico de las competencias y conocimientos adquiridos a lo largo de la titulación en Ingeniería Multimedia. La consecución de esta aplicación no habría sido posible sin la base teórica e instrumental de diversas asignaturas clave:
+El diseño, la codificación arquitectónica y el ensamblaje de este proyecto representan la culminación práctica de múltiples competencias, lógicas y metodologías asimiladas a lo largo de la titulación en Ingeniería Multimedia. La consolidación de esta aplicación es resultado de asentar conocimientos provenientes de las siguientes áreas vertebrales:
 
 \begin{itemize}
-\item \textbf{Realidad Virtual:} Ha sido el pilar fundamental de este proyecto, me proporcionó más experiencia y práctica para desarrollo de aplicaciones de RV, con la diferencia de ser en este caso Unreal Engine. Aprendí la bases como el Raycast, la interacción con los mandos, la implementación de sistemas que previenen la cinetosis y el diseño de interacciones con mediante trazado de rayos.
-\item \textbf{Usabilidad y Accesibilidad} Sus contenidos han sido vitales para adaptar componentes 2D a un entorno inmersivo. La aplicación de estos conceptos permitió mejorar el diseño de interfaces.
-\item \textbf{Estructura de Datos y Algoritmia:} La arquitectura del código hace uso intensivo de patrones de diseño, diccionarios, listas dinámicas y \textit{HashSets} para gestionar de manera eficiente los miles de componentes que conforman un modelo BIM.
-\item \textbf{Fundamentos de videojuegos  y Análisis y Especificación de Sistemas Multimedia:} Proporcionaron los marcos de trabajo ágiles y las buenas prácticas de versionado necesarias para organizar un desarrollo iterativo, documentar las funcionalidades y adaptar la planificación ante los imprevistos técnicos surgidos durante el proceso.
+\item \textbf{Realidad Virtual:} Ha sido el ecosistema rector y pilar metodológico del trabajo, otorgando experiencia tangencial en un motor diferente (Unity frente a la instrucción en Unreal Engine). Se han puesto en práctica fundamentos tales como el trazado de rayos (\textit{Raycasting}), interacción de 6 grados de libertad (6DoF) con mandos, sistemas de cinemática inversa y la mitigación perceptual de la cinetosis a través de la interfaz.
+\item \textbf{Usabilidad y Accesibilidad:} Las directrices de estas materias han sido imprescindibles para el diseño de paneles de interfaces de usuario inmersivas, traduciendo elementos convencionales 2D (\textit{Canvas}) a espacios euclidianos interactivos. Se priorizó la retroalimentación de contraste en los menús y la accesibilidad para usuarios que pudiesen padecer fatiga ocular en inmersiones prolongadas.
+\item \textbf{Estructura de Datos y Algoritmia:} La columna vertebral lógica del código se afianza en el diseño estructural; empleando diccionarios, *HashSets* paramétricos, listas dinámicas y árboles para aislar y procesar de manera concurrente los miles de componentes y metadatos que conforman la topología BIM.
+\item \textbf{Fundamentos de videojuegos y Análisis/Especificación de Sistemas Multimedia:} Proveyeron el andamiaje corporativo: adopción de ciclos de trabajo *Agile*, el diseño del modelo documental de arquitectura de software, el dominio de los repositorios de control de versiones (Git) y la correcta especificación funcional ante requerimientos cambiantes y desafíos técnicos inesperados.
 \end{itemize}
-
-
-
-
-

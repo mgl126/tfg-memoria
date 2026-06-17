@@ -1,7 +1,6 @@
 \chapter{\label{desarrollo}Desarrollo}
 
-En este capítulo se describe el proceso técnico de creación de la aplicación, desde la gestión de los modelos tridimensionales hasta la arquitectura de la interfaz de usuario. En primer lugar, se expone la propuesta de solución a nivel conceptual, detallando las funcionalidades integradas en el sistema. Posteriormente, se analizará cada parte de la implementación lógica y matemática que hace posible dichas herramientas.
-\footnote{Assets utilizados: Skybox menú principal (vista 360º) (\url{https://maps.app.goo.gl/Qa8RHXL4oYLrD1Km6}), skybox del resto de escenas (\url{https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633}) y tercer modelo de prueba (Apartamentos) (\url{https://www.nordicsustainableconstruction.com/knowledge/2024/august/bim4lca-files}).}
+En este capítulo se describe el proceso técnico de creación de la aplicación, desde la gestión de los modelos tridimensionales hasta la arquitectura de la interfaz de usuario. En primer lugar, se expone la propuesta de solución a nivel conceptual, detallando las funcionalidades integradas en el sistema. Posteriormente, se analizará cada parte de la implementación lógica y matemática que hace posible dichas herramientas.\footnote{Assets utilizados: Skybox menú principal (vista 360º) (\url{https://maps.app.goo.gl/Qa8RHXL4oYLrD1Km6}), skybox del resto de escenas (\url{https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633}) y tercer modelo de prueba (Apartamentos) (\url{https://www.nordicsustainableconstruction.com/knowledge/2024/august/bim4lca-files}).}
 
 \section{Propuesta de Solución y Arquitectura General}
 
@@ -105,12 +104,110 @@ Esta infraestructura base actúa como el núcleo técnico del proyecto, garantiz
 
 \section{Generación Procedural de Físicas y Optimización}
 
-Para que las herramientas de interacción a distancia como el escáner de mapa de calor o el puntero de selección— operen de forma precisa sobre el modelo arquitectónico, es necesario que cada elemento geométrico posea un volumen físico capaz de registrar impactos. Configurar esto de forma manual en modelos complejos que contienen miles de piezas resulta inviable.
+Para que las herramientas de interacción a distancia —como el escáner de mapa de calor o el puntero de selección— operen de forma precisa sobre el modelo arquitectónico, es necesario que cada elemento geométrico posea un volumen físico capaz de registrar impactos. Configurar esto de forma manual en modelos complejos que contienen miles de piezas resulta inviable.
 
-Para automatizar este proceso, se desarrolló un algoritmo de optimización que opera durante la inicialización del entorno. Este sistema utiliza una rutina de procesamiento asíncrono para iterar sobre todas las mallas visuales del edificio. Al detectar una pieza carente de propiedades físicas, el sistema le adhiere dinámicamente un volumen de colisión y le transfiere la topología exacta del objeto tridimensional.
+Para automatizar este proceso, se desarrolló un algoritmo de optimización que opera durante la inicialización del entorno. Este sistema utiliza una rutina de procesamiento asíncrono para iterar sobre todas las mallas visuales del edificio. Al detectar una pieza que no tenga propiedades físicas, el sistema le adhiere dinámicamente un volumen de colisión y le transfiere la topología exacta del objeto tridimensional.
 
-Con el objetivo de mantener la fluidez, la ejecución se ha escalonado mediante pausas controladas, 10 elementos del edificio en 1 frame + 1 frame de espera, repitiendo el proceso. Esta técnica garantiza que el hilo principal de procesamiento no se sature al cargar edificios de alta densidad poligonal, evitando que la imagen se congele temporalmente al iniciar la aplicación.
+Con el objetivo mantener estabilidad en la tasa de fotogramas y prevenir interrupciones en el seguimiento del visor, la ejecución se ha escalonado mediante pausas controladas. Al introducir un nuevo colisionador, el hilo principal de procesamiento se detiene forzando un fotograma de espera de forma inmediata, mitigando así picos severos en la carga computacional. En caso de que la pieza evaluada ya cuente con propiedades físicas preexistentes, el algoritmo continúa la inspección secuencial introduciendo de manera preventiva una pausa de un fotograma cada 100 comprobaciones para liberar el flujo de datos del sistema. En el Cuadro~\ref{diagrama_optimizacion} se detalla de forma exhaustiva la lógica de control y bifurcación de este algoritmo concurrente.
 
+\begin{table}[!htb]
+    \centering
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tikzpicture}[
+        node distance=1cm and 1.2cm,
+        font=\sffamily\small,
+        % Estilos de las cajas
+        base/.style={rectangle, draw=black!70, thick, rounded corners=2mm, align=center, minimum height=1.2cm, fill=white, drop shadow={opacity=0.25}},
+        main/.style={base, fill=blue!10, text width=3.5cm},
+        process/.style={base, fill=gray!15, text width=4.8cm},
+        decision/.style={diamond, draw=black!70, thick, fill=yellow!10, align=center, inner sep=0pt, text width=2.6cm, aspect=1.4, drop shadow={opacity=0.25}},
+        wait/.style={base, fill=orange!10, text width=3.2cm, dashed},
+        group/.style={rectangle, draw=black!50, dashed, rounded corners=3mm, inner sep=12pt},
+        arrow/.style={->, thick, draw=black!70, >=stealth},
+        line/.style={thick, draw=black!70}
+    ]
+
+    % Nodos Centrales e Iniciales
+    \node[main] (start) {\textbf{Hilo Principal}\\(Inicio de Escena)};
+    \node[process] (get) [below=0.8cm of start] {\textbf{Extracción de Datos}\\Obtener listado de mallas visuales};
+    \node[decision] (collider) [below=0.8cm of get] {¿Tiene\\colisionador?};
+
+    % Coordenadas absolutas para alinear la altura
+    \node[process] (add) at ([xshift=-2.6cm, yshift=-2.6cm]collider.south) {\textbf{Generación de Físicas}\\Adherir MeshCollider};
+    \node[decision] (count100) at ([xshift=2.8cm, yshift=-2.6cm]collider.south) {¿Múltiplo de\\100 iteraciones?};
+
+    \node[wait] (yield_add) [below=0.8cm of add] {\textbf{Pausa Forzada}\\(Espera 1 fotograma)};
+    \node[wait] (yield_count) [below=0.8cm of count100] {\textbf{Pausa de Control}\\(Espera 1 fotograma)};
+
+    % Se baja el nodo loop para dar más margen a la unión
+    \coordinate (loop_y) at ([yshift=-1.8cm]yield_count.south);
+    \node[decision] (loop) at (collider |- loop_y) {¿Faltan mallas\\por evaluar?};
+
+    % Puntos de anclaje para enrutar flechas por FUERA de todos los nodos
+    \coordinate (leftPath) at ([xshift=-1.4cm]add.west);
+    \coordinate (rightPath) at ([xshift=1.4cm]count100.east);
+
+    % Nodo Final
+    \node[main] (end) [below=1.2cm of loop] {\textbf{Hilo Principal}\\(Interacción del usuario)};
+
+    % Caja contenedora
+    \node[group, fit=(collider) (add) (yield_add) (count100) (yield_count) (loop) (leftPath) (rightPath), label={[font=\sffamily\bfseries, text=black!70]above left:Rutina de Procesamiento Asíncrono}] (rutina) {};
+
+    % ---------------- ENRUTAMIENTO DE FLECHAS ---------------- %
+
+    \draw[arrow] (start) -- (get);
+    \draw[arrow] (get) -- (collider);
+
+    % Bifurcación limpia
+    \coordinate (fork_collider) at ([yshift=-0.6cm]collider.south);
+    \draw[line] (collider.south) -- (fork_collider);
+    \draw[arrow] (fork_collider) -| node[above, pos=0.25] {No} (add.north);
+    \draw[arrow] (fork_collider) -| node[above, pos=0.25] {Sí} (count100.north);
+
+    % Bajada desde la rama izquierda
+    \draw[arrow] (add) -- (yield_add);
+
+    % Bajada desde la rama derecha
+    \draw[arrow] (count100.south) -- node[right] {Sí} (yield_count.north);
+
+    % By-pass derecho
+    \draw[arrow] (count100.east) -- node[above] {No} (rightPath |- count100.east) |- (loop.east);
+
+    % Unión forzada explícitamente por debajo de los nodos para evitar cruces
+    \coordinate (join_y) at ([yshift=-0.8cm]yield_add.south);
+    \coordinate (join_center) at (collider |- join_y);
+    
+    \draw[line] (yield_add.south) |- (join_center);
+    \draw[line] (yield_count.south) |- (join_center);
+    \draw[arrow] (join_center) -- (loop.north);
+
+    % Salida del bucle
+    \draw[arrow] (loop.south) -- node[right] {No} (end.north);
+
+    % Retorno del bucle
+    \draw[arrow] (loop.west) -- node[above] {Sí} (leftPath |- loop.west) -- (leftPath |- collider.west) -- (collider.west);
+
+    \end{tikzpicture}
+    }
+    \caption{Diagrama de flujo del proceso asíncrono para la generación de físicas}
+    \label{diagrama_optimizacion}
+\end{table}
+
+
+\section{Gestión Dual de Modelos y Visualización}
+
+La aplicación permite al usuario alternar dinámicamente entre el modelo de diseño teórico y la captura física de la realidad. Esto es fundamental para identificar discrepancias visuales de forma rápida. Para gestionar esta funcionalidad, se desarrolló un controlador lógico basado en una máquina de estados que define tres modalidades de visualización: exclusiva para el diseño, exclusiva para la realidad escaneada, o una superposición de ambas.
+
+El sistema evalúa continuamente las pulsaciones de los botones del usuario. Al recibir la orden de cambio, el controlador recalcula qué modelo debe ser visible y altera el estado de activación en la jerarquía del entorno. Cabe destacar que, para el renderizado del modelo físico, se implementó un forzado de actualización sobre el buffer de la memoria gráfica al volver a un estado activo, asegurando que las partículas volumétricas se redibujen sin errores visuales tras un periodo ocultas.
+
+La integración de este sistema se realizó mediante un objeto gestor centralizado en la arquitectura del proyecto, el cual mantiene las referencias en memoria de ambos ecosistemas tridimensionales, tal como se aprecia en la Figura~\ref{fig:layer-switcher-unity}.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.7\linewidth]{include/images/figura5.1.png}
+    \caption{Configuración del gestor de visualización en el motor de desarrollo}
+    \label{fig:layer-switcher-unity}
+\end{figure}
 
 
 \section{Alineación Espacial de Modelos (Diseño vs Realidad)}
@@ -129,7 +226,7 @@ Matemáticamente, el algoritmo calcula los vectores directores de orientación u
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/figura5.7.png}
-    \caption{Modelos alineados de forma automática mediante el sistema espacial}
+    \caption{Modelos alineados de forma automática}
     \label{fig:alineador}
 \end{figure}
 
@@ -154,22 +251,6 @@ Al detectar una interferencia, el sistema ejecuta tres acciones automatizadas:
 \end{figure}
 
 
-\section{Gestión Dual de Modelos y Visualización}
-
-La aplicación permite al usuario alternar dinámicamente entre el modelo de diseño teórico y la captura física de la realidad. Esto es fundamental para identificar discrepancias visuales de forma rápida. Para gestionar esta funcionalidad, se desarrolló un controlador lógico basado en una máquina de estados que define tres modalidades de visualización: exclusiva para el diseño, exclusiva para la realidad escaneada, o una superposición de ambas.
-
-El sistema evalúa continuamente las pulsaciones de los botones del usuario. Al recibir la orden de cambio, el controlador recalcula qué modelo debe ser visible y altera el estado de activación en la jerarquía del entorno. Cabe destacar que, para el renderizado del modelo físico, se implementó un forzado de actualización sobre el buffer de la memoria gráfica al volver a un estado activo, asegurando que las partículas volumétricas se redibujen sin errores visuales tras un periodo ocultas.
-
-La integración de este sistema se realizó mediante un objeto gestor centralizado en la arquitectura del proyecto, el cual mantiene las referencias en memoria de ambos ecosistemas tridimensionales, tal como se aprecia en la Figura~\ref{fig:layer-switcher-unity}.
-
-\begin{figure}[!htb]
-    \centering
-    \includegraphics[width=0.7\linewidth]{include/images/figura5.1.png}
-    \caption{Configuración del gestor de visualización en el motor de desarrollo}
-    \label{fig:layer-switcher-unity}
-\end{figure}
-
-
 
 \section{Sistema de Punteros e Interacción a Distancia}
 
@@ -177,17 +258,31 @@ En Realidad Virtual, el usuario necesita una referencia visual constante que ind
 
 El módulo calcula una línea poligonal continua en el espacio 3D. En cada iteración gráfica, el algoritmo toma la posición física de la mano del usuario como punto de origen y calcula un vector proyectado hacia adelante multiplicado por una constante de distancia. Para evitar que el rayo se comporte de forma errática al rotar la muñeca, se forzó el cálculo de los vértices sobre el espacio de coordenadas globales de la escena en lugar del local de la mano.
 
-El láser resultante se renderizó con un grosor mínimo para simular precisión milimétrica, y se le aplicó un material puro sin cálculo de iluminación o sombras, garantizando que el haz de luz mantenga su visibilidad máxima sin importar las condiciones de oscuridad de la obra virtual.
+El láser resultante se renderizó con un grosor mínimo para simular precisión milimétrica, y se le aplicó un material puro sin cálculo de iluminación o sombras, garantizando que el haz de luz mantenga su visibilidad máxima sin importar las condiciones de oscuridad de la obra virtual. Como podemos observar en la Figura \ref{fig:rayvisual}, el rayo de cada controlador es distinto, al ser el izquierdo para seleccionar piezas es más grueso, y el derecho, al requerir un control más preciso es más fino.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{include/images/controllerrayvisual.png}
+    \caption{Raycast de cada controlador}
+    \label{fig:rayvisual}
+\end{figure}
 
 
 
 \section{Inspección de Metadatos y Deconstrucción Selectiva}
 
-El sistema permite apuntar a piezas individuales del diseño, extraer su información técnica (categoría, nombre de sistema, identificador) y visualizarla en un panel flotante. Además, incluye la capacidad de ocultar el elemento seleccionado para visualizar el interior de las estructuras.
+El sistema permite apuntar a piezas individuales del diseño, extraer su información técnica (categoría, nombre de sistema, identificador) y visualizarla en un panel flotante (Figura \ref{fig:inspeccion}. Además, incluye la capacidad de ocultar el elemento seleccionado para visualizar el interior de las estructuras.
 
 El algoritmo lanza un rayo físico invisible desde el mando que es filtrado mediante máscaras lógicas para asegurar que solo interactúa con geometría del edificio a inspeccionar. Al colisionar, se activa un retroalimentador visual que cambia el color de la pieza. El módulo de inspección fragmenta los datos del elemento objetivo para reconstruir una ficha técnica con formato legible.
 
 El gestor de la interfaz calcula dinámicamente la posición del panel de información basándose en vectores espaciales. El panel se sitúa siempre a una distancia prudencial frente al usuario y se orienta hacia su línea de visión, garantizando la legibilidad (Figura~\ref{fig:ovr-controllers-unity}). El usuario puede ocultar la pieza inspeccionada mediante un comando directo, y el sistema memoriza estos elementos en una estructura de datos para permitir su restauración total mediante otro atajo en los controladores.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{include/images/inspeccion.png}
+    \caption{Interfaz mostrada al inspeccionar una columna de manera individual}
+    \label{fig:inspeccion}
+\end{figure}
 
 \begin{figure}[!htb]
     \centering
@@ -210,7 +305,7 @@ Para dotar a la interfaz de consciencia espacial, el sistema implementa un algor
 
 \section{Herramienta de Medición Espacial Euclidiana}
 
-Para evaluar discrepancias, el usuario cuenta con una "cinta métrica virtual" capaz de calcular distancias exactas entre cualquier par de puntos del espacio tridimensional a partir del modelo teórico.
+Para evaluar discrepancias, el usuario cuenta con una "cinta métrica virtual" capaz de calcular distancias exactas entre cualquier par de puntos del espacio tridimensional a partir del modelo teórico. Visto en la Figura \ref{fig:informe-diseño}.
 
 El sistema de medición opera mediante una máquina de estados controlada por las interacciones del operario:
 \begin{enumerate}
@@ -225,11 +320,16 @@ El sistema de medición opera mediante una máquina de estados controlada por la
 
 \section{Registro de Incidencias y Trazabilidad}
 
-La aplicación provee un sistema para señalar problemas visuales manualmente y categorizarlos mediante marcadores espaciales (Grave, Leve o a Revisar), utilizando un flujo de trabajo optimizado para no interrumpir la inmersión.
+La aplicación provee un sistema para señalar problemas visuales manualmente y categorizarlos mediante marcadores espaciales (Grave, Leve o a Revisar, Figura \ref{fig:incidencia}), utilizando un flujo de trabajo optimizado para no interrumpir la inmersión.
 
-Para no saturar la aplicación, en lugar de utilizar menús, la selección de la gravedad de la incidencia se realiza mediante la lectura del eje direccional del controlador secundario (arriba, izquierda o derecha). Al clavar la marca de incidencia en el entorno, se adjunta información textual. Para garantizar que estos marcadores sean siempre legibles desde cualquier ángulo de la sala, se implementó una rutina matemática de orientación continua (\textit{Billboarding}), la cual fuerza la rotación geométrica de las etiquetas para que encaren constantemente el vector de visión del usuario.
+Para no saturar la aplicación, en lugar de utilizar menús, la selección de la gravedad de la incidencia se realiza mediante la lectura del eje direccional del controlador derecho (arriba, izquierda o derecha), bloqueando el giro de la cámara hecho con el mismo. Al clavar la marca de incidencia en el entorno, se adjunta información textual. Para garantizar que estos marcadores sean siempre legibles desde cualquier ángulo de la sala, se implementó una rutina matemática de orientación continua (\textit{Billboarding}), la cual fuerza la rotación geométrica de las etiquetas para que encaren constantemente el vector de visión del usuario.
 
-
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{include/images/incidencias.png}
+    \caption{Niveles de incidencia posibles}
+    \label{fig:incidencia}
+\end{figure}
 
 
 \section{Gestión y Filtrado de Tipologías Estructurales}
@@ -275,7 +375,7 @@ A la hora de interactuar con paneles virtuales, las herramientas estándar de Un
 Para evitar mareos durante los tiempos de carga entre diferentes modelos arquitectónicos, las transiciones se delegaron a hilos de procesamiento en segundo plano, y se sincronizaron con un oscurecimiento progresivo de la visión del usuario. Esto garantiza que el seguimiento de los movimientos de la cabeza nunca se congele mientras el procesador prepara el nuevo entorno. Este oscurecimiento se logró creando un panel negro de gran tamaño delante de la cámara del usuario usuario (Figura~\ref{fig:camara}), que se hace visible progresivamente al cambiar de escena.
 
 \subsection{Persistencia Local de Sesiones}
-Se integró un sistema de almacenamiento ligero en la memoria del dispositivo que registra fechas y datos de inspección mediante cadenas de texto. Esta información se inyecta en la sala inicial, permitiendo al usuario llevar un control visual de las auditorías previas sin requerir complejas infraestructuras de bases de datos externas.
+Se integró un sistema de almacenamiento ligero en la memoria del dispositivo que registra fechas y datos de inspección mediante cadenas de texto. Esta información se inyecta en la sala inicial, permitiendo al usuario llevar un control visual de las auditorías previas sin requerir complejas infraestructuras de bases de datos externas. Visto en la Figura \ref{fig:res-menu}.
 
 \subsection{Desplazamiento Físico en Desniveles}
 El desplazamiento por una maqueta implica subir o bajar escaleras. La simulación de gravedad estándar generaba caídas abruptas y micro-saltos al caminar rápidamente por un desnivel negativo. Para subsanarlo, el algoritmo aísla el cálculo de movimiento horizontal del vertical. Al detectar el borde de un escalón, el sistema realiza una presión vertical que actúa como un ancla magnética hacia la malla de las escaleras, forzando a descender adherido a la pendiente del peldaño y resultando en un tránsito fluido.
@@ -316,9 +416,9 @@ Para una buena presentación, se encapsula lógicamente cada captura fotográfic
 
 \section{Evaluación Volumétrica y Mapa de Calor Espacial}
 
-La aportación diagnóstica central de la aplicación recae en un escáner capaz de medir las diferencias entre la estructura real física y el modelo teórico en tiempo real. Esta herramienta tiñe los elementos del edificio teórico con un mapa de calor proyectado.
+Otra de las funciones de la aplicación para analizar es un escáner capaz de medir las diferencias entre la estructura real física y el modelo teórico en tiempo real. Esta herramienta tiñe los elementos del edificio teórico con un mapa de calor proyectado.
 
-El desafío principal radicaba en que las digitalizaciones de la realidad carecen de volumen sólido, y procesar millones de partículas simultáneamente saturaría el procesador, volviendo la experiencia injugable. Para solucionarlo, el modelo volumétrico crudo se preprocesó mediante software especializado (CloudCompare) aplicando un submuestreo espacial, reduciendo considerablemente la densidad de puntos y aligerando el volumen de datos. Este modelo se exportó como documento de texto incluyendo todo el conjunto de puntos como coordenadas con el objetivo de optimizar el proceso y hacer posible esa comparación.
+El desafío principal radicaba en que las digitalizaciones de la realidad carecen de volumen sólido, y procesar millones de partículas simultáneamente saturaría el procesador, volviendo la experiencia injugable. Para solucionarlo, el modelo volumétrico crudo se preprocesó mediante software especializado (CloudCompare) aplicando un submuestreo espacial, reduciendo considerablemente la densidad de puntos y aligerando el volumen de datos. Este modelo se exportó como documento de texto incluyendo todo el conjunto de puntos como coordenadas con el objetivo de optimizar el proceso y hacer posible esa comparación. A modo de prueba y validación, en la Figura \ref{fig:comparacion} se observa que los puntos cianes representan la versión simplificada del modelo con Gaussian Splat
 
 \subsection{Algoritmo de Proximidad Topológica}
 La herramienta de escáner ejecuta un cálculo de búsqueda espacial. Al interactuar con un muro teórico, el sistema analiza las coordenadas circundantes y evalúa la distancia hacia los puntos del modelo preprocesado.
@@ -339,6 +439,6 @@ El resultado final es un diagnóstico inmersivo inmediato que, además de colore
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/figura5.6.png}
-    \caption{Prueba de la visualización simplificada de los datos volumétricos actuando como mapa de calor}
+    \caption{Versión inicial del spray de mapa de calor con el modelo de puntos simplificado, inicialmente eran solo dos colores}
     \label{fig:comparacion}
 \end{figure}
