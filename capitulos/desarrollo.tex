@@ -1,6 +1,6 @@
 \chapter{\label{desarrollo}Desarrollo}
 
-En este capítulo se describe el proceso técnico de creación de la aplicación, desde la gestión de los modelos tridimensionales hasta la arquitectura de la interfaz de usuario. En primer lugar, se expone la propuesta de solución a nivel conceptual, detallando las funcionalidades integradas en el sistema. Posteriormente, se analizará cada parte de la implementación lógica y matemática que hace posible dichas herramientas.\footnote{Assets utilizados: Skybox menú principal (vista 360º) (\url{https://maps.app.goo.gl/Qa8RHXL4oYLrD1Km6}), skybox del resto de escenas (\url{https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633}) y tercer modelo de prueba (Apartamentos) (\url{https://www.nordicsustainableconstruction.com/knowledge/2024/august/bim4lca-files}).}
+En este capítulo se describe el proceso técnico de creación de la aplicación, desde la gestión de los modelos tridimensionales hasta la arquitectura de la \gls{ui}. En primer lugar, se expone la propuesta de solución a nivel conceptual, detallando las funcionalidades integradas en el sistema. Posteriormente, se analizará cada parte de la implementación lógica y matemática que hace posible dichas herramientas.\footnote{Assets utilizados: Skybox menú principal (vista 360º) (\url{https://maps.app.goo.gl/Qa8RHXL4oYLrD1Km6}), skybox del resto de escenas (\url{https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633}) y tercer modelo de prueba (Apartamentos) (\url{https://www.nordicsustainableconstruction.com/knowledge/2024/august/bim4lca-files}).}
 
 \section{Propuesta de Solución y Arquitectura General}
 
@@ -14,7 +14,7 @@ La solución se estructura en torno a un conjunto de herramientas interactivas q
     \item \textbf{Medición Espacial Precisa:} Un sistema de cinta métrica virtual que permite calcular distancias exactas entre cualquier punto de la obra, facilitando la comprobación de dimensiones y tolerancias.
     \item \textbf{Detección Automática de Interferencias:} Módulo que evalúa las colisiones estructurales entre las instalaciones (conductos, tuberías) y la propia estructura del edificio (suelos, pilares...), aislando visualmente los conflictos para su resolución.
     \item \textbf{Inspección y Gestión Estructural:} Acceso a los metadatos y propiedades de cada elemento del diseño, con la posibilidad de "deconstruir" virtualmente el edificio ocultando capas arquitectónicas enteras o piezas de manera individual, por ejemplo, para ocultar paredes y ver las tuberías subyacentes.
-    \item \textbf{Trazabilidad y Generación de Informes:} Sistema integrado que permite tomar fotografías virtuales, etiquetar incidencias por gravedad y compilar automáticamente toda la información recopilada en un documento PDF exportable.
+    \item \textbf{Trazabilidad y Generación de Informes:} Sistema integrado que permite tomar fotografías virtuales, etiquetar incidencias por gravedad y compilar automáticamente toda la información recopilada en un documento \gls{pdf} exportable.
 \end{itemize}
 
 Para facilitar la comprensión global de la herramienta, en el siguiente diagrama (Cuadro~\ref{fig:arquitectura_propuesta}) se ilustra el flujo de trabajo principal de la aplicación y la disposición de las interfaces de usuario.

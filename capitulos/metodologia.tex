@@ -33,7 +33,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
 \begin{itemize}
 \item Git y Github: Git se utiliza como sistema principal de control de versiones, una tecnología indispensable para registrar el historial de cambios, revertir errores y mantener un control estricto sobre el código fuente. GitHub actúa como repositorio remoto en la nube, garantizando la redundancia de los datos y salvaguardando todo el progreso ante cualquier posible fallo del equipo local.
 
-\item Github Desktop: Se emplea como capa gráfica (GUI) para simplificar la interacción con el control de versiones. Esta herramienta agiliza las operaciones diarias de Git, permitiendo una gestión de ramas más visual, una revisión detallada de las modificaciones (diffs) antes de cada commit y una sincronización más intuitiva con el repositorio remoto.
+\item Github Desktop: Se emplea como capa gráfica \gls{gui} para simplificar la interacción con el control de versiones. Esta herramienta agiliza las operaciones diarias de Git, permitiendo una gestión de ramas más visual, una revisión detallada de las modificaciones (diffs) antes de cada commit y una sincronización más intuitiva con el repositorio remoto.
 
 \begin{figure}[!htb]
     \centering
@@ -69,7 +69,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:slack}
 \end{figure}
 
-\item Unity: Motor gráfico y plataforma de desarrollo en tiempo real que actúa como el núcleo del proyecto. Se ha seleccionado por su complejidad no excesiva, capacidades avanzadas de renderizado 3D y su soporte nativo e integración madura con los estándares de Realidad Virtual (XR), permitiendo construir entornos inmersivos interactivos. La versión que se utilizará para este proyecto será la 6000.3.9f1.
+\item Unity: Motor gráfico y plataforma de desarrollo en tiempo real que actúa como el núcleo del proyecto. Se ha seleccionado por su complejidad no excesiva, capacidades avanzadas de renderizado 3D y su soporte nativo e integración madura con los estándares de Realidad Extendida (XR), permitiendo construir entornos inmersivos interactivos. La versión que se utilizará para este proyecto será la 6000.3.9f1.
 
 \begin{figure}[!htb]
     \centering
@@ -87,7 +87,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:cloudcompare}
 \end{figure}
 
-\item Entorno de Desarrollo Integrado (IDE) - Visual Studio: Editor de código avanzado indispensable para la redacción y depuración de los scripts en lenguaje CSharp. Su integración directa con Unity proporciona herramientas de autocompletado, análisis de sintaxis y detección de errores en tiempo real, agilizando la programación de la lógica interna de la aplicación.
+\item \gls{ide} - Visual Studio: Editor de código avanzado indispensable para la redacción y depuración de los scripts en lenguaje CSharp. Su integración directa con Unity proporciona herramientas de autocompletado, análisis de sintaxis y detección de errores en tiempo real, agilizando la programación de la lógica interna de la aplicación.
 
 \item Meta Horizon Link: Conjunto de utilidades de desarrollo y retransmisión por cable o red local. Resulta crítico para el flujo de trabajo en Realidad Virtual (PC VR), ya que permite previsualizar y testear el entorno tridimensional directamente desde el editor de Unity usando el visor, ahorrando el costoso proceso de empaquetar y compilar un archivo ejecutable en cada iteración de prueba.
 
@@ -98,7 +98,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:metahorizonlink}
 \end{figure}
 
-\item Meta Quest 2: Dispositivo de hardware empleado como plataforma de pruebas y ejecución del entorno inmersivo. Este visor opera con arquitectura standalone (autónoma) impulsada por el SoC (System on a Chip) Qualcomm Snapdragon XR2 y 6 GB de memoria RAM, lo que proporciona una alta capacidad de procesamiento gráfico y computacional. A nivel visual, incorpora un panel LCD con una resolución de 1832 x 1920 píxeles por ojo y frecuencias de actualización dinámicas (72 Hz, 90 Hz y hasta 120 Hz), características críticas para mantener una latencia de fotones a movimiento (M2P) baja y asegurar el confort visual. Se apoya en cuatro cámaras integradas en el chasis que ejecutan algoritmos de visión artificial (SLAM) para mapear el entorno físico en tiempo real y rastrear con precisión milimétrica la posición y rotación de los controladores hápticos Oculus Touch. Además, su soporte para conectividad Wi-Fi y el protocolo Meta Quest Link resulta vital para la metodología de trabajo, permitiendo la depuración y el testeo en tiempo real directamente desde el motor gráfico.
+\item Meta Quest 2: Dispositivo de hardware empleado como plataforma de pruebas y ejecución del entorno inmersivo. Este visor opera con arquitectura standalone (autónoma) impulsada por el \gls{soc} Qualcomm Snapdragon XR2 y 6 GB de memoria \gls{ram}, lo que proporciona una alta capacidad de procesamiento gráfico y computacional. A nivel visual, incorpora un panel \gls{lcd} con una resolución de 1832 x 1920 píxeles por ojo y frecuencias de actualización dinámicas (72 Hz, 90 Hz y hasta 120 Hz), características críticas para mantener una latencia de fotones a movimiento \gls{m2p} baja y asegurar el confort visual. Se apoya en cuatro cámaras integradas en el chasis que ejecutan algoritmos de visión artificial (SLAM) para mapear el entorno físico en tiempo real y rastrear con precisión milimétrica la posición y rotación de los controladores hápticos Oculus Touch. Además, su soporte para conectividad Wi-Fi y el protocolo Meta Quest Link resulta vital para la metodología de trabajo, permitiendo la depuración y el testeo en tiempo real directamente desde el motor gráfico.
 
 \begin{figure}[!htb]
     \centering

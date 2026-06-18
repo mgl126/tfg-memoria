@@ -46,9 +46,9 @@ Esta sección consiste en un análisis exhaustivo del estado actual de la técni
 
 \section{Reconstrucción volumétrica: 3D Gaussian Splatting}
 
-El 3D Gaussian Splatting (3DGS) ha emergido recientemente como una técnica revolucionaria para la reconstrucción tridimensional y el renderizado volumétrico a partir de un conjunto de fotografías bidimensionales. A diferencia de la modelado tradicional, que intenta generar mallas poligonales cerradas y a menudo falla al interpretar superficies reflectantes, transparentes o sin textura, el 3DGS representa la escena utilizando millones de partículas matemáticas (distribuciones gaussianas 3D) que poseen atributos de posición, escala, rotación, opacidad y color armónico esférico.
+El \gls{3dgs} ha emergido recientemente como una técnica revolucionaria para la reconstrucción tridimensional y el renderizado volumétrico a partir de un conjunto de fotografías bidimensionales. A diferencia de la modelado tradicional, que intenta generar mallas poligonales cerradas y a menudo falla al interpretar superficies reflectantes, transparentes o sin textura, el 3DGS representa la escena utilizando millones de partículas matemáticas (distribuciones gaussianas 3D) que poseen atributos de posición, escala, rotación, opacidad y color armónico esférico.
 
-Esta técnica es considerado un salto considerable respecto a métodos previos como los NeRFs (Neural Radiance Fields). Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el Gaussian Splatting permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de fotogramas (FPS) incluso en escenas de gran complejidad geométrica.
+Esta técnica es considerado un salto considerable respecto a métodos previos como los \gls{nerf}. Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el Gaussian Splatting permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de fotogramas \gls{fps} incluso en escenas de gran complejidad geométrica.
 
 En el contexto de la arquitectura y la construcción, esta tecnología ofrece posibilidades para el control de calidad y la auditoría de obras:
 
@@ -90,13 +90,13 @@ Esta estandarización progresiva genera un ecosistema propicio para aplicaciones
 
 \subsection{Formatos y estándares BIM}
 
-La interoperabilidad constituye uno de los desafíos fundamentales del ecosistema BIM. Diferentes actores del proyecto utilizan software especializado para sus disciplinas (Revit para arquitectura, Tekla para estructuras, MEP para instalaciones), lo que genera la necesidad de formatos de intercambio que preserven la información.
+La interoperabilidad constituye uno de los desafíos fundamentales del ecosistema BIM. Diferentes actores del proyecto utilizan software especializado para sus disciplinas (Revit para arquitectura, Tekla para estructuras, \gls{mep} para instalaciones), lo que genera la necesidad de formatos de intercambio que preserven la información.
 
 IFC (Industry Foundation Classes) se ha consolidado como el estándar abierto por excelencia, desarrollado por buildingSMART International. IFC define una estructura de datos jerárquica que describe elementos constructivos (muros, forjados, ventanas), sus propiedades (materiales, dimensiones, características térmicas) y relaciones espaciales. Su carácter abierto y neutral respecto a fabricantes lo convierte en la opción preferente para garantizar interoperabilidad, aunque las implementaciones de exportación/importación en diferentes software presentan ocasionalmente inconsistencias.
 
-Otros formatos relevantes incluyen BCF (BIM Collaboration Format) para comunicación de incidencias asociadas a elementos del modelo, COBie (Construction Operations Building Information Exchange) orientado a datos para la gestión de instalaciones, formatos propietarios como .RVT de Autodesk Revit que, aunque no abiertos, están ampliamente extendidos en la industria.
+Otros formatos relevantes incluyen \gls{bcf} para comunicación de incidencias asociadas a elementos del modelo, \gls{cobie} orientado a datos para la gestión de instalaciones, formatos propietarios como .RVT de Autodesk Revit que, aunque no abiertos, están ampliamente extendidos en la industria.
 
-Para aplicaciones AR/VR, la conversión desde estos formatos hacia representaciones optimizadas para renderizado en tiempo real (meshes con texturas, estructuras LOD) constituye un requisito técnico que debe equilibrar fidelidad visual y rendimiento.
+Para aplicaciones AR/VR, la conversión desde estos formatos hacia representaciones optimizadas para renderizado en tiempo real (meshes con texturas, estructuras \gls{lod}) constituye un requisito técnico que debe equilibrar fidelidad visual y rendimiento.
 
 \subsection{Niveles de desarrollo LOD}
 
@@ -145,7 +145,7 @@ Los sistemas modernos de AR utilizan principalmente dos enfoques de tracking:
 \end{figure}
 
 
-\item Markerless AR o SLAM: Analiza características naturales del entorno para construir un mapa espacial y posicionar el dispositivo dentro de él, lo cual conlleva desafíos de iluminación y falta de referencias en entornos de construcción\footnote{\cite{rankohi2013review}}. Este enfoque, implementado en ARCore (Google) y ARKit (Apple), permite experiencias más fluidas sin preparación previa, aunque presenta limitaciones de precisión (típicamente 5-10 cm en interiores, mayor error en exteriores).
+\item Markerless AR o \gls{slam}: Analiza características naturales del entorno para construir un mapa espacial y posicionar el dispositivo dentro de él, lo cual conlleva desafíos de iluminación y falta de referencias en entornos de construcción\footnote{\cite{rankohi2013review}}. Este enfoque, implementado en ARCore (Google) y ARKit (Apple), permite experiencias más fluidas sin preparación previa, aunque presenta limitaciones de precisión (típicamente 5-10 cm en interiores, mayor error en exteriores).
 
 \begin{figure}[!htb]
     \centering
@@ -190,7 +190,7 @@ La aplicación de AR en entornos de construcción presenta particularidades que 
 
 \item Condiciones ambientales adversas: Obras expuestas a polvo, variaciones lumínicas extremas (sol directo, sombra), lluvia o temperaturas extremas que afectan al rendimiento de cámaras y sensores.
 
-\item Ausencia de referencias visuales: En fases tempranas, el emplazamiento puede ser un solar vacío sin características distintivas, obligando a depender de GPS con sus limitaciones de precisión\footnote{\cite{wang2013augmented}}.
+\item Ausencia de referencias visuales: En fases tempranas, el emplazamiento puede ser un solar vacío sin características distintivas, obligando a depender de \gls{gps} con sus limitaciones de precisión\footnote{\cite{wang2013augmented}}.
 
 \item Escala y distancias: Los proyectos arquitectónicos abarcan decenas o cientos de metros, mientras que el tracking AR optimiza para espacios interiores de pocos metros. Mantener coherencia espacial en áreas extensas requiere estrategias específicas de gestión de anclajes persistentes.
 
@@ -207,7 +207,7 @@ En esta sección se explica toda la parte teórica relacionada con Realidad Virt
 
 La Realidad Virtual sumerge completamente al usuario en un entorno sintético mediante headsets que bloquean la visión del mundo real y presentan imágenes estereoscópicas (ligeramente diferentes para cada ojo) que generan percepción de profundidad tridimensional.
 
-Los sistemas VR modernos ofrecen 6 grados de libertad (6DoF), tracking tanto de la orientación de la cabeza (pitch, yaw, roll) como de su posición espacial (x, y, z) permitiendo al usuario moverse naturalmente por el entorno virtual\footnote{\cite{slater2009place}}. Esto contrasta con sistemas más simples de 3DoF que solo rastrean orientación, adecuados para experiencias pasivas (visualización 360º) pero limitados para exploración activa de espacios arquitectónicos.
+Los sistemas VR modernos ofrecen 6 grados de libertad \gls{6dof}, tracking tanto de la orientación de la cabeza (pitch, yaw, roll) como de su posición espacial (x, y, z) permitiendo al usuario moverse naturalmente por el entorno virtual\footnote{\cite{slater2009place}}. Esto contrasta con sistemas más simples de \gls{3dof} que solo rastrean orientación, adecuados para experiencias pasivas (visualización 360º) pero limitados para exploración activa de espacios arquitectónicos.
 
 Los principales desafíos técnicos de VR incluyen:
 \begin{itemize}
@@ -221,7 +221,7 @@ Los principales desafíos técnicos de VR incluyen:
 
 El mercado VR se ha consolidado en torno a varios ecosistemas principales:
 \begin{itemize}
-\item Meta Quest (anteriormente Oculus) lidera en dispositivos standalone (todo incluido sin necesidad de PC), ofreciendo experiencias inalámbricas a precios asequibles (300-500€). Su capacidad de procesamiento limitada exige optimización agresiva de contenidos.
+\item Meta Quest (anteriormente Oculus) lidera en dispositivos standalone (todo incluido sin necesidad de \gls{pc}), ofreciendo experiencias inalámbricas a precios asequibles (300-500€). Su capacidad de procesamiento limitada exige optimización agresiva de contenidos.
 
 \begin{figure}[!htb]
     \centering
@@ -297,7 +297,7 @@ Fuzor, desarrollado por Kalloc Studios, constituye una de las propuestas más co
 Características principales:
 \begin{itemize} 
 \item Integración nativa con Autodesk Revit mediante plugin
-\item Soporte de múltiples headsets VR (HTC Vive, OCulus, WIndows MR)
+\item Soporte de múltiples headsets VR (HTC Vive, OCulus, Windows MR)
 \item Funcionalidades de clash detection (detección de colisiones) visualizadas en VR.
 \item Simulación de secuencias constructivas.
 \item Herramientas de medición y anotación dentro del entorno virtual.
@@ -460,7 +460,7 @@ Integrar estas capacidades en una aplicación AR/VR mejoraría significativament
 
 El concepto de gemelos digitales extiende BIM más allá de la fase de diseño y construcción, consisten en mantener un modelo digital actualizado durante toda la vida útil del edificio, con todos sus detalles. Sensores IoT (temperatura, humedad, ocupación, consumo energético) alimentan el modelo con datos en tiempo real, dotando de semántica al espacio tridimensional\footnote{\cite{boje2020towards}}. En la Figura~\ref{fig:Gemelos-digitales} se puede apreciar y entender mejor el concepto, consiste en una réplica exacta no física.
 
-Visualizar estos digital twins mediante AR/VR permitiría a gestores de instalaciones ver información operativa contextualizada espacialmente: "esta sala está a 26°C según el sensor, superando el umbral configurado". Esta convergencia BIM-IoT-AR representa una tendencia de crecimiento significativo en la gestión de las instalaciones.
+Visualizar estos digital twins mediante AR/VR permitiría a gestores de instalaciones ver información operativa contextualizada espacialmente: "esta sala está a 26°C según el sensor, superando el umbral configurado". Esta convergencia BIM-\gls{iot}-AR representa una tendencia de crecimiento significativo en la gestión de las instalaciones.
 
 
 \begin{figure}[!htb]
