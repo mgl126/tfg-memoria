@@ -7,7 +7,7 @@ Las estimaciones tienen en cuenta los riesgos identificados previamente en la ma
 
 Se ha incorporado un margen de seguridad de dos semanas antes de la fecha límite oficial de entrega, previendo la aparición de imprevistos técnicos, problemas con hardware de testing o cualquier otra contingencia que pudiera surgir durante el desarrollo.
 
-El inicio oficial del proyecto tuvo lugar el 22 de diciembre de 2025, fecha con la que se empezó a investigar herramientas técnicas y se comenzó la redacción de la memoria. Todos estos plazos se detalla en el siguiente Cuadro~\ref{tab:planificacion-temporal}. 
+El inicio oficial del proyecto tuvo lugar el 22 de diciembre de 2025, fecha con la que se empezó a investigar herramientas técnicas y se comenzó la redacción de la memoria. Todos estos plazos se detallan en el siguiente Cuadro~\ref{tab:planificacion-temporal}. 
 
 
 \begin{table}[!htb]
@@ -28,9 +28,9 @@ Diseño & 4 semanas & 09/03/2026 \\
 \addlinespace
 Implementación & 10 semanas & 06/04/2026 \\
 \addlinespace
-Pruebas y validación, Resultados & 4 semanas & 15/06/2026 \\
+Pruebas y validación, Resultados & 3 semanas & 15/06/2026 \\
 \addlinespace
-Conclusiones y trabajo futuro, Referencias, bibliografía y apéndices, Revisión final & 3 semanas & 06/07/2026 \\
+Conclusiones y trabajo futuro, Referencias, bibliografía y apéndices, Revisión final & 2 semanas & 06/07/2026 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -40,21 +40,21 @@ Conclusiones y trabajo futuro, Referencias, bibliografía y apéndices, Revisió
 
 \chapter{\label{estado-arte}Estado del arte}
 
-La intersección entre tecnologías inmersivas (Realidad Aumentada y Realidad Virtual) y el sector de la construcción representa un campo en constante evolución que ha experimentado un crecimiento significativo durante la última década. Para abordar adecuadamente el desarrollo de una aplicación AR/VR orientada a la visualización de proyectos arquitectónicos mediante modelos BIM, resulta imprescindible comprender el contexto tecnológico actual, las soluciones existentes en el mercado, sus fortalezas y limitaciones, así como las tendencias emergentes que están configurando el futuro del sector.
+La intersección entre tecnologías inmersivas (Realidad Aumentada y Realidad Virtual) y el sector de la construcción representa un campo en constante evolución que ha experimentado un crecimiento significativo durante la última década. Para abordar adecuadamente el desarrollo de una aplicación AR/VR orientada a la visualización de proyectos arquitectónicos mediante modelos BIM, resulta imprescindible comprender el contexto tecnológico actual, las soluciones existentes en el mercado, sus fortalezas y limitaciones, así como las tendencias emergentes que están influyendo en el futuro del sector.
 
-Esta sección consiste en un análisis exhaustivo del estado actual de la técnica, examinando tanto los fundamentos tecnológicos que sustentan estas aplicaciones como las propuestas comerciales y académicas más relevantes. El objetivo es adquirir una visión comprehensiva que permita identificar oportunidades de mejora, detectar funcionalidades desatendidas y establecer los requisitos técnicos necesarios para diseñar una solución que aporte valor real diferenciado.
+Esta sección consiste en un análisis sobre los fundamentos tecnológicos que sustentan estas aplicaciones y las propuestas comerciales y académicas más relevantes. El objetivo es adquirir una visión que comprenda e identifique oportunidades de mejora, detectar funcionalidades desatendidas y establecer los requisitos técnicos necesarios para diseñar una solución que aporte valor real diferenciado.
 
 \section{Reconstrucción volumétrica: 3D Gaussian Splatting}
 
-El \gls{3dgs} ha emergido recientemente como una técnica revolucionaria para la reconstrucción tridimensional y el renderizado volumétrico a partir de un conjunto de fotografías bidimensionales. A diferencia de la modelado tradicional, que intenta generar mallas poligonales cerradas y a menudo falla al interpretar superficies reflectantes, transparentes o sin textura, el 3DGS representa la escena utilizando millones de partículas matemáticas (distribuciones gaussianas 3D) que poseen atributos de posición, escala, rotación, opacidad y color armónico esférico.
+El \gls{3dgs} ha emergido recientemente como una técnica revolucionaria para la reconstrucción tridimensional y el renderizado volumétrico a partir de un conjunto de fotografías bidimensionales. A diferencia de la fotogametría tradicional, que intenta generar mallas poligonales cerradas y a menudo falla al interpretar superficies reflectantes, transparentes o sin textura, el 3DGS representa la escena utilizando millones de partículas matemáticas (distribuciones gaussianas 3D) que poseen atributos de posición, escala, rotación, opacidad y color armónico esférico.
 
-Esta técnica es considerado un salto considerable respecto a métodos previos como los \gls{nerf}. Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el Gaussian Splatting permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de fotogramas \gls{fps} incluso en escenas de gran complejidad geométrica.
+Esta técnica es considerado un salto considerable respecto a métodos previos como los \gls{nerf}. Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el \textit{Gaussian Splatting} permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de \gls{fps} incluso en escenas de gran complejidad geométrica.
 
 En el contexto de la arquitectura y la construcción, esta tecnología ofrece posibilidades para el control de calidad y la auditoría de obras:
 
-Como se puede observar en la Figura~\ref{fig:gaussian-splat}, Gaussian Splatting permite digitalizar el estado actual de una obra o apartamento con un fotorrealismo absoluto, capturando detalles milimétricos (como cableado, texturas de materiales o imperfecciones) que los escáneres láser o las mallas tradicionales suelen ignorar o deformar.
+Como se puede observar en la Figura~\ref{fig:gaussiancomparison}, \textit{Gaussian Splatting} permite digitalizar el estado actual de una ubicación con un fotorrealismo absoluto, capturando detalles milimétricos (como texturas de materiales o imperfecciones) que los escáneres láser o las mallas tradicionales suelen ignorar o deformar.
 
-Adicionalmente, la verdadera potencia de esta tecnología en el sector constructivo reside en su superposición con los modelos teóricos. Al importar una captura de Gaussian Splatting en un entorno inmersivo junto al modelo BIM original, los profesionales pueden realizar una inspección visual directa, detectando desviaciones, errores de ejecución o interferencias estructurales antes de que supongan un sobrecoste crítico para el proyecto.
+Adicionalmente, la verdadera potencia de esta tecnología en el sector constructivo reside en su superposición con los modelos teóricos. Al importar una captura de \textit{Gaussian Splatting} en un entorno inmersivo junto al modelo BIM original, los profesionales pueden realizar una inspección visual directa, detectando desviaciones, errores de ejecución o interferencias estructurales antes de que supongan un sobrecoste crítico para el proyecto.
 
 
 La integración de nubes de puntos volumétricas generadas mediante 3DGS como entorno de validación para modelos BIM resuelve de manera directa los conflictos existentes entre el diseño digital planificado y la realidad física construida.
@@ -62,7 +62,7 @@ La integración de nubes de puntos volumétricas generadas mediante 3DGS como en
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/figura3.1.PNG}
-    \caption{Comparación Gaussian Splat con realidad}
+    \caption{Comparación de una foto convencional con una recreación mediante Gaussian Splat}
     \label{fig:gaussian-splat}
 \end{figure}
 
@@ -75,7 +75,7 @@ La integración de nubes de puntos volumétricas generadas mediante 3DGS como en
 \end{figure}
 
 \section{Metodología BIM en la construcción}
-Building Information Modeling (BIM) representa un cambio paradigmático en la forma de concebir, diseñar y ejecutar proyectos de construcción\footnote{\cite{eastman2011bim}}. A diferencia de los métodos tradicionales basados en planos bidimensionales independientes, BIM propone un modelo tridimensional único y centralizado que integra información geométrica, técnica, funcional y temporal de todos los elementos constructivos.
+BIM representa un cambio paradigmático en la forma de concebir, diseñar y ejecutar proyectos de construcción\footnote{\cite{eastman2011bim}}. A diferencia de los métodos tradicionales basados en planos bidimensionales independientes, BIM propone un modelo tridimensional único y centralizado que integra información geométrica, técnica, funcional y temporal de todos los elementos constructivos.
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/BIMmodel.png}
@@ -86,21 +86,21 @@ Building Information Modeling (BIM) representa un cambio paradigmático en la fo
 
 La adopción de metodologías BIM ha sido progresiva pero constante. Países como Reino Unido establecieron en 2016 la obligatoriedad de utilizar BIM nivel 2 en proyectos públicos\footnote{\cite{ukcabinet2016strategy}}, mientras que la Unión Europea publicó en 2017 el manual para la introducción del BIM en contratación pública\footnote{\cite{eubim2017handbook}}. En España, aunque la implantación ha sido más gradual, la Comisión BIM creada por el Ministerio de Fomento en 2015 ha impulsado su adopción mediante recomendaciones y directrices, estableciendo diciembre de 2018 como fecha recomendada para su uso en licitaciones públicas\footnote{\cite{fomento2015comision}}.
 
-Esta estandarización progresiva genera un ecosistema propicio para aplicaciones que consuman datos BIM, dado que cada vez más proyectos disponen de modelos digitales estructurados susceptibles de ser visualizados mediante tecnologías inmersivas.
+Esta estandarización progresiva genera un contexto ideal para aplicaciones que consuman datos BIM, dado que cada vez más proyectos disponen de modelos digitales estructurados que permiten ser visualizados mediante tecnologías inmersivas.
 
 \subsection{Formatos y estándares BIM}
 
-La interoperabilidad constituye uno de los desafíos fundamentales del ecosistema BIM. Diferentes actores del proyecto utilizan software especializado para sus disciplinas (Revit para arquitectura, Tekla para estructuras, \gls{mep} para instalaciones), lo que genera la necesidad de formatos de intercambio que preserven la información.
+La interoperabilidad constituye uno de los desafíos fundamentales del ecosistema BIM. Diferentes actores del proyecto utilizan software especializado para sus disciplinas (Revit para arquitectura e instalaciones, y Tekla para estructuras), lo que genera la necesidad de formatos de intercambio que preserven la información.
 
 IFC (Industry Foundation Classes) se ha consolidado como el estándar abierto por excelencia, desarrollado por buildingSMART International. IFC define una estructura de datos jerárquica que describe elementos constructivos (muros, forjados, ventanas), sus propiedades (materiales, dimensiones, características térmicas) y relaciones espaciales. Su carácter abierto y neutral respecto a fabricantes lo convierte en la opción preferente para garantizar interoperabilidad, aunque las implementaciones de exportación/importación en diferentes software presentan ocasionalmente inconsistencias.
 
-Otros formatos relevantes incluyen \gls{bcf} para comunicación de incidencias asociadas a elementos del modelo, \gls{cobie} orientado a datos para la gestión de instalaciones, formatos propietarios como .RVT de Autodesk Revit que, aunque no abiertos, están ampliamente extendidos en la industria.
+Existen otros formatos relevantes como \gls{bcf} para la comunicación de incidencias asociadas a elementos del modelo, \gls{cobie} orientado a datos para la gestión de instalaciones, formatos propietarios como .RVT de Autodesk Revit que, aunque no abiertos, están ampliamente extendidos en la industria.
 
-Para aplicaciones AR/VR, la conversión desde estos formatos hacia representaciones optimizadas para renderizado en tiempo real (meshes con texturas, estructuras \gls{lod}) constituye un requisito técnico que debe equilibrar fidelidad visual y rendimiento.
+Para aplicaciones AR/VR, la conversión desde estos formatos hacia representaciones optimizadas para renderizado en tiempo real (meshes con texturas, estructuras \gls{lod}) constituye un requisito técnico que debe balancear fidelidad visual con rendimiento.
 
-\subsection{Niveles de desarrollo LOD}
+\subsection{Niveles de desarrollo (LOD)}
 
-El concepto de Level of Development (LOD) estandariza el grado de definición geométrica y la cantidad de información asociada a los elementos BIM en diferentes fases del proyecto. La especificación más utilizada, desarrollada y estandarizada globalmente, define distintos niveles de detalle geométrico y semántico\footnote{\cite{eastman2011bim}}:
+El concepto de LOD (Level Of Development) estandariza el grado de definición geométrica y la cantidad de información asociada a los elementos BIM en diferentes fases del proyecto. La especificación más estandarizada globalmente, define distintos niveles de detalle geométrico y semántico\footnote{\cite{eastman2011bim}}:
 \begin{itemize}
 \item LOD 100: Representación simbólica y conceptual (volúmenes aproximados)
 \item LOD 200: Geometría aproximada con dimensiones, orientación y ubicación
@@ -112,10 +112,10 @@ El concepto de Level of Development (LOD) estandariza el grado de definición ge
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/lods.png}
-    \caption{Ejemplos de tipos de LODs}
+    \caption{Ejemplo de los distintos Niveles de Desarrollo}
     \label{fig:lods}
 \end{figure}
-Esta gradación resulta relevante para aplicaciones AR/VR porque diferentes casos de uso requieren distintos niveles de detalle. Una presentación comercial a clientes puede funcionar perfectamente con LOD 200-300, mientras que una inspección técnica en obra podría necesitar LOD 400 para verificar encuentros constructivos complejos. Implementar sistemas de visualización que adapten automáticamente el nivel de detalle según el contexto de uso constituye un factor diferenciador importante. Como se puede ver en la siguiente Figura~\ref{fig:BIM-model}, un modelado 3D habitual coge los detalles exteriores del edificio, sin embargo, un modelo BIM analiza cada una de sus partes interiores.
+Esta gradación resulta relevante para aplicaciones AR/VR porque diferentes casos de uso requieren distintos niveles de detalle. Una presentación comercial a clientes puede funcionar perfectamente con LOD 200-300, mientras que una inspección técnica en obra podría necesitar LOD 400 para verificar encuentros constructivos complejos. Implementar sistemas de visualización que adapten automáticamente el nivel de detalle según el contexto de uso constituye un factor diferenciador importante. Como se puede ver en la siguiente Figura~\ref{fig:BIM-model}, un modelado 3D habitual coge los detalles exteriores del edificio, pero por le contrario, un modelo BIM analiza cada una de sus partes interiores.
 
 \begin{figure}[!htb]
     \centering
@@ -135,7 +135,7 @@ La Realidad Aumentada superpone información digital sobre la percepción del mu
 
 Los sistemas modernos de AR utilizan principalmente dos enfoques de tracking:
 \begin{itemize}
-\item Marker-based AR: Emplea patrones visuales predefinidos (códigos QR, imágenes) que la cámara reconoce y utiliza como referencia espacial. Ofrece alta precisión en entornos controlados pero requiere preparar y mantener los marcadores físicos, lo que resulta poco práctico en obras de construcción.
+\item Marker-based AR: Emplea patrones visuales predefinidos (códigos QR visto en la Figura \ref{fig:markerbased} o imágenes) que la cámara reconoce y utiliza como referencia espacial. Ofrece alta precisión en entornos controlados pero requiere preparar y mantener los marcadores físicos, lo que resulta poco práctico en obras de construcción.
 
 \begin{figure}[!htb]
     \centering
@@ -145,12 +145,12 @@ Los sistemas modernos de AR utilizan principalmente dos enfoques de tracking:
 \end{figure}
 
 
-\item Markerless AR o \gls{slam}: Analiza características naturales del entorno para construir un mapa espacial y posicionar el dispositivo dentro de él, lo cual conlleva desafíos de iluminación y falta de referencias en entornos de construcción\footnote{\cite{rankohi2013review}}. Este enfoque, implementado en ARCore (Google) y ARKit (Apple), permite experiencias más fluidas sin preparación previa, aunque presenta limitaciones de precisión (típicamente 5-10 cm en interiores, mayor error en exteriores).
+\item Markerless AR o \gls{slam}: Analiza características naturales del entorno para construir un mapa espacial y posicionar el dispositivo dentro de él (Figura \ref{fig:markerlessar}), lo cual puede conllevar dificultades de iluminación y falta de referencias en entornos de construcción\footnote{\cite{rankohi2013review}}. Este enfoque, implementado en ARCore (Google) y ARKit (Apple), permite experiencias más fluidas sin preparación previa, aunque presenta limitaciones de precisión (típicamente 5-10 cm en interiores, mayor error en exteriores).
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.8\linewidth]{include/images/markerlessar.png}
-    \caption{Realidad aumentada markerless}
+    \caption{Realidad aumentada directamente sobre el emplazamiento real}
     \label{fig:markerlessar}
 \end{figure}
 \end{itemize}
@@ -158,11 +158,11 @@ Para aplicaciones en construcción, frecuentemente se necesita AR en exteriores 
 
 \subsection{Plataformas de desarrollo AR}
 
-ARCore (Android) y ARKit (iOS) constituyen las plataformas dominantes para AR móvil. Ambas ofrecen APIs para detección de planos horizontales y verticales, estimación de iluminación ambiental, tracking de imágenes y rostros, y anclaje de contenido virtual. Sus capacidades son similares, aunque ARKit tradicionalmente ha mantenido ventaja en precisión de tracking gracias al control más estricto de Apple sobre el hardware.
+ARCore (Android) y ARKit (iOS) constituyen las plataformas dominantes para AR móvil. Ambas ofrecen APIs para detección de planos horizontales y verticales, estimación de iluminación ambiental, tracking de imágenes y rostros, y anclaje de contenido virtual. Sus capacidades son similares, aunque ARKit tradicionalmente ha tenido ventaja en el aspecto de precisión de tracking gracias al control más estricto de Apple sobre el hardware.
 
-Para aplicaciones multiplataforma, frameworks como Unity con AR Foundation o Unreal Engine con AR plugins proporcionan una capa de abstracción que permite tener la misma base desplegable en ambos ecosistemas, reduciendo significativamente el esfuerzo de desarrollo y mantenimiento.
+Para aplicaciones multiplataforma, frameworks como Unity con AR Foundation o Unreal Engine con AR plugins proporcionan una capa de abstracción que permite tener la misma base desplegable en ambas plataformas, reduciendo significativamente el esfuerzo de desarrollo y mantenimiento.
 
-Dispositivos especializados como Microsoft Hololens 2 o Magic Leap 2 ofrecen experiencias AR más avanzadas mediantes gafas con displays transparentes, liberando las manos del usuario y proporcionando campos de visión más amplios. Sin embargo, su elevado coste (3000-4000€ por unidad) y menor disponibilidad limitan su adopción masiva, relegándolos a casos de uso profesionales de alto valor añadido.
+Dispositivos especializados como Microsoft Hololens 2 o Magic Leap 2 ofrecen experiencias AR más avanzadas mediantes gafas con displays transparentes (apreciables en las Figuras \ref{fig:microsoftlens2} y \ref{fig:magicleap2}), liberando las manos del usuario y proporcionando campos de visión más amplios. Sin embargo, su elevado coste (3000-4000€ por unidad) y menor disponibilidad limitan su adopción masiva, relegándolos a casos de uso profesionales de alto valor añadido.
 
 \begin{figure}[!htb]
     \centering
@@ -170,7 +170,7 @@ Dispositivos especializados como Microsoft Hololens 2 o Magic Leap 2 ofrecen exp
     \begin{minipage}[b]{0.48\linewidth}
         \centering
         \includegraphics[width=\linewidth]{include/images/microsoftlens2.jpg}
-        \caption{Gafas microsoft Lens 2}
+        \caption{Gafas Microsoft Lens 2}
         \label{fig:microsoftlens2}
     \end{minipage}
     \hfill
@@ -178,14 +178,14 @@ Dispositivos especializados como Microsoft Hololens 2 o Magic Leap 2 ofrecen exp
     \begin{minipage}[b]{0.48\linewidth}
         \centering
         \includegraphics[width=\linewidth]{include/images/magicleap2.png}
-        \caption{Gafas Magid Leap 2}
+        \caption{Gafas Magic Leap 2}
         \label{fig:magicleap2}
     \end{minipage}
 \end{figure}
 
 \subsection{Desafíos específicos de AR en construcción}
 
-La aplicación de AR en entornos de construcción presenta particularidades que no aparecen en otros dominios:
+La aplicación de AR en entornos de construcción presenta particularidades que no aparecen en otros campos:
 \begin{itemize}
 
 \item Condiciones ambientales adversas: Obras expuestas a polvo, variaciones lumínicas extremas (sol directo, sombra), lluvia o temperaturas extremas que afectan al rendimiento de cámaras y sensores.
@@ -194,7 +194,7 @@ La aplicación de AR en entornos de construcción presenta particularidades que 
 
 \item Escala y distancias: Los proyectos arquitectónicos abarcan decenas o cientos de metros, mientras que el tracking AR optimiza para espacios interiores de pocos metros. Mantener coherencia espacial en áreas extensas requiere estrategias específicas de gestión de anclajes persistentes.
 
-\item Complejidad geométrica: Los modelos BIM contienen millones de polígonos que superan las capacidades de renderizado en tiempo real de dispositivos móviles, necesitando técnicas agresivas de optimización (culling, LOD dinámico, instancing).
+\item Complejidad geométrica: Los modelos BIM contienen millones de polígonos que superan las capacidades de renderizado en tiempo real de dispositivos móviles, necesitando técnicas agresivas de optimización (culling, LOD dinámico).
 \end{itemize}
 Solucionar estos desafíos constituye uno de los valores añadidos fundamentales que debe aportar una aplicación AR específicamente diseñada para construcción.
 
@@ -205,21 +205,21 @@ En esta sección se explica toda la parte teórica relacionada con Realidad Virt
 
 
 
-La Realidad Virtual sumerge completamente al usuario en un entorno sintético mediante headsets que bloquean la visión del mundo real y presentan imágenes estereoscópicas (ligeramente diferentes para cada ojo) que generan percepción de profundidad tridimensional.
+La Realidad Virtual sumerge completamente al usuario en un entorno representado mediante headsets que bloquean la visión del mundo real y presentan imágenes estereoscópicas (ligeramente diferentes para cada ojo) que generan percepción de profundidad tridimensional.
 
-Los sistemas VR modernos ofrecen 6 grados de libertad \gls{6dof}, tracking tanto de la orientación de la cabeza (pitch, yaw, roll) como de su posición espacial (x, y, z) permitiendo al usuario moverse naturalmente por el entorno virtual\footnote{\cite{slater2009place}}. Esto contrasta con sistemas más simples de \gls{3dof} que solo rastrean orientación, adecuados para experiencias pasivas (visualización 360º) pero limitados para exploración activa de espacios arquitectónicos.
+Los sistemas VR modernos ofrecen \gls{6dof}, tracking tanto de la orientación de la cabeza (pitch, yaw, roll) como de su posición espacial (x, y, z) permitiendo al usuario moverse naturalmente por el entorno virtual\footnote{\cite{slater2009place}}. Esto contrasta con sistemas más simples de \gls{3dof} que solo rastrean orientación, adecuados para experiencias pasivas (visualización 360º) pero limitados para exploración activa de espacios arquitectónicos.
 
 Los principales desafíos técnicos de VR incluyen:
 \begin{itemize}
 \item Latencia motora-visual: El retardo entre movimiento de cabeza y actualización de la imagen debe mantenerse por debajo de 20ms para evitar mareo. Esto exige mantener framerates elevados incluso con escenas complejas.
 
-\item Resolución y field of view: Los displays actuales (típicamente 1832x1920 por ojo en Meta Quest 2) muestra efecto de pixelado ("screen door effect") que rompe la inmersión. Aumentar resolución compite con las demandas de framerate.
+\item Resolución y campo de visión: Los displays actuales (típicamente 1832x1920 por ojo en Meta Quest 2) muestra efecto de pixelado ("screen door effect") que rompe la inmersión. Aumentar resolución compite con las demandas de framerate.
 
 \item Ergonomía y comfort: Sesiones prolongadas pueden causar fatiga ocular, mareo (motion sickness) o incomodidad por el peso del dispositivo. El diseño de interacciones debe minimizar estos efectos mediante técnicas como teleportación en lugar de movimiento continuo con joystick en casos extremos de optimización.
 \end{itemize}
 \subsection{Plataformas VR y dispositivos}
 
-El mercado VR se ha consolidado en torno a varios ecosistemas principales:
+El mercado VR se ha consolidado en torno a varios headsets principales:
 \begin{itemize}
 \item Meta Quest (anteriormente Oculus) lidera en dispositivos standalone (todo incluido sin necesidad de \gls{pc}), ofreciendo experiencias inalámbricas a precios asequibles (300-500€). Su capacidad de procesamiento limitada exige optimización agresiva de contenidos.
 
@@ -251,7 +251,7 @@ El mercado VR se ha consolidado en torno a varios ecosistemas principales:
     \end{minipage}
 \end{figure}
 
-\item PlayStation VR: Captura el mercado de consolas pero resulta menos relevante para aplicaciones profesionales por sus capacidades limitadas y ecosistema cerrado.
+\item PlayStation VR: Captura el mercado de consolas pero resulta menos relevante para aplicaciones profesionales por sus capacidades limitadas e interoperabilidad cerrada.
 
 \begin{figure}[!htb]
     \centering
@@ -280,32 +280,32 @@ VR resulta particularmente valiosa en construcción para:
 
 - Visualización de proyectos: Permitir a clientes, inversores o autoridades experimentar espacios antes de su construcción, evaluando proporciones, iluminación natural, vistas y sensación espacial de forma imposible mediante renders estáticos o vídeos.
 
-- Revisión de diseño: Arquitectos e ingenieros pueden detectar conflictos espaciales, evaluar ergonomía de circulaciones y validar parámetros de seguridad desde la perspectiva del usuario final\footnote{\cite{li2018critical}}.
+- Revisión de diseño: Arquitectos e ingenieros pueden detectar conflictos espaciales, evaluar el diseño de las circulaciones y validar parámetros de seguridad desde la perspectiva del usuario final\footnote{\cite{li2018critical}}.
 
 - Formación en seguridad: Simulación de procedimientos de trabajo en altura, manejo de maquinaria o respuesta ante emergencias en entornos controlados sin riesgos reales.
 
-- Coordinación de oficios: Visualización de instalaciones (electricidad, fontanería, climatización) en su contexto espacial real facilita detectar interferencias antes de ejecutar en obra.
+- Coordinación de oficios: Visualización de instalaciones \gls{mep} en su contexto espacial real facilita detectar interferencias antes de ejecutar en obra.
 
-Las ventajas de VR complementan las de AR: mientras AR destaca en validación in-situ sobre lo construido, VR sobresale en exploración de lo aún no construido y en contextos donde el desplazamiento físico resultaría costoso o impracticable.
+Las ventajas de VR complementan las de AR: mientras AR destaca en validación sobre lo construido, VR tiene la exploración de lo aún no construido y en contextos donde el desplazamiento físico resultaría costoso o impracticable.
 
 \section{Análisis de soluciones existentes}
 En esta sección se detallarán las aplicaciones actuales más similares a los que se pretende abarcar este proyecto.
 \subsection{Fuzor: VR + BIM}
 
-Fuzor, desarrollado por Kalloc Studios, constituye una de las propuestas más consolidadas de integración BIM-VR. Su enfoque principal es servir como visualizador inmersivo de modelos Revit (como se puede observar en la Figura~\ref{fig:Fuzor-screenshot}), estableciendo un vínculo directo (LiveLink) que sincroniza cambios en el modelo BIM con la representación VR en tiempo real\footnote{\cite{fuzor}}.
+Fuzor, desarrollado por Kalloc Studios, es una de las propuestas más consolidadas de integración BIM-VR. Su enfoque principal es visualizar modelos Revit de manera inmersiva (como se puede observar en la Figura~\ref{fig:Fuzor-screenshot}), estableciendo un vínculo directo (LiveLink) que sincroniza cambios en el modelo BIM con la representación VR en tiempo real\footnote{\cite{fuzor}}.
 
 Características principales:
 \begin{itemize} 
 \item Integración nativa con Autodesk Revit mediante plugin
-\item Soporte de múltiples headsets VR (HTC Vive, OCulus, Windows MR)
+\item Soporte de múltiples headsets VR (HTC Vive, Oculus, Windows MR)
 \item Funcionalidades de clash detection (detección de colisiones) visualizadas en VR.
 \item Simulación de secuencias constructivas.
 \item Herramientas de medición y anotación dentro del entorno virtual.
 \item Motor físico para simulación de comportamiento de objetos.
 \end{itemize}
-La sincronización en tiempo real con Revit representa su mayor ventaja competitiva, permitiendo a diseñadores iterar sobre el proyecto y evaluar cambios inmediatamente en VR sin exportaciones intermedias. Las capacidades de simulación 4D resultan valiosas para planificación de obra.
+La sincronización en tiempo real con Revit representa su mayor ventaja competitiva, permitiendo a diseñadores iterar sobre el proyecto y evaluar cambios inmediatamente en VR sin exportaciones intermedias.
 
-Sin embargo, su dependencia de Revit limita la interoperabilidad con flujos de trabajo basados en otros software BIM. No ofrece funcionalidades AR robustas para uso en campo, centrándose casi exclusivamente en VR de escritorio. El precio (licencia anual de aproximadamente 500-800€ por usuario) puede resultar prohibitivo para estudios pequeños. La curva de aprendizaje es pronunciada, requiriendo formación específica para aprovechar todas las funcionalidades.
+Sin embargo, su dependencia de Revit limita la interoperabilidad con flujos de trabajo basados en otros software BIM. No ofrece funcionalidades AR robustas para uso en la obra, centrándose casi exclusivamente en VR de escritorio. Además, el precio (licencia anual de aproximadamente 500-800€ por usuario) puede resultar costoso para estudios pequeños. Asimismo, la curva de aprendizaje es pronunciada, requiriendo formación específica para aprovechar todas las funcionalidades.
 
 \begin{figure}[!htb]
     \centering
@@ -316,7 +316,7 @@ Sin embargo, su dependencia de Revit limita la interoperabilidad con flujos de t
 
 \subsection{Trimble Connect: AR en construcción}
 
-Trimble Connect forma parte del ecosistema de soluciones constructivas de Trimble, multinacional especializada en tecnologías de posicionamiento y gestión de proyectos. Como se puede apreciar en la Figura~\ref{fig:Trimble-screenshot} Su aplicación móvil AR permite visualizar modelos BIM directamente sobre el emplazamiento real mediante smartphones o tablets\footnote{\cite{trimbleconnect}}.
+Trimble Connect forma parte de la plataforma de soluciones constructivas de Trimble, multinacional especializada en tecnologías de posicionamiento y gestión de proyectos. Como se puede apreciar en la Figura~\ref{fig:Trimble-screenshot}, su aplicación móvil AR permite visualizar modelos BIM directamente sobre el emplazamiento real mediante smartphones o tablets\footnote{\cite{trimbleconnect}}.
 
 Caracteristicas principales:
 \begin{itemize}
@@ -324,12 +324,12 @@ Caracteristicas principales:
 \item Importación de modelos desde múltiples fuentes BIM (Revit, SketchUp, Tekla)
 \item Posicionamiento mediante GPS y alineación manual
 \item Herramientas de medición y comparación modelo vs realidad
-\item Sistema de issues/incidencias geolocalizadas
+\item Sistema de incidencias/incidencias geolocalizadas
 \item Integración con plataforma Trimble Connect para colaboración en nube
 \end{itemize}
-Su integración con el ecosistema Trimble (estaciones totales, escáneres láser, soluciones de topografía) proporciona ventajas significativas para empresas que ya utilizan estos equipamientos profesionales. La aplicación móvil resulta más accesible que soluciones basadas en gafas AR caras. El sistema de gestión de incidencias vinculado al modelo facilita la comunicación entre oficina técnica y obra.
+Su integración con la plataforma de Trimble (escáneres láser, soluciones de topografía) proporciona ventajas significativas para empresas que ya utilizan estos equipamientos profesionales. La aplicación móvil resulta más accesible que soluciones basadas en gafas AR caras. El sistema de gestión de incidencias vinculado al modelo facilita la comunicación entre oficina técnica y obra.
 
-Por otro lado, la precisión de posicionamiento mediante GPS resulta insuficiente para muchas tareas de inspección detallada. La interfaz, aunque funcional, no destaca por su intuitividad y requiere cierto periodo de adaptación. Las funcionalidades más avanzadas requiere suscripción a servicios Trimble Connect, generando costes recurrentes. No ofrece experiencias VR inmersivas, limitándose a AR móvil.
+Por otro lado, la precisión de posicionamiento mediante GPS resulta insuficiente para muchas tareas de inspección detallada. La interfaz, aunque funcional, no destaca por su intuitividad y requiere cierto periodo de adaptación. Las funcionalidades más avanzadas requieren suscripción a servicios Trimble Connect, generando costes recurrentes. Por útlimo, no ofrece experiencias VR inmersivas, limitándose a AR móvil.
 
 \begin{figure}[!htb]
     \centering
@@ -351,36 +351,36 @@ Características principales:
 \item Simulación de variantes de diseño (materiales, colores, configuraciones)
 \item Exportación de recorridos VR para presentaciones
 \end{itemize}
-La calidad visual de las escenas generadas destaca sobre competidores, notándose sobre todo en materiales realistas e iluminación. Las sesiones multiusuario permiten reuniones de coordinación donde múltiples participantes (arquitectos, clientes, contratistas) exploran conjuntamente el modelo, cada uno desde su ubicación física, señalando elementos y discutiendo en tiempo real mediante audio espacializado. La simplicidad del flujo de trabajo, que consiste en importar un modelo, para después tenerlo automáticamente disponible en VR reduce barreras de entrada.
+La calidad visual de las escenas generadas la hace destacar, notándose sobre todo en materiales realistas e iluminación. Las sesiones multiusuario permiten reuniones de coordinación donde múltiples participantes (arquitectos, clientes, contratistas) exploran conjuntamente el modelo, cada uno desde su ubicación física, señalando elementos y discutiendo en tiempo real mediante audio espacializado. La simplicidad del flujo de trabajo, que consiste en importar un modelo, para después tenerlo automáticamente disponible en VR reduce barreras de entrada.
 
-En cambio, no incluye funcionalidades AR, siendo exclusivamente una solución VR. Requiere hardware potente (PC gaming o estaciones de trabajo) para modelos complejos, limitando la portabilidad. La suscripción resulta costosa (aproximadamente 70/100€ mes por usuario), especialmente para uso ocasional. Tras la adquisición por Resolve, el desarrollo independiente de Prospect cesó, integrándose sus capacidades en la plataforma más amplia de Resolve BIM.
+En cambio, no incluye funcionalidades AR, siendo exclusivamente una solución VR. Requiere hardware potente para modelos complejos, limitando la portabilidad. La suscripción resulta costosa (aproximadamente 70/100€ mes por usuario), especialmente para uso ocasional. Tras la adquisición por Resolve, el desarrollo independiente de Prospect cesó, integrando sus capacidades en la plataforma más amplia de Resolve BIM.
 \subsection{Resolve BIM: plataforma integrada de coordinación}
 
-Resolve (anteriormente conocida como BIM Track hasta 2020) representa una evolución hacia plataformas integrales que unifican coordinación BIM, gestión de incidencias y visualización inmersiva\footnote{\cite{resolvebim}}. Tras adquirir IrisVR en 2021, Resolve integró las capacidades VR de Prospect en su ecosistema más amplio de gestión de proyectos constructivos.
+Resolve (anteriormente conocida como BIM Track hasta 2020) representa una evolución hacia plataformas integrales que unifican coordinación BIM, gestión de incidencias y visualización inmersiva\footnote{\cite{resolvebim}}. Tras adquirir IrisVR en 2021, Resolve integró las capacidades VR de Prospect en su plataforma más amplia de gestión de proyectos constructivos.
 
 Características principales:
 \begin{itemize} 
 
 \item Plataforma cloud centralizada para coordinación BIM multiproyecto
-\item Sistema avanzado de gestión de issues con workflows personalizables
+\item Sistema avanzado de gestión de incidencias con flujos de trabajo personalizables
 \item Visualización 3D web (sin necesidad de software específico) de modelos BIM
 \item Módulo VR heredado de IrisVR Prospect para inmersión y reuniones virtuales, mostrado en la Figura~\ref{fig:ResolveBIM-screenshot}
 \item Clash detection (detección de colisiones) con priorización inteligente
 \item Integración con Revit, Navisworks, Solibri y otros software BIM mediante plugins
 \item Sistema de reportes y analíticas sobre estado del proyecto
-\item Aplicación móvil para consulta y resolución de incidencias en campo
+\item Aplicación móvil para consulta y resolución de incidencias en la obra
 \end{itemize}
-La principal ventaja de Resolve radica en su enfoque holístico, no es simplemente una herramienta de visualización AR/VR, sino una plataforma completa de gestión que incluye capacidades inmersivas como un componente más del flujo de trabajo. Esto facilita la trazabilidad completa desde la detección de un conflicto en VR hasta su asignación, seguimiento y verificación de resolución. El sistema de issues es particularmente robusto, con clasificación por disciplinas, estados, responsables y prioridades, generando dashboards ejecutivos que proporcionan visibilidad del estado global del proyecto.
+La principal ventaja de Resolve radica en ser un producto completo, no es simplemente una herramienta de visualización AR/VR, sino una plataforma completa de gestión que incluye capacidades inmersivas como un componente más del flujo de trabajo. Esto facilita la trazabilidad completa desde la detección de un conflicto en VR hasta su asignación, seguimiento y verificación de resolución. El sistema de incidencias es particularmente robusto, con clasificación por disciplinas, estados, responsables y prioridades, mostrando paneles que proporcionan visibilidad del estado global del proyecto.
 
-La visualización web 3D representa otra fortaleza significativa, cualquier stakeholder con navegador puede explorar el modelo sin instalar software especializado ni tener conocimientos técnicos avanzados. Esto democratiza el acceso a la información del proyecto, facilitando la colaboración con clientes, autoridades regulatorias o subcontratistas que no manejan software BIM.
+La visualización web 3D representa otra fortaleza significativa, cualquier stakeholder con navegador puede explorar el modelo sin instalar software especializado ni tener conocimientos técnicos avanzados. Esto democratiza el acceso a la información del proyecto, facilitando la colaboración con clientes, autoridades o subcontratistas que no manejan software BIM.
 
-El módulo VR, aunque derivado de IrisVR Prospect, se integra perfectamente con el resto de la plataforma, las incidencias detectadas durante sesiones VR se crean automáticamente en el sistema de gestión, asignan a responsables y rastrean hasta su cierre, cerrando el ciclo de coordinación.
+El módulo VR, aunque derivado de IrisVR Prospect, se integra con el resto de la plataforma, las incidencias detectadas durante sesiones VR se crean automáticamente en el sistema de gestión, asignan a responsables y rastrean hasta su cierre, cerrando el ciclo de coordinación.
 
 A pesar de sus virtudes, Resolve presenta limitaciones importantes para ciertos casos de uso. No ofrece funcionalidades AR móvil para inspección en obra, centrándose en coordinación de oficina técnica. La experiencia VR, aunque integrada, no ha evolucionado significativamente desde la adquisición de IrisVR, manteniendo las mismas limitaciones de requerir PC potente y headset dedicado.
 
-El modelo de negocio basado en suscripción por proyecto (no solo por usuario) puede resultar costoso para estudios que manejan múltiples proyectos simultáneamente pequeños. La complejidad de la plataforma, si bien justificada por su amplitud funcional, genera curvas de aprendizaje pronunciadas que requieren inversión en formación para aprovechamiento óptimo.
+El modelo de negocio basado en suscripción por proyecto (no solo por usuario) puede resultar costoso para estudios que manejan múltiples proyectos simultáneamente pequeños. La complejidad de la plataforma, aunque justificada por su amplitud funcional, genera curvas de aprendizaje pronunciadas que requieren inversión en formación para su aprovechamiento.
 
-Otra limitación destacable es la dependencia de conectividad, trabajar sin conexión a internet resulta problemático, lo cual puede ser restrictivo en obras donde la conectividad es inestable o inexistente. Aunque existe aplicación móvil, sus capacidades están limitadas principalmente a consulta y anotación básica, sin permitir acceder a todas las funcionalidades disponibles en la versión desktop.
+Otra limitación destacable es la dependencia de conectividad, trabajar sin conexión a internet resulta problemático, lo cual puede ser restrictivo en obras donde la conectividad es inestable o inexistente. Aunque tiene su aplicación móvil, sus capacidades están limitadas principalmente a consulta y anotación básica, sin poder acceder a todas las funcionalidades disponibles en la versión de escritorio.
 
 Finalmente, la integración VR heredada de IrisVR no aprovecha las tendencias más recientes como headsets standalone (requiere conexión a PC), realidad mixta o funcionalidades colaborativas AR, manteniéndose como una solución VR "tradicional" en un mercado que evoluciona rápidamente hacia experiencias más versátiles.
 
@@ -407,15 +407,15 @@ Finalmente, la integración VR heredada de IrisVR no aprovecha las tendencias m�
 \midrule
 Soporte AR móvil & No & Sí & No & No \\
 \addlinespace
-Soporte VR & Sí (excelente) & No & Sí (excelente) & Sí (bueno) \\
+Soporte VR & Sí & No & Sí & Sí \\
 \addlinespace
 Integración Revit & Directa & Importación & Importación & Plugin \\
 \addlinespace
 Interoperabilidad BIM & Limitada & Amplia & Amplia & Amplia \\
 \addlinespace
-Colaboración multiusuario & Limitada & Sí (cloud) & Sí (VR) & Sí (cloud + VR) \\
+Colaboración multiusuario & Limitada & Sí & Sí & Sí \\
 \addlinespace
-Gestión de issues & Básica & Buena & Básica & Excelente \\
+Gestión de incidencias & Básica & Buena & Básica & Excelente \\
 \addlinespace
 Uso en campo/obra & No & Sí (móvil) & No & Limitado \\
 \addlinespace
@@ -435,15 +435,23 @@ Enfoque principal & VR & AR campo & VR & Gestión integral \\
 
 Ninguna de las soluciones analizadas en el Cuadro~\ref{tab:comparativa-soluciones} cubre completamente el espectro de necesidades identificado. Fuzor e IrisVR destacan en VR pero no ofrecen AR móvil para uso en obra. Trimble Connect proporciona AR en campo pero carece de experiencias VR inmersivas. Resolve BIM ofrece la plataforma de gestión más completa e integra VR, pero no incluye capacidades AR para inspección en campo y presenta barreras de entrada significativas en coste y complejidad.
 
-Todas las soluciones presentan limitaciones en accesibilidad (coste, curva de aprendizaje o requisitos hardware) que restringen su adopción por pequeños estudios o profesionales independientes, configurando un espacio de oportunidad para propuestas más equilibradas que integren AR y VR manteniendo usabilidad y costes controlados.
+Todas las soluciones presentan limitaciones en accesibilidad (coste, curva de aprendizaje o requisitos hardware) que restringen su adopción por pequeños estudios o profesionales independientes, configurando un espacio de oportunidad para propuestas más equilibradas que integren AR y VR manteniendo usabilidad y costes asequibles.
 
 \section{Tendencias emergentes y oportunidades}
 En esta sección se explicará algunas técnicas de desarrollo para optimizar el uso de las técnologías inmersivas.
 \subsection{Realidad mixta (MR) y pass-through AR}
 
-Dispositivos recientes como Meta Quest Pro o Apple Vision Pro difuminan la frontera entre AR y VR mediante pass-through de alta calidad: cámaras frontales capturan el entorno real y lo presentan en los displays del headset, sobre el cual se superpone contenido virtual\footnote{\cite{milgram1994taxonomy}}. Esto permite transiciones fluidas entre inmersión total (VR) y el entorno real (AR) sin cambiar de dispositivo.
+Dispositivos recientes como Meta Quest Pro (Figura \ref{fig:passthrough}) o Apple Vision Pro difuminan la frontera entre AR y VR mediante pass-through de alta calidad: cámaras frontales capturan el entorno real y lo presentan en los displays del headset, sobre el cual se superpone contenido virtual\footnote{\cite{milgram1994taxonomy}}. Esto permite transiciones fluidas entre inmersión total (VR) y el entorno real (AR) sin cambiar de dispositivo.
 
-Esta convergencia tecnológica abre oportunidades para aplicaciones híbridas que combinen exploración VR de modelos BIM con validación AR sobre lo construido, todo dentro de un mismo flujo de trabajo y dispositivo.
+Esta convergencia tecnológica abre oportunidades para aplicaciones híbridas que combinen exploración VR de modelos BIM con validación AR sobre lo construido, todo dentro de un mismo flujo de trabajo y dispositivo sin necesidad de un dispositivo móvil convencional.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{include/images/passthrough.jpg}
+    \caption{Interfaz de Meta Quest Pro sobre el emplazamiento real}
+    \label{fig:passthrough}
+\end{figure}
+
 \subsection{Inteligencia artificial aplicada a BIM}
 
 El procesamiento de modelos BIM mediante técnicas de machine learning permite automatizar tareas tediosas como:\footnote{\cite{pan2021artificial}} 
@@ -458,9 +466,9 @@ Integrar estas capacidades en una aplicación AR/VR mejoraría significativament
 
 \subsection{Gemelos digitales (Digital Twins)}
 
-El concepto de gemelos digitales extiende BIM más allá de la fase de diseño y construcción, consisten en mantener un modelo digital actualizado durante toda la vida útil del edificio, con todos sus detalles. Sensores IoT (temperatura, humedad, ocupación, consumo energético) alimentan el modelo con datos en tiempo real, dotando de semántica al espacio tridimensional\footnote{\cite{boje2020towards}}. En la Figura~\ref{fig:Gemelos-digitales} se puede apreciar y entender mejor el concepto, consiste en una réplica exacta no física.
+El concepto de gemelos digitales extiende el uso de BIM más allá de la fase de diseño y construcción, consisten en mantener un modelo digital actualizado durante toda la vida útil del edificio, con todos sus detalles. Sensores IoT (temperatura, humedad, ocupación, consumo energético) alimentan el modelo con datos en tiempo real, manteniendo una estructura de información actualizada al espacio tridimensional\footnote{\cite{boje2020towards}}. En la Figura~\ref{fig:Gemelos-digitales} se puede entender mejor el concepto, consiste en una réplica exacta no física.
 
-Visualizar estos digital twins mediante AR/VR permitiría a gestores de instalaciones ver información operativa contextualizada espacialmente: "esta sala está a 26°C según el sensor, superando el umbral configurado". Esta convergencia BIM-\gls{iot}-AR representa una tendencia de crecimiento significativo en la gestión de las instalaciones.
+Visualizar estos gemelos digitales mediante AR/VR permitiría a gestores de instalaciones ver información operativa contextualizada espacialmente: "esta sala está a 26°C según el sensor, superando el umbral configurado". Esta convergencia BIM-\gls{iot}-AR representa una tendencia de crecimiento significativo en la gestión de las instalaciones.
 
 
 \begin{figure}[!htb]
@@ -472,7 +480,7 @@ Visualizar estos digital twins mediante AR/VR permitiría a gestores de instalac
 
 \subsection{5G y edge computing}
 
-La latencia reducida y ancho de banda aumentado de redes 5G habilita arquitecturas de renderizado en la nube donde el procesamiento gráfico pesado se ejecuta en servidores y solo se transmite el vídeo resultante al dispositivo móvil. Esto permitiría visualizar modelos BIM complejos en smartphones de gama media, democratizando el acceso a experiencias de alta calidad sin depender de hardware costoso.
+La latencia reducida y ancho de banda aumentado de redes 5G habilita arquitecturas de renderizado en la nube donde el procesamiento gráfico pesado se ejecuta en servidores y solo se transmite el vídeo resultante al dispositivo móvil. Esto permitiría visualizar modelos BIM complejos en smartphones de gama media, abriendo más el acceso a experiencias de alta calidad sin depender de hardware costoso.
 
 Combinado con edge computing (procesamiento cerca del usuario), se podrían ofrecer experiencias colaborativas multiusuario en tiempo real sin las limitaciones actuales de sincronización.
 
@@ -490,7 +498,7 @@ Esta situación configura un espacio de oportunidad claro para una propuesta que
 \item Adopte modelo de negocio accesible (freemium con funcionalidades core gratuitas) que reduzca barreras de entrada.
 \end{itemize}
 
-Los fundamentos tecnológicos están disponibles y maduros. Las metodologías BIM están consolidándose como estándar industrial. Los dispositivos AR/VR son cada vez más accesibles y potentes. El conocimiento adquirido sobre el estado del arte proporciona la base necesaria para diseñar una solución que aprenda de los aciertos y evite las limitaciones de propuestas anteriores, aportando valor diferencial real al sector de la construcción.
+Los fundamentos tecnológicos están disponibles y avanzados. Las metodologías BIM están consolidándose como estándar industrial. Los dispositivos AR/VR son cada vez más accesibles y potentes. El conocimiento adquirido sobre el estado del arte proporciona la base necesaria para diseñar una solución que aprenda de los aciertos y evite las limitaciones de propuestas anteriores, aportando valor diferencial real al sector de la construcción.
 
 
 
@@ -524,10 +532,10 @@ El objetivo principal de este Trabajo de Fin de Grado es diseñar, desarrollar e
 \item Incorporar herramientas de anotación y reporte que permitan a los usuarios marcar discrepancias, añadir comentarios y capturar evidencias fotográficas directamente sobre los modelos visualizados, generando documentación estructurada útil para coordinación de equipos.
 \item Diseñar interfaces de usuario intuitivas y específicas para profesionales del sector construcción, minimizando la curva de aprendizaje y priorizando la usabilidad en condiciones reales de trabajo (campo, obra, reuniones con clientes).
 \item Garantizar la interoperabilidad mediante estándares abiertos, evitando dependencias con software propietario específico y facilitando la integración en flujos de trabajo heterogéneos donde coexisten diferentes herramientas BIM.
-\item Aplicar buenas prácticas de ingeniería del software, generando código modular, bien documentado y mantenible, que facilite futuras extensiones o adaptaciones del sistema por parte de otros desarrolladores.
+\item Aplicar buenas prácticas de ingeniería del software, generando código modular y mantenible que facilite futuras extensiones o adaptaciones del sistema por parte de otros desarrolladores.
 
 \end{itemize}
-La consecución de estos objetivos permitirá obtener un prototipo funcional que demuestre la viabilidad técnica y el valor potencial de integrar tecnologías AR/VR con metodologías BIM en el sector de la construcción, contribuyendo tanto al aprendizaje personal como al avance del conocimiento en este campo emergente.
+La consecución de estos objetivos permitirá terminar con un prototipo funcional que demuestre la viabilidad técnica y el valor potencial de integrar tecnologías AR/VR con metodologías BIM en el sector de la construcción, contribuyendo tanto al aprendizaje personal la de este campo emergente.
 
 
 

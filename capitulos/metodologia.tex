@@ -1,12 +1,12 @@
 ⁰
 \chapter{\label{metodologia}Metodología}
 
-Este capítulo detalla las herramientas utilizadas para la organización de este proyecto. Dado que el objetivo es desarrollar una solución de ingeniería que integre visualización AR/VR y modelos BIM, se requiere un marco de trabajo que combine documentación académica con la flexibilidad que exige el desarrollo de software inmersivo.
+Este capítulo detalla las herramientas utilizadas para la organización de este proyecto. Dado que el objetivo es desarrollar una solución que integre visualización AR/VR y modelos BIM, se requiere un marco de trabajo que combine documentación académica con la flexibilidad que exige el desarrollo de software inmersivo.
 \section{Kanban}
 
-En el desarrollo de software, la elección entre metodologías tradicionales (como el modelo en cascada) y ágiles es determinante. Para este proyecto, se ha optado a una metodología ágil. Esta decisión es debido a la falta de experiencia de las tecnologías AR/VR, puede presentar imprevistos técnicos que requieren ajustes constantes durante el ciclo de vida del desarrollo.
+En el desarrollo de software, la elección entre metodologías tradicionales (como el modelo en cascada) y ágiles es importante. Para este proyecto, se ha optado a una metodología ágil. Esta decisión es debido a la falta de experiencia de las tecnologías AR/VR, puede presentar imprevistos técnicos que requieren ajustes constantes durante el ciclo de vida del desarrollo.
 
-Dentro del ecosistema ágil, se ha seleccionado Kanban. A diferencia de Scrum, que utiliza ciclos temporales cerrados (sprints), Kanban se centra en la continuidad del flujo de trabajo y la gestión visual de las tareas. Esta elección es ideal para un proyecto desarrollado de forma individual, ya que permite:
+Dentro de la metdología ágil, se ha seleccionado Kanban. A diferencia de Scrum, que utiliza ciclos temporales cerrados (sprints), Kanban se centra en la continuidad del flujo de trabajo y la gestión visual de las tareas. Esta elección es ideal para un proyecto desarrollado de forma individual, ya que permite:
 \begin{itemize}
 \item Optimizar la capacidad de trabajo disponible sin la presión de plazos artificiales internos.
 
@@ -21,7 +21,7 @@ El flujo de trabajo se ha organizado en un tablero compuesto por las siguientes 
 
 \item Por hacer (To Do): Tareas que se han seleccionado para ser abordadas a corto plazo debido a su prioridad en la planificación temporal.
 
-\item En curso (In Progress): Actividades que se están ejecutando en el momento actual.
+\item En curso (In Progress): Actividades que se están completando en el momento.
 
 \item Finalizado (Done): Tareas terminadas que están a la espera de una validación final.
 
@@ -29,11 +29,11 @@ El flujo de trabajo se ha organizado en un tablero compuesto por las siguientes 
 \end{itemize}
 \section{Herramientas}
 
-Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, se han seleccionado herramientas que facilitan la labor de un desarrollador en solitario:
+Para poder tener un registro de los avances y una gestión eficiente del tiempo, se han seleccionado herramientas adecuadas para un desarrollador en solitario:
 \begin{itemize}
-\item Git y Github: Git se utiliza como sistema principal de control de versiones, una tecnología indispensable para registrar el historial de cambios, revertir errores y mantener un control estricto sobre el código fuente. GitHub actúa como repositorio remoto en la nube, garantizando la redundancia de los datos y salvaguardando todo el progreso ante cualquier posible fallo del equipo local.
+\item \textbf{Git y Github}: Git se utiliza como sistema principal de control de versiones, una tecnología indispensable para registrar el historial de cambios, revertir errores y mantener un control estricto sobre el código fuente. GitHub actúa como repositorio remoto en la nube, garantizando la redundancia de los datos y salvaguardando todo el progreso ante cualquier posible fallo del equipo local.
 
-\item Github Desktop: Se emplea como capa gráfica \gls{gui} para simplificar la interacción con el control de versiones. Esta herramienta agiliza las operaciones diarias de Git, permitiendo una gestión de ramas más visual, una revisión detallada de las modificaciones (diffs) antes de cada commit y una sincronización más intuitiva con el repositorio remoto.
+\item \textbf{Github Desktop}: Se emplea como \gls{gui} para simplificar la interacción con el control de versiones. Esta herramienta agiliza las operaciones diarias de Git, permitiendo una gestión de ramas más visual, una revisión detallada de las modificaciones (diffs) antes de cada commit y un control más intuitiva con el repositorio remoto.
 
 \begin{figure}[!htb]
     \centering
@@ -42,7 +42,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:githubdesktop}
 \end{figure}
 
-\item Trello: Plataforma de gestión de proyectos que permite materializar el tablero Kanban. Su interfaz basada en listas y tarjetas facilita la categorización, asignación de prioridades y seguimiento visual del ciclo de vida de cada requisito del sistema, adaptándose perfectamente a metodologías ágiles.
+\item \textbf{Trello}: Plataforma de gestión de proyectos que permite elaborar el tablero Kanban. Su interfaz basada en listas y tarjetas facilita la categorización, asignación de prioridades y seguimiento visual del ciclo de vida de cada requisito del sistema, adaptándose perfectamente a metodologías ágiles.
 
 \begin{figure}[!htb]
     \centering
@@ -51,7 +51,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:trello}
 \end{figure}
 
-\item Clockify: Dado que el desarrollo del TFG debe compaginarse con la carga académica del proyecto ABP, este software permite registrar y cronometrar de forma analítica el tiempo dedicado a cada fase de la ingeniería. La generación de reportes métricos ayuda a verificar si el ritmo de trabajo se ajusta al cronograma previsto para la entrega final en septiembre de 2026.
+\item \textbf{Clockify}: Dado que el desarrollo del TFG debe compaginarse con la carga académica del proyecto ABP, este software permite registrar y cronometrar de forma analítica el tiempo dedicado a cada fase del proyecto. La generación de reportes métricos ayuda a verificar si el ritmo de trabajo se ajusta al cronograma previsto para la entrega final en julio de 2026.
 
 \begin{figure}[!htb]
     \centering
@@ -60,7 +60,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:clockify}
 \end{figure}
 
-\item Slack: Herramienta de comunicación corporativa y mensajería asíncrona. Permite mantenter una constante comunicación con el tutor para posibles dudas y reuniones futuras.
+\item \textbf{Slack}: Herramienta de comunicación corporativa y mensajería. Permite mantenter una constante comunicación con el tutor para posibles dudas y reuniones futuras.
 
 \begin{figure}[!htb]
     \centering
@@ -69,7 +69,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:slack}
 \end{figure}
 
-\item Unity: Motor gráfico y plataforma de desarrollo en tiempo real que actúa como el núcleo del proyecto. Se ha seleccionado por su complejidad no excesiva, capacidades avanzadas de renderizado 3D y su soporte nativo e integración madura con los estándares de Realidad Extendida (XR), permitiendo construir entornos inmersivos interactivos. La versión que se utilizará para este proyecto será la 6000.3.9f1.
+\item \textbf{Unity}: Motor gráfico y plataforma de desarrollo en tiempo real que actúa como el núcleo del proyecto. Se ha seleccionado por su complejidad no excesiva, capacidades avanzadas de renderizado 3D y su soporte nativo e integración avanzada con los estándares de Realidad Extendida (XR), permitiendo construir entornos inmersivos interactivos. La versión que se utilizará para este proyecto será la 6000.3.9f1.
 
 \begin{figure}[!htb]
     \centering
@@ -78,7 +78,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:unity}
 \end{figure}
 
-\item CloudCompare: Software de código abierto especializado en el procesamiento de nubes de puntos 3D y mallas triangulares. Proporciona un conjunto avanzado de algoritmos matemáticos e interfaz visual para el filtrado, escalado y análisis de densidad de grandes conjuntos de datos espaciales antes de su exportación al motor gráfico.
+\item \textbf{CloudCompare}: Software de código abierto especializado en el procesamiento de nubes de puntos 3D y mallas triangulares. Proporciona un conjunto avanzado de algoritmos matemáticos e interfaz visual para el filtrado, escalado y análisis de densidad de grandes conjuntos de datos espaciales antes de su exportación al motor gráfico.
 
 \begin{figure}[!htb]
     \centering
@@ -87,9 +87,9 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:cloudcompare}
 \end{figure}
 
-\item \gls{ide} - Visual Studio: Editor de código avanzado indispensable para la redacción y depuración de los scripts en lenguaje CSharp. Su integración directa con Unity proporciona herramientas de autocompletado, análisis de sintaxis y detección de errores en tiempo real, agilizando la programación de la lógica interna de la aplicación.
+\item \textbf{\gls{ide} - Visual Studio}: Editor de código avanzado indispensable para la redacción y depuración de los scripts en lenguaje C$\sharp$. Su integración directa con Unity proporciona herramientas de autocompletado, análisis de sintaxis y detección de errores en tiempo real, agilizando la programación de la lógica interna de la aplicación.
 
-\item Meta Horizon Link: Conjunto de utilidades de desarrollo y retransmisión por cable o red local. Resulta crítico para el flujo de trabajo en Realidad Virtual (PC VR), ya que permite previsualizar y testear el entorno tridimensional directamente desde el editor de Unity usando el visor, ahorrando el costoso proceso de empaquetar y compilar un archivo ejecutable en cada iteración de prueba.
+\item \textbf{Meta Horizon Link}: Conjunto de utilidades de desarrollo y retransmisión por cable o red local. Resulta indispensable para el flujo de trabajo en Realidad Virtual, ya que permite previsualizar y probar el entorno tridimensional directamente desde el editor de Unity usando el visor, ahorrando el costoso proceso de empaquetar y compilar un archivo ejecutable en cada iteración de prueba.
 
 \begin{figure}[!htb]
     \centering
@@ -98,7 +98,7 @@ Para asegurar la trazabilidad del código y una gestión eficiente del tiempo, s
     \label{fig:metahorizonlink}
 \end{figure}
 
-\item Meta Quest 2: Dispositivo de hardware empleado como plataforma de pruebas y ejecución del entorno inmersivo. Este visor opera con arquitectura standalone (autónoma) impulsada por el \gls{soc} Qualcomm Snapdragon XR2 y 6 GB de memoria \gls{ram}, lo que proporciona una alta capacidad de procesamiento gráfico y computacional. A nivel visual, incorpora un panel \gls{lcd} con una resolución de 1832 x 1920 píxeles por ojo y frecuencias de actualización dinámicas (72 Hz, 90 Hz y hasta 120 Hz), características críticas para mantener una latencia de fotones a movimiento \gls{m2p} baja y asegurar el confort visual. Se apoya en cuatro cámaras integradas en el chasis que ejecutan algoritmos de visión artificial (SLAM) para mapear el entorno físico en tiempo real y rastrear con precisión milimétrica la posición y rotación de los controladores hápticos Oculus Touch. Además, su soporte para conectividad Wi-Fi y el protocolo Meta Quest Link resulta vital para la metodología de trabajo, permitiendo la depuración y el testeo en tiempo real directamente desde el motor gráfico.
+\item \textbf{Meta Quest 2}: Dispositivo de hardware empleado como plataforma de pruebas y ejecución del entorno inmersivo. Este headset opera con arquitectura standalone (autónoma) impulsada por el \gls{soc} Qualcomm Snapdragon XR2 y 6 GB de memoria \gls{ram}, lo que proporciona suficiente capacidad de procesamiento gráfico y computacional. A nivel visual, incorpora un panel \gls{lcd} con una resolución de 1832 x 1920 píxeles por ojo y frecuencias de actualización dinámicas (72 Hz, 90 Hz y hasta 120 Hz), características para mantener una \gls{m2p} baja y asegurar el confort visual. Se apoya en cuatro cámaras integradas en el chasis que ejecutan algoritmos de visión artificial (SLAM) para mapear el entorno físico en tiempo real y rastrear con precisión milimétrica la posición y rotación de los controladores hápticos Oculus Touch. Además, su soporte para conectividad Wi-Fi y el protocolo Meta Quest Link resulta vital para la metodología de trabajo, permitiendo la depuración y prueba en tiempo real directamente desde el motor gráfico.
 
 \begin{figure}[!htb]
     \centering
