@@ -17,9 +17,9 @@ La solución se estructura en torno a un conjunto de herramientas interactivas q
     \item \textbf{Trazabilidad y generación de informes:} Sistema integrado que permite tomar fotografías virtuales, etiquetar incidencias por gravedad y compilar automáticamente toda la información recopilada en un documento \gls{pdf} exportable.
 \end{itemize}
 
-Para facilitar la comprensión global de la herramienta, en el siguiente diagrama (Cuadro~\ref{fig:arquitectura_propuesta}) se ilustra el flujo de trabajo principal de la aplicación y la disposición de las interfaces de usuario.
+Para facilitar la comprensión global de la herramienta, en el diagrama (Figura~\ref{fig:arquitectura_propuesta}) se ilustra el flujo de trabajo principal de la aplicación y la disposición de las interfaces de usuario.
 
-\begin{table}[!htb]
+\begin{figure}[!htb]
     \centering
     % Ajusta automáticamente el tamaño para que no se salga de los márgenes de la página
     \resizebox{\textwidth}{!}{%
@@ -80,7 +80,7 @@ Para facilitar la comprensión global de la herramienta, en el siguiente diagram
     }
     \caption{Diagrama conceptual de la arquitectura de la aplicación y herramientas disponibles}
     \label{fig:arquitectura_propuesta}
-\end{table}
+\end{figure}
 
 A partir de este punto, se detallan los mecanismos lógicos y estructurales desarrollados para implementar cada una de estas propuestas.
 
@@ -96,7 +96,7 @@ La integración del kit de desarrollo base provee una arquitectura modular compu
 \begin{itemize}
     \item \textbf{Sistema de cámara estereoscópica y rastreo espacial:} Sustituye el renderizado tradicional por cámaras duales encargadas de generar la distorsión estereoscópica necesaria para percibir la profundidad. Este componente traslada los movimientos de la cabeza del operario al espacio virtual de forma instantánea.
     \item \textbf{Controles de entrada y mapeo de dispositivos:} Subsistema que extrae las señales de hardware provenientes de los controladores en eventos lógicos, permitiendo la lectura precisa de botones, superficies táctiles y gatillos.
-    \item \textbf{Interactores y componentes de delección:} Módulos que gestionan las mecánicas de interacción, proveyendo herramientas nativas para la manipulación directa por proximidad y la selección a distancia mediante punteros virtuales (raycast).
+    \item \textbf{Interactores y componentes de selección:} Módulos que gestionan las mecánicas de interacción, proveyendo herramientas nativas para la manipulación directa por proximidad y la selección a distancia mediante punteros virtuales (raycast).
     \item \textbf{Físicas y capas de colisión:} Reglas del motor que controlan la gravedad artificial y delimitan las áreas transitables.
 \end{itemize}
 
@@ -104,13 +104,13 @@ Esta infraestructura base actúa como el núcleo técnico del proyecto, garantiz
 
 \section{Generación Procedural de Físicas y Optimización}
 
-Para que las herramientas de interacción a distancia (el escáner de mapa de calor o el puntero de selección) operen de forma precisa sobre el modelo arquitectónico, es necesario que cada elemento geométrico del edicio posea un volumen físico independiente que pueda registrar impactos de los punteros. Configurar esto de forma manual en modelos complejos que contienen miles de piezas resulta inviable.
+Para que las herramientas de interacción a distancia (el escáner de mapa de calor o el puntero de selección) operen de forma precisa sobre el modelo arquitectónico, es necesario que cada elemento geométrico del edificio posea un volumen físico independiente que pueda registrar impactos de los punteros. Configurar esto de forma manual en modelos complejos que contienen miles de piezas resulta inviable.
 
 Para automatizar este proceso, se desarrolló un algoritmo de optimización que opera durante la inicialización del entorno. Este sistema utiliza una rutina de procesamiento asíncrono para iterar sobre todas las mallas visuales del edificio. Al detectar una pieza que no tenga propiedades físicas, el sistema le adhiere dinámicamente un volumen de colisión y le transfiere la topología exacta del objeto tridimensional.
 
-Con el objetivo mantener estabilidad en la tasa de fotogramas y prevenir interrupciones en el seguimiento del visor, la ejecución se ha creado mediante pausas controladas. Al introducir un nuevo colisionador, el hilo principal de procesamiento se detiene forzando un fotograma de espera, reduciendo así picos severos en la carga computacional. En caso de que la pieza evaluada ya cuente con propiedades físicas existentes, el algoritmo continúa la inspección secuencial introduciendo de manera preventiva una pausa de un fotograma cada 100 iteraciones para liberar el flujo de datos del sistema. En el Cuadro~\ref{diagrama_optimizacion} se detalla de forma exhaustiva la lógica de control y bifurcación de este algoritmo concurrente.
+Con el objetivo de mantener estabilidad en la tasa de fotogramas y prevenir interrupciones en el seguimiento del visor, la ejecución se ha regulado mediante pausas controladas. Al introducir un nuevo colisionador, el hilo principal de procesamiento se detiene forzando un fotograma de espera, reduciendo así picos severos en la carga computacional. En caso de que la pieza evaluada ya cuente con propiedades físicas existentes, el algoritmo continúa la inspección secuencial introduciendo de manera preventiva una pausa de un fotograma cada 100 iteraciones para liberar el flujo de datos del sistema. En la Figura~\ref{diagrama_optimizacion} se detalla de forma exhaustiva la lógica de control y bifurcación de este algoritmo concurrente.
 
-\begin{table}[!htb]
+\begin{figure}[!htb]
     \centering
     \resizebox{0.95\textwidth}{!}{%
     \begin{tikzpicture}[
@@ -191,7 +191,7 @@ Con el objetivo mantener estabilidad en la tasa de fotogramas y prevenir interru
     }
     \caption{Diagrama de flujo del proceso asíncrono para la generación de físicas}
     \label{diagrama_optimizacion}
-\end{table}
+\end{figure}
 
 
 \section{Gestión Dual de Modelos y Visualización}
@@ -305,7 +305,7 @@ Para dotar a la interfaz de un comportamiento más limpio, el sistema implementa
 
 \section{Herramienta de Medición Espacial Euclidiana}
 
-Para evaluar discrepancias, el usuario cuenta con una "cinta métrica virtual" capaz de calcular distancias exactas entre cualquier par de puntos del espacio tridimensional a partir del modelo teórico. Visto en la posterior Figura \ref{fig:informe-diseño}.
+Para evaluar discrepancias, el usuario cuenta con una "cinta métrica virtual" capaz de calcular distancias exactas entre cualquier par de puntos del espacio tridimensional a partir del modelo teórico. Visto en la Figura \ref{fig:medicionespacial}.
 
 El sistema de medición opera mediante una máquina de estados controlada por las interacciones del usuario:
 \begin{enumerate}
@@ -315,7 +315,12 @@ El sistema de medición opera mediante una máquina de estados controlada por la
     \item \textbf{Representación visual:} Se genera dinámicamente un indicador de texto flotante que se sitúa en el punto medio geométrico exacto del segmento trazado, mostrando el valor métrico resultante.
 \end{enumerate}
 
-
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{include/images/medicionespacial.png}
+    \caption{Medición de la entrada del piso con la cinta métrica}
+    \label{fig:medicionespacial}
+\end{figure}
 
 
 \section{Registro de Incidencias y Trazabilidad}
@@ -372,7 +377,7 @@ Los cambios abruptos en el entorno virtual pueden romper la inmersión e inducir
 
 A la hora de interactuar con paneles virtuales, las herramientas estándar de Unity ofrecían una respuesta visual pobre. Se diseñó un módulo que reemplaza por completo el material de los botones al ser pulsados. Al realizar un intercambio de la propia textura en lugar de tintar la imagen, se respetan las sombras y brillos del entorno tridimensional, mejorando la respuesta táctil visual.
 
-Para evitar mareos durante los tiempos de carga entre diferentes modelos arquitectónicos, las transiciones se realizan mediante hilos de procesamiento en segundo plano, y se sincronizaron con un oscurecimiento progresivo de la visión del usuario. Esto garantiza que el seguimiento de los movimientos de la cabeza nunca se congele mientras el procesador prepara la nueva escena. Este oscurecimiento se logró creando un panel negro de gran tamaño delante de la cámara del usuario usuario (Figura~\ref{fig:camara}), que se hace visible progresivamente al cambiar de escena.
+Para evitar mareos durante los tiempos de carga entre diferentes modelos arquitectónicos, las transiciones se realizan mediante hilos de procesamiento en segundo plano, y se sincronizaron con un oscurecimiento progresivo de la visión del usuario. Esto garantiza que el seguimiento de los movimientos de la cabeza nunca se congele mientras el procesador prepara la nueva escena. Este oscurecimiento se logró creando un panel negro de gran tamaño delante de la cámara del usuario (Figura~\ref{fig:camara}), que se hace visible progresivamente al cambiar de escena.
 
 \subsection{Persistencia Local de Sesiones}
 Se integró un sistema de almacenamiento ligero en la memoria del dispositivo que registra fechas y datos de inspección mediante cadenas de texto. Esta información se inyecta en la sala inicial, permitiendo al usuario llevar un control visual de las auditorías previas sin requerir complejas infraestructuras de bases de datos externas. Visto en la Figura \ref{fig:res-menu}.
@@ -398,7 +403,7 @@ Para capturar evidencias en obra, se desarrolló una herramienta que simula una 
 \end{figure}
 
 \subsection{Motor de Compilación de Datos}
-La automatización del informe documental consiste en una arquitectura de memoria centralizada. Todas las herramientas de la aplicación operan independientemente, pero vuelcan su información en estructuras de datos globales. Al solicitar la exportación, un motor basado en librerías de procesamiento de documentos organiza estos datos y lo estructura en un archivo PDF.
+La automatización del informe documental consiste en una arquitectura de memoria centralizada. Todas las herramientas de la aplicación operan independientemente, pero vuelcan su información en estructuras de datos globales. Al solicitar la exportación, un motor basado en librerías de procesamiento de documentos organiza estos datos y los estructura en un archivo PDF.
 
 Para una buena presentación, se encapsula lógicamente cada captura fotográfica junto a su texto descriptivo, forzando saltos de página inteligentes para evitar que queden huérfanos o separados. Tras compilar el archivo (Figura~\ref{fig:informe-diseño}), el sistema hace una limpieza de memoria, permitiendo realizar múltiples auditorías sucesivas sin reiniciar el programa.
 
@@ -418,7 +423,7 @@ Para una buena presentación, se encapsula lógicamente cada captura fotográfic
 
 Otra de las funciones de la aplicación para inspeccionar el edificio es un escáner capaz de medir las diferencias entre la estructura real física y el modelo teórico en tiempo real. Esta herramienta tiñe los elementos del edificio teórico con un mapa de calor proyectado.
 
-La dificultad principal residía en que las digitalizaciones de la realidad carecen de volumen sólido, y procesar millones de partículas simultáneamente saturaría el procesador(pasarlo de la \gls{gpu} a la \gls{cpu}), volviendo la experiencia impracticable . Para solucionarlo, el modelo con \textit{Gaussian Splat} original se preprocesó mediante software especializado (CloudCompare) aplicando un submuestreo espacial, reduciendo considerablemente la densidad de puntos y aligerando el volumen de datos. Este modelo se exportó como documento de texto incluyendo todo el conjunto de puntos como coordenadas con el objetivo de optimizar el proceso e incorporar geometría (colisiones) a los puntos. A modo de prueba y validación, en la Figura \ref{fig:comparacion} se observa que los puntos cianes representan la versión simplificada del modelo con \textit{Gaussian Splat}
+La dificultad principal residía en que las digitalizaciones de la realidad carecen de volumen sólido, y procesar millones de partículas simultáneamente saturaría el procesador (pasarlo de la \gls{gpu} a la \gls{cpu}), volviendo la experiencia impracticable. Para solucionarlo, el modelo con \textit{Gaussian Splat} original se preprocesó mediante software especializado (CloudCompare) aplicando un submuestreo espacial, reduciendo considerablemente la densidad de puntos y aligerando el volumen de datos. Este modelo se exportó como documento de texto incluyendo todo el conjunto de puntos como coordenadas con el objetivo de optimizar el proceso e incorporar geometría (colisiones) a los puntos. A modo de prueba y validación, en la Figura \ref{fig:comparacion} se observa que los puntos cianes representan la versión simplificada del modelo con \textit{Gaussian Splat}.
 
 \subsection{Algoritmo de Proximidad Topológica}
 La herramienta de escáner ejecuta un cálculo de búsqueda espacial. Al interactuar con un muro teórico, el sistema analiza las coordenadas circundantes y evalúa la distancia hacia los puntos del modelo preprocesado.
@@ -426,7 +431,7 @@ La herramienta de escáner ejecuta un cálculo de búsqueda espacial. Al interac
 Si el algoritmo confirma la existencia de masa física real dentro de un radio de tolerancia, verifica la validez de esa parte de la estructura.
 
 \subsection{Clasificador de Desviaciones}
-Esta evaluación se realiza a través de un sistema de clasificación que analiza la magnitud del error detectado y altera en consecuencia la el color de la superficie analizada:
+Esta evaluación se realiza a través de un sistema de clasificación que analiza la magnitud del error detectado y altera en consecuencia el color de la superficie analizada:
 \begin{itemize}
     \item \textbf{Verde (perfecto):} Desviación ínfima. La obra física coincide íntegramente con el plano.
     \item \textbf{Amarillo (aceptable):} Discrepancia leve pero asumible dentro de las tolerancias normales.

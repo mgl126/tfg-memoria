@@ -6,7 +6,7 @@ Una vez finalizada la fase de desarrollo de la aplicación, en este capítulo se
 Para poner a prueba el software desarrollado, se ha probado de manera exitosa la aplicación a tres tipos de modelos arquitectónicos, demostrando una gran adaptabilidad a diferentes tipos de edificios.
 
 \subsection{Apartamento Individual (Tres Cantos, Madrid)}
-Este primer escenario representa una vivienda unifamiliar de un solo nivel. Ha sido el entorno principal empleado de forma continuada durante el ciclo de desarrollo de la aplicación, utilizándose como escena de pruebas en lugar de avanzar con los tres casos de forma simultánea. Resultó ser el modelo ideal para depurar las interacciones a corta distancia y calibrar el comportamiento de las herramientas inmersivas en espacios reducidos. Cabe destacar que, aunque el modelo de diseño teórico (BIM) comprende la vivienda en su totalidad, el acceso a la reconstrucción volumétrica de la realidad (\textit{Gaussian Splatting}) está limitado a una única habitación debido a la alta complejidad computacional y la accesibilidad a dicho modelo proporcionado por el tutor. La proporción que tiene dicho modelo respecto a la totalidad del modelo teórico se puede apreciar en la siguiente Figura \ref{fig:trescantospiso}. 
+Este primer escenario representa una vivienda unifamiliar de un solo nivel. Ha sido el entorno principal empleado de forma continuada durante el ciclo de desarrollo de la aplicación, utilizándose como escena de pruebas en lugar de avanzar con los tres casos de forma simultánea. Resultó ser el modelo ideal para depurar las interacciones a corta distancia y calibrar el comportamiento de las herramientas inmersivas en espacios reducidos. Cabe destacar que, aunque el modelo de diseño teórico (BIM) comprende la vivienda en su totalidad, el acceso a la reconstrucción volumétrica de la realidad (\textit{Gaussian Splatting}) está limitado a una única habitación debido a la alta complejidad computacional y la falta de accesibilidad a dicho modelo. La proporción que tiene dicho modelo respecto a la totalidad del modelo teórico se puede apreciar en la Figura \ref{fig:trescantospiso}. 
 
 \begin{figure}[!htb]
 \centering
@@ -16,7 +16,7 @@ Este primer escenario representa una vivienda unifamiliar de un solo nivel. Ha s
 \end{figure}
 
 \subsection{Aeródromo de la Universidad de Alicante}
-Este modelo representa el entorno de la Antigua Torre de Control de las instalaciones universitarias. Al ser una estructura vertical y aislada que opera como edificio de oficinas y gestión, permitió testear los algoritmos de movimiento en desniveles (prevención de cinetosis en escaleras) y comprobar el rendimiento de los colisionadores con grandes ventanales y geometrías atípicas. Para este caso de estudio específico no se dispuso de una digitalización física de la realidad, operando exclusivamente sobre el entorno BIM para la validación de las lógicas de movimiento y físicas procedurales. En las siguientes Figuras \ref{fig:aerodromofull} y \ref{fig:aerodromo} se puede apreciar la diferencia del edificio en su totalidad con una versión descompuesta en solo puertas, ventanas, suelos y aparatos sanitarios.
+Este modelo representa el entorno de la Antigua Torre de Control de las instalaciones universitarias. Al ser una estructura vertical y aislada que opera como edificio de oficinas y gestión, permitió testear los algoritmos de movimiento en desniveles (prevención de cinetosis en escaleras) y comprobar el rendimiento de los colisionadores con grandes ventanales y geometrías atípicas. Para este caso de estudio específico no se dispuso de una digitalización física de la realidad, operando exclusivamente sobre el entorno BIM para la validación de las lógicas de movimiento y físicas procedurales. En las Figuras \ref{fig:aerodromofull} y \ref{fig:aerodromo} se puede apreciar la diferencia del edificio en su totalidad con una versión descompuesta en solo puertas, ventanas, suelos y aparatos sanitarios.
 
 \begin{figure}[!htb]
     \centering
@@ -37,7 +37,7 @@ Este modelo representa el entorno de la Antigua Torre de Control de las instalac
     \end{minipage}
 \end{figure}
 
-Durante las pruebas en este modelo, se detectó que el tramo de escaleras superior tenía una pendiente excesivamente vertical, lo cual obstaculizaba el ascenso fluido del usuario mediante el sistema de movimiento continuo. Para solventar este problema de accesibilidad geométrica sin alterar la malla visual arquitectónica original, se superpuso un volumen de colisión invisible (\textit{Collider}) en forma de rampa con un ángulo de inclinación más suave. De esta forma la colisión del usuario se deslizará de manera natural hacia la planta superior, evitando bloqueos físicos o movimientos abruptos que pudieran romper la inmersión o inducir cinetosis. Visto en la siguiente Figura \ref{fig:escaleraauxiliar}.
+Durante las pruebas en este modelo, se detectó que el tramo de escaleras superior tenía una pendiente excesivamente vertical, lo cual obstaculizaba el ascenso fluido del usuario mediante el sistema de movimiento continuo. Para solventar este problema de accesibilidad geométrica sin alterar la malla visual arquitectónica original, se superpuso un volumen de colisión invisible (\textit{Collider}) en forma de rampa con un ángulo de inclinación más suave. De esta forma la colisión del usuario se deslizará de manera natural hacia la planta superior, evitando bloqueos físicos o movimientos abruptos que pudieran romper la inmersión o inducir cinetosis. Visto en la Figura \ref{fig:escaleraauxiliar}.
 
 \begin{figure}[!htb]
 \centering
@@ -146,11 +146,34 @@ Los costes futuros asociados al despliegue se centrarían principalmente en el m
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Vinculación Académica sobre el Grado}
 El diseño de este proyecto representa la culminación práctica de múltiples competencias, lógicas y metodologías asimiladas a lo largo de la titulación en Ingeniería Multimedia. El producto final de esta aplicación es resultado de aplicar conocimientos provenientes de las siguientes áreas:
 
 \begin{itemize}
-\item \textbf{Realidad Virtual (21040):} Durante este curso 2025-2026 en el grado se ha impartido esta asignatura, y ha sido una de las asignaturas más relacionadas con el trabajo, otorgando experiencia similar en un motor diferente, Unreal Engine. Se han puesto en práctica fundamentos tales como el trazado de rayos (\textit{Raycasting}), interacción de 6DoF con mandos, y la prevención de la cinetosis a través de la interfaz.
+\item \textbf{Realidad Virtual (21040):} Durante este curso 2025-2026 en el grado se ha impartido esta asignatura, y ha sido una de las más relacionadas con el trabajo, otorgando experiencia similar en un motor diferente, Unreal Engine. Se han puesto en práctica fundamentos tales como el trazado de rayos (\textit{Raycasting}), interacción de 6DoF con mandos, y la prevención de la cinetosis a través de la interfaz.
 \item \textbf{Usabilidad y Accesibilidad (21013):} Las directrices de estas materias han sido imprescindibles para el diseño de paneles de interfaces de usuario inmersivas, traduciendo elementos convencionales 2D (\textit{Canvas}) a espacios euclidianos interactivos. Se priorizó el contraste en los menús y la accesibilidad para usuarios que pudiesen padecer fatiga ocular en inmersiones prolongadas.
 \item \textbf{Estructura de Datos y Algoritmia (21014):} Ha sido fundamental para la lógica del código; empleando diccionarios, *HashSets* paramétricos, listas dinámicas y árboles para aislar y procesar de manera concurrente los miles de componentes y metadatos que conforman la topología BIM.
 \item \textbf{Fundamentos de videojuegos (21027) y Análisis y Especificación de Sistemas Multimedia (21017):} Proveyeron la base del flujo de trabajo: adopción de ciclos de trabajo de la metodología ágil, el diseño del modelo documental de arquitectura de software, el dominio de los repositorios de control de versiones (Git) y la correcta especificación funcional ante requerimientos cambiantes y desafíos técnicos inesperados.

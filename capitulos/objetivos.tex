@@ -48,7 +48,7 @@ Esta sección consiste en un análisis sobre los fundamentos tecnológicos que s
 
 El \gls{3dgs} ha emergido recientemente como una técnica revolucionaria para la reconstrucción tridimensional y el renderizado volumétrico a partir de un conjunto de fotografías bidimensionales. A diferencia de la fotogametría tradicional, que intenta generar mallas poligonales cerradas y a menudo falla al interpretar superficies reflectantes, transparentes o sin textura, el 3DGS representa la escena utilizando millones de partículas matemáticas (distribuciones gaussianas 3D) que poseen atributos de posición, escala, rotación, opacidad y color armónico esférico.
 
-Esta técnica es considerado un salto considerable respecto a métodos previos como los \gls{nerf}. Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el \textit{Gaussian Splatting} permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de \gls{fps} incluso en escenas de gran complejidad geométrica.
+Esta técnica es considerada un salto considerable respecto a métodos previos como los \gls{nerf}. Mientras que los NeRFs requieren tiempos de inferencia altísimos que imposibilitan su uso fluido\footnote{\cite{mildenhall2020nerf}}, el \textit{Gaussian Splatting} permite un renderizado fotorrealista en tiempo real, alcanzando mejores tasas de \gls{fps} incluso en escenas de gran complejidad geométrica.
 
 En el contexto de la arquitectura y la construcción, esta tecnología ofrece posibilidades para el control de calidad y la auditoría de obras:
 
@@ -115,7 +115,7 @@ El concepto de LOD (Level Of Development) estandariza el grado de definición ge
     \caption{Ejemplo de los distintos Niveles de Desarrollo}
     \label{fig:lods}
 \end{figure}
-Esta gradación resulta relevante para aplicaciones AR/VR porque diferentes casos de uso requieren distintos niveles de detalle. Una presentación comercial a clientes puede funcionar perfectamente con LOD 200-300, mientras que una inspección técnica en obra podría necesitar LOD 400 para verificar encuentros constructivos complejos. Implementar sistemas de visualización que adapten automáticamente el nivel de detalle según el contexto de uso constituye un factor diferenciador importante. Como se puede ver en la siguiente Figura~\ref{fig:BIM-model}, un modelado 3D habitual coge los detalles exteriores del edificio, pero por le contrario, un modelo BIM analiza cada una de sus partes interiores.
+Esta gradación resulta relevante para aplicaciones AR/VR porque diferentes casos de uso requieren distintos niveles de detalle. Una presentación comercial a clientes puede funcionar perfectamente con LOD 200-300, mientras que una inspección técnica en obra podría necesitar LOD 400 para verificar encuentros constructivos complejos. Implementar sistemas de visualización que adapten automáticamente el nivel de detalle según el contexto de uso constituye un factor diferenciador importante. Como se puede apreciar en la Figura~\ref{fig:BIM-model}, un modelado 3D habitual coge los detalles exteriores del edificio, pero por le contrario, un modelo BIM analiza cada una de sus partes interiores.
 
 \begin{figure}[!htb]
     \centering
@@ -329,7 +329,7 @@ Caracteristicas principales:
 \end{itemize}
 Su integración con la plataforma de Trimble (escáneres láser, soluciones de topografía) proporciona ventajas significativas para empresas que ya utilizan estos equipamientos profesionales. La aplicación móvil resulta más accesible que soluciones basadas en gafas AR caras. El sistema de gestión de incidencias vinculado al modelo facilita la comunicación entre oficina técnica y obra.
 
-Por otro lado, la precisión de posicionamiento mediante GPS resulta insuficiente para muchas tareas de inspección detallada. La interfaz, aunque funcional, no destaca por su intuitividad y requiere cierto periodo de adaptación. Las funcionalidades más avanzadas requieren suscripción a servicios Trimble Connect, generando costes recurrentes. Por útlimo, no ofrece experiencias VR inmersivas, limitándose a AR móvil.
+Por otro lado, la precisión de posicionamiento mediante GPS resulta insuficiente para muchas tareas de inspección detallada. La interfaz, aunque funcional, no destaca por su intuitividad y requiere cierto periodo de adaptación. Las funcionalidades más avanzadas requieren suscripción a servicios Trimble Connect, generando costes recurrentes. Por último, no ofrece experiencias VR inmersivas, limitándose a AR móvil.
 
 \begin{figure}[!htb]
     \centering
@@ -438,7 +438,7 @@ Ninguna de las soluciones analizadas en el Cuadro~\ref{tab:comparativa-solucione
 Todas las soluciones presentan limitaciones en accesibilidad (coste, curva de aprendizaje o requisitos hardware) que restringen su adopción por pequeños estudios o profesionales independientes, configurando un espacio de oportunidad para propuestas más equilibradas que integren AR y VR manteniendo usabilidad y costes asequibles.
 
 \section{Tendencias emergentes y oportunidades}
-En esta sección se explicará algunas técnicas de desarrollo para optimizar el uso de las técnologías inmersivas.
+En esta sección se explicará algunas técnicas de desarrollo para optimizar el uso de las tecnologías inmersivas.
 \subsection{Realidad mixta (MR) y pass-through AR}
 
 Dispositivos recientes como Meta Quest Pro (Figura \ref{fig:passthrough}) o Apple Vision Pro difuminan la frontera entre AR y VR mediante pass-through de alta calidad: cámaras frontales capturan el entorno real y lo presentan en los displays del headset, sobre el cual se superpone contenido virtual\footnote{\cite{milgram1994taxonomy}}. Esto permite transiciones fluidas entre inmersión total (VR) y el entorno real (AR) sin cambiar de dispositivo.
@@ -535,7 +535,7 @@ El objetivo principal de este Trabajo de Fin de Grado es diseñar, desarrollar e
 \item Aplicar buenas prácticas de ingeniería del software, generando código modular y mantenible que facilite futuras extensiones o adaptaciones del sistema por parte de otros desarrolladores.
 
 \end{itemize}
-La consecución de estos objetivos permitirá terminar con un prototipo funcional que demuestre la viabilidad técnica y el valor potencial de integrar tecnologías AR/VR con metodologías BIM en el sector de la construcción, contribuyendo tanto al aprendizaje personal la de este campo emergente.
+La consecución de estos objetivos permitirá terminar con un prototipo funcional que demuestre la viabilidad técnica y el valor potencial de integrar tecnologías AR/VR con metodologías BIM en el sector de la construcción, contribuyendo tanto al aprendizaje personal como a este campo emergente.
 
 
 
