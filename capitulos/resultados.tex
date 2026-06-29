@@ -160,6 +160,63 @@ Los costes futuros asociados al despliegue se centrarían principalmente en el m
 
 
 
+\subsection{Experimento FPS vs Puntos}
+
+Para medir el límite computacional de la aplicación durante su ejecución, se realizaron mediciones de FPS a la escena principal como prueba. Consistió en evaluar la tasa de fotogramas ante distintas cargas de densidad del modelo \textit{Gaussian Splatting}, aplicando simplificaciones sobre ésta (842.344 puntos). 
+
+Los resultados de las cuatro pruebas realizadas se detallan en el Cuadro~\ref{tab:fps_splatting}:
+
+\begin{table}[!htb]
+    \centering
+    \caption{Rendimiento de la aplicación según la densidad volumétrica (\textit{Gaussian Splatting})}
+    \label{tab:fps_splatting}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Categoría / Calidad} & \textbf{Porcentaje} & \textbf{Nº de Puntos} & \textbf{Tasa media (FPS)} \\
+        \midrule
+        Calidad Original (Nivel 1) & 100\,\% & 842.344 & 15 \\
+        Simplificación Leve (Nivel 2) & 75\,\% & 631.758 & 18 \\
+        Simplificación Media (Nivel 3) & 50\,\% & 421.172 & 18 \\
+        Simplificación Alta (Nivel 4) & 25\,\% & 210.586 & 23 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+El análisis de los datos del experimento permite extraer dos conclusiones fundamentales sobre la arquitectura del sistema:
+
+\begin{enumerate}
+    \item \textbf{Estancamiento del rendimiento:} Al reducir la cantidad de puntos un 25\,\% (Nivel 2), el visor experimenta una leve mejora de 3 FPS. Sin embargo, al simplificar la muestra hasta la mitad exacta (Nivel 3), se mantiene estancado en los mismos 18 FPS. Este comportamiento demuestra que, una vez reducido el número de puntos, el problema ya no es la cantidad de datos, sino el esfuerzo que debe realizar la tarjeta gráfica para dibujar y superponer los elementos semitransparentes en la pantalla.
+    \item \textbf{Inviabilidad autónoma (.apk):} Incluso aplicando una simplificación extrema que elimina tres cuartas partes del modelo (Nivel 4), el hardware del ordenador apenas logra alcanzar los 23 FPS, situándose muy por debajo del umbral mínimo de los 72 FPS exigidos por la industria para prevenir la cinetosis en Realidad Virtual.
+\end{enumerate}
+
+Estas mediciones apoyan la decisión de que la ejecución de digitalizaciones complejas mediante \textit{Gaussian Splatting} en visores requiere de forma obligatoria derivar la carga gráfica a un ordenador externo mediante transmisión.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
